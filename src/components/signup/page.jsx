@@ -12,8 +12,11 @@ const SignUp = () => {
         <h3></h3>
         <p></p>
         <div>
-          <input type="text" />
-          <input type="text" />
+          <input type="text" placeholder="Full name" />
+          <input type="email" placeholder="Email" />
+          <input type="text" placeholder="Phone Number" />
+          <input type="text" placeholder="Password" />
+          <button>Sign Up</button>
         </div>
       </div>
     </main>
