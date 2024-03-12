@@ -3,6 +3,8 @@ import { useRef } from "react";
 import Image from "next/image";
 import SignupImg from "../../images/signup.png";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import app from "@/app/firebase/config";
+// import auth from "../../app/firebase/config";
 
 const SignUp = () => {
   const emailInputRef = useRef(null);
@@ -13,7 +15,7 @@ const SignUp = () => {
     const password = passwordInputRef.current.value;
 
     try {
-      const auth = getAuth();
+      const auth = getAuth(app);
       const res = await createUserWithEmailAndPassword(auth, email, password);
       console.log({ res });
     } catch (e) {
