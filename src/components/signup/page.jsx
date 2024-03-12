@@ -1,27 +1,27 @@
 "use client";
-import { useState } from "react";
+import { useRef } from "react";
 import Image from "next/image";
 import SignupImg from "../../images/signup.png";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-// import auth from "../../app/firebase/config";
 
 const SignUp = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  // const [createUserWithEmailAndPassword] =
-  //   useCreateUserWithEmailAndPassword(auth);
+  const emailInputRef = useRef(null);
+  const passwordInputRef = useRef(null);
 
   const handleSignup = async () => {
+    const email = emailInputRef.current.value;
+    const password = passwordInputRef.current.value;
+
     try {
       const auth = getAuth();
       const res = await createUserWithEmailAndPassword(auth, email, password);
       console.log({ res });
-      setEmail("");
-      setPassword("");
     } catch (e) {
       console.error(e);
     }
+
+    emailInputRef.current.value = "";
+    passwordInputRef.current.value = "";
   };
 
   return (
@@ -33,17 +33,12 @@ const SignUp = () => {
         <h3></h3>
         <p></p>
         <div className="flex flex-col">
-          <input type="text" placeholder="Full name" />
+          <input type="email" placeholder="Email" ref={emailInputRef} />
+
           <input
-            type="email"
-            placeholder="Email"
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <input type="text" placeholder="Phone Number" />
-          <input
-            type="text"
+            type="password"
             placeholder="Password"
-            onChange={(e) => setPassword(e.target.value)}
+            ref={passwordInputRef}
           />
           <button onClick={handleSignup} className="bg-black text-white">
             Sign Up
