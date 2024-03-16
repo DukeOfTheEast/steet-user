@@ -31,8 +31,8 @@ const SignUp = () => {
   };
 
   return (
-    <main className="bg-signup-bg bg-no-repeat h-screen w-screen bg-cover flex flex-col items-center justify-center overflow-x-hidden">
-      <div className="sm:my-10 my-10 text-center sm:mt-20">
+    <main className="bg-signup-bg bg-no-repeat h-screen w-screen bg-cover flex flex-col items-center">
+      <div className="my-10 text-center sm:mt-20">
         <h3 className="sm:text-5xl text-3xl font-extrabold text-neutral-700">
           Welcome to FrancisCoutures
         </h3>
