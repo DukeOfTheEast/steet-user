@@ -41,7 +41,7 @@ const SignUp = () => {
           folder.
         </p>
       </div>
-      <div className="sm:w-[400px] w-[300] bg-white px-5 py-8 rounded-2xl mb-20">
+      <div className="sm:w-[400px] w-[300] bg-white px-5 py-8 rounded-2xl sm:mb-20 mb-5">
         <div className="flex flex-col gap-5">
           <input
             className="rounded-2xl p-3 bg-slate-300 focus:outline-none"
