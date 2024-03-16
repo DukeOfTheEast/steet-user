@@ -1,14 +1,17 @@
 "use client";
 import { useRef } from "react";
 import Image from "next/image";
-import SignupImg from "../../images/signup.png";
+// import SignupImg from "../../images/signup.png";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import app from "@/app/firebase/config";
+import { useRouter } from "next/navigation";
 // import auth from "../../app/firebase/config";
+import Link from "next/link";
 
 const SignUp = () => {
   const emailInputRef = useRef(null);
   const passwordInputRef = useRef(null);
+  const router = useRouter();
 
   const handleSignup = async () => {
     const email = emailInputRef.current.value;
@@ -18,6 +21,7 @@ const SignUp = () => {
       const auth = getAuth(app);
       const res = await createUserWithEmailAndPassword(auth, email, password);
       console.log({ res });
+      router.push("/signin");
     } catch (e) {
       console.error(e);
     }
@@ -27,25 +31,44 @@ const SignUp = () => {
   };
 
   return (
-    <main className="flex flex-row">
-      <div>
-        <Image className="" src={SignupImg} priority alt="" />
+    <main className="bg-signup-bg bg-no-repeat h-screen w-screen bg-cover flex flex-col items-center justify-center overflow-x-hidden">
+      <div className="my-10 text-center mt-20">
+        <h3 className="text-5xl font-extrabold text-neutral-700">
+          Welcome to FrancisCoutures
+        </h3>
+        <p className="italic text-slate-100">
+          You are one step closer to <br /> start creating your customers
+          folder.
+        </p>
       </div>
-      <div>
-        <h3></h3>
-        <p></p>
-        <div className="flex flex-col">
-          <input type="email" placeholder="Email" ref={emailInputRef} />
+      <div className="w-[400px] bg-white px-5 py-8 rounded-2xl mb-20">
+        <div className="flex flex-col gap-5">
+          <input
+            className="rounded-2xl p-3 bg-slate-300 focus:outline-none"
+            type="email"
+            placeholder="Email"
+            ref={emailInputRef}
+          />
 
           <input
+            className="rounded-2xl p-3 bg-slate-300 focus:outline-none"
             type="password"
             placeholder="Password"
             ref={passwordInputRef}
           />
-          <button onClick={handleSignup} className="bg-black text-white">
+          <button
+            onClick={handleSignup}
+            className="bg-black hover:bg-gray-700 text-white rounded-2xl p-3"
+          >
             Sign Up
           </button>
         </div>
+        <p className="my-5">
+          Already have an account?{" "}
+          <Link href="/signin" className="text-blue-500">
+            Sign in
+          </Link>
+        </p>
       </div>
     </main>
   );
