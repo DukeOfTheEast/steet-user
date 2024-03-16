@@ -32,7 +32,7 @@ const SignUp = () => {
 
   return (
     <main className="bg-signup-bg bg-no-repeat h-screen w-screen bg-cover flex flex-col items-center justify-center overflow-x-hidden">
-      <div className="my-10 text-center mt-20">
+      <div className="my-10 text-center sm:mt-20 mt-10">
         <h3 className="text-5xl font-extrabold text-neutral-700">
           Welcome to FrancisCoutures
         </h3>
@@ -41,7 +41,7 @@ const SignUp = () => {
           folder.
         </p>
       </div>
-      <div className="w-[400px] bg-white px-5 py-8 rounded-2xl mb-20">
+      <div className="sm:w-[400px] w-[300] bg-white px-5 py-8 rounded-2xl mb-20">
         <div className="flex flex-col gap-5">
           <input
             className="rounded-2xl p-3 bg-slate-300 focus:outline-none"
