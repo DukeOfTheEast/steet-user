@@ -32,8 +32,8 @@ const SignUp = () => {
 
   return (
     <main className="bg-signup-bg bg-no-repeat h-screen w-screen bg-cover flex flex-col items-center justify-center overflow-x-hidden">
-      <div className="my-10 text-center sm:mt-20 mt-10">
-        <h3 className="text-5xl font-extrabold text-neutral-700">
+      <div className="my-10 text-center sm:mt-20">
+        <h3 className="sm:text-5xl text-3xl font-extrabold text-neutral-700">
           Welcome to FrancisCoutures
         </h3>
         <p className="italic text-slate-100">
