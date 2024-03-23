@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app";
 // import getAuth from "firebase/auth";
+import { getFirestore, collection, getDocs } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -12,6 +13,20 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 // const auth = getAuth(app);
+export const db = getFirestore();
+const colRef = collection(db, "books");
+
+getDocs(colRef)
+  .then((snapshot) => {
+    let catalogue = [];
+    snapshot.docs.forEach((doc) => {
+      catalogue.push({ ...doc.data(), id: doc.id });
+    });
+    console.log(catalogue);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 
 // export { app, auth };
 export default app;

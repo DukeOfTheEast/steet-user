@@ -1,5 +1,5 @@
 "use client";
-import Image from "next/image";
+// import Image from "next/image";
 import { useState } from "react";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import app from "../firebase/config";
@@ -25,25 +25,38 @@ const SignIn = () => {
   };
 
   return (
-    <div>
-      <h2>Sign In</h2>
+    <main className="bg-signin-bg bg-no-repeat h-screen w-screen bg-cover flex flex-col items-center pt-32">
+      <h2 className="sm:text-5xl text-3xl font-extrabold text-black ">
+        Hello! Welcome back.
+      </h2>
+      <p className="italic text-slate-100">Enter your information to login.</p>
       {error && <p>{error}</p>}
-      <form onSubmit={handleSignIn}>
+      <form
+        className="flex flex-col gap-5 sm:w-[400px] w-[300] bg-white px-5 py-8 rounded-2xl sm:mb-20"
+        onSubmit={handleSignIn}
+      >
         <input
+          className="rounded-2xl p-3 bg-slate-300 focus:outline-none"
           type="email"
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
         <input
+          className="rounded-2xl p-3 bg-slate-300 focus:outline-none"
           type="password"
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <button type="submit">Sign In</button>
+        <button
+          type="submit"
+          className="bg-black hover:bg-gray-700 text-white rounded-2xl p-3"
+        >
+          Sign In
+        </button>
       </form>
-    </div>
+    </main>
   );
 };
 
