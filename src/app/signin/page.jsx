@@ -58,7 +58,7 @@ const SignIn = () => {
         </button>
         <p className="my-3">
           Don&apos;t have an account?{" "}
-          <Link href="/signup" className="text-blue-500">
+          <Link href="/" className="text-blue-500">
             Sign Up
           </Link>
         </p>
