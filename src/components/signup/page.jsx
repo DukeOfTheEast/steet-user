@@ -1,5 +1,5 @@
 "use client";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import Image from "next/image";
 // import SignupImg from "../../images/signup.png";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
@@ -11,6 +11,7 @@ import Link from "next/link";
 const SignUp = () => {
   const emailInputRef = useRef(null);
   const passwordInputRef = useRef(null);
+  const [error, setError] = useState(null);
   const router = useRouter();
 
   const handleSignup = async () => {
@@ -22,8 +23,11 @@ const SignUp = () => {
       const res = await createUserWithEmailAndPassword(auth, email, password);
       console.log({ res });
       router.push("/signin");
-    } catch (e) {
-      console.error(e);
+    } catch (error) {
+      setError(error.message);
+      setTimeout(() => {
+        setError("");
+      }, 3000);
     }
 
     emailInputRef.current.value = "";
@@ -41,6 +45,11 @@ const SignUp = () => {
           folder.
         </p>
       </div>
+      {error && (
+        <p className="text-red-500 bg-white rounded-md px-3 py-1 absolute top-5">
+          Input cannot be empty!
+        </p>
+      )}
       <div className="sm:w-[400px] w-[300] bg-white px-5 py-8 rounded-2xl sm:mb-20">
         <div className="flex flex-col gap-5">
           <input
@@ -58,7 +67,7 @@ const SignUp = () => {
           />
           <button
             onClick={handleSignup}
-            className="bg-black hover:bg-gray-700 text-white rounded-2xl p-3"
+            className="bg-black hover:opacity-70 text-white rounded-2xl p-3"
           >
             Sign Up
           </button>

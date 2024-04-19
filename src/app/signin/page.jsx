@@ -34,6 +34,8 @@ const SignIn = () => {
       setTimeout(() => {
         setError("");
       }, 3000);
+      setEmail("");
+      setPassword("");
     }
   };
 
@@ -68,7 +70,7 @@ const SignIn = () => {
         />
         <button
           type="submit"
-          className="bg-black hover:bg-gray-700 text-white rounded-2xl p-3"
+          className="bg-black hover:opacity-70 text-white rounded-2xl p-3"
         >
           Sign In
         </button>
