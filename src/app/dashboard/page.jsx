@@ -32,11 +32,11 @@ const Dashboard = () => {
 
   return (
     <div>
-      <ul className="md:flex md:flex-wrap flex flex-col m-4 sm:gap-6 gap-4 items-center justify-center">
+      <ul className="flex md:flex-wrap sm:flex-row flex-col  m-4 sm:gap-6 gap-4 items-center justify-center">
         {data?.map((repo) => (
           <li
             key={repo.id}
-            className="md:w-2/5 shadow-md rounded-3xl hover:cursor-pointer bg-slate-100"
+            className="md:w-2/5 shadow-md rounded-3xl hover:cursor-pointer bg-slate-100 sm:h-40"
           >
             <a
               href={repo.url}
@@ -57,9 +57,9 @@ const Dashboard = () => {
               <img
                 src={repo.image_url}
                 alt="images"
-                width="200"
-                height="200"
-                className="rounded-r-3xl"
+                // width="200"
+                // height="200"
+                className="rounded-r-3xl sm:w-48 w-24 sm:h-40 h-28"
               />
             </a>
           </li>
