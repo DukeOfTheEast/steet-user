@@ -1,6 +1,7 @@
 "use client";
 
-import Image from "next/image";
+// import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 // import { addDoc } from "firebase/firestore";
 import { useState, useEffect } from "react";
@@ -21,7 +22,6 @@ const Dashboard = () => {
         const jsonData = await response.json();
         setData(jsonData.results);
         console.log(jsonData);
-        // console.log(jsonData.results[0].title);
       } catch (error) {
         setError(error.message);
       }
@@ -32,12 +32,36 @@ const Dashboard = () => {
 
   return (
     <div>
-      <ul>
+      <ul className="md:flex md:flex-wrap flex flex-col m-4 sm:gap-6 gap-4 items-center justify-center">
         {data?.map((repo) => (
-          <li key={repo.id}>
-            <h2 className="text-lg">{repo.title}</h2>
-            {/* <Image src={repo.image_url} alt="images" width="300" height="300" /> */}
-            <img src={repo.image_url} alt="images" width="300" height="300" />
+          <li
+            key={repo.id}
+            className="md:w-2/5 shadow-md rounded-3xl hover:cursor-pointer bg-slate-100"
+          >
+            <a
+              href={repo.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex"
+            >
+              <h2 className="sm:text-lg py-4 pl-4">{repo.title}</h2>
+
+              {/* <Image
+              src={repo.image_url}
+              alt="images"
+              width="300"
+              height="300"
+              className="rounded-r-3xl"
+            /> */}
+
+              <img
+                src={repo.image_url}
+                alt="images"
+                width="200"
+                height="200"
+                className="rounded-r-3xl"
+              />
+            </a>
           </li>
         ))}
       </ul>
