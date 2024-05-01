@@ -5,6 +5,8 @@ import Link from "next/link";
 import React from "react";
 // import { addDoc } from "firebase/firestore";
 import { useState, useEffect } from "react";
+import Navbar from "@/components/navbar/page";
+import { DesktopHeader } from "@/components/desktop-header/page";
 
 const Dashboard = () => {
   const [data, setData] = useState([]);
@@ -31,22 +33,25 @@ const Dashboard = () => {
   }, []);
 
   return (
-    <div>
-      <ul className="flex md:flex-wrap sm:flex-row flex-col  m-4 sm:gap-6 gap-4 items-center justify-center">
-        {data?.map((repo) => (
-          <li
-            key={repo.id}
-            className="md:w-2/5 shadow-md rounded-3xl hover:cursor-pointer bg-slate-100 sm:h-40"
-          >
-            <a
-              href={repo.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex"
+    <div className="sm:flex">
+      <Navbar />
+      <div className="sm:pl-80 sm:pt-20">
+        <DesktopHeader />
+        <ul className="flex md:flex-wrap lg:flex-row flex-col  m-4 sm:gap-6 gap-4 items-center justify-center">
+          {data?.map((repo) => (
+            <li
+              key={repo.id}
+              className="md:w-2/5 shadow-md rounded-3xl hover:cursor-pointer bg-slate-100 sm:h-40"
             >
-              <h2 className="sm:text-lg py-4 pl-4">{repo.title}</h2>
+              <a
+                href={repo.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex"
+              >
+                <h2 className="sm:text-lg py-4 pl-4">{repo.title}</h2>
 
-              {/* <Image
+                {/* <Image
               src={repo.image_url}
               alt="images"
               width="300"
@@ -54,17 +59,18 @@ const Dashboard = () => {
               className="rounded-r-3xl"
             /> */}
 
-              <img
-                src={repo.image_url}
-                alt="images"
-                // width="200"
-                // height="200"
-                className="rounded-r-3xl sm:w-48 w-24 sm:h-40 h-28"
-              />
-            </a>
-          </li>
-        ))}
-      </ul>
+                <img
+                  src={repo.image_url}
+                  alt="images"
+                  // width="200"
+                  // height="200"
+                  className="rounded-r-3xl sm:w-48 w-24 sm:h-40 h-28"
+                />
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 };
