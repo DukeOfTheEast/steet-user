@@ -8,7 +8,7 @@ import { useState, useEffect } from "react";
 import Navbar from "@/components/navbar/page";
 import { DesktopHeader } from "@/components/desktop-header/page";
 
-const Dashboard = () => {
+const Home = () => {
   const [data, setData] = useState([]);
   const [error, setError] = useState(null);
 
@@ -75,4 +75,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default Home;

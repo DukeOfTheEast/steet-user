@@ -28,7 +28,7 @@ const SignIn = () => {
       const auth = getAuth(app);
       const res = await signInWithEmailAndPassword(auth, email, password);
       console.log({ res });
-      router.push("/dashboard");
+      router.push("/dashboard/home");
     } catch (error) {
       setError(error.message);
       setTimeout(() => {
