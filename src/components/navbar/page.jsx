@@ -8,6 +8,7 @@ import Orders from "@/images/orders.png";
 import Tasks from "@/images/task-list.png";
 import Catalogue from "@/images/catalogue.png";
 import Settings from "@/images/settings.png";
+import Logout from "@/images/logout.png";
 
 export default function Navbar() {
   return (
@@ -41,8 +42,9 @@ export default function Navbar() {
             <p>Settings</p>
           </Link>
         </div>
-        <div>
+        <div className=" text-neutral-50 mx-16 mt-40">
           <Link href="/" className="flex gap-1">
+            <Image src={Logout} alt="logo" />
             <p>Logout</p>
           </Link>
         </div>
@@ -50,7 +52,7 @@ export default function Navbar() {
 
       {/* MOBILE VIEW OF THE NAVBAR */}
       <div className="sm:hidden bg-yellow-500">
-        <Image src={Logo} alt="logo" />
+        <Image src={Logo} alt="logo" className="" />
         <div className="hidden">
           <p>Dashboard</p>
           <p>Customer Folder</p>
@@ -59,7 +61,7 @@ export default function Navbar() {
           <p>Catalogue</p>
           <p>Settings</p>
         </div>
-        <div>
+        <div className="hidden">
           <p>Logout</p>
         </div>
       </div>
