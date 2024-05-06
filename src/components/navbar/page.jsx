@@ -11,6 +11,7 @@ import Tasks from "@/images/task-list.png";
 import Catalogue from "@/images/catalogue.png";
 import Settings from "@/images/settings.png";
 import Logout from "@/images/logout.png";
+import Cancel from "@/images/cancel.png";
 import { usePathname } from "next/navigation";
 import Hamburger from "@/images/hamburger.png";
 
@@ -108,8 +109,17 @@ export default function Navbar() {
           />
         </div>
 
-        <div className="fixed z-50 bg-[#2b2b29] py-10 px-20 h-full text-neutral-50">
-          <div className="">
+        <div className="fixed z-50 bg-[#2b2b29] h-full text-neutral-50">
+          {/* <div className="fixed z-40 inset-0 bg-black opacity-90"></div> */}
+          <div className="flex justify-between items-center mx-4">
+            <Image src={Logo} alt="" />
+            <Image
+              src={Cancel}
+              alt=""
+              className="w-10 h-10 bg-slate-50 rounded-2xl"
+            />
+          </div>
+          <div className="mx-28 my-16 flex flex-col gap-5">
             <p>Dashboard</p>
             <p>Customer Folder</p>
             <p>Orders</p>
@@ -117,7 +127,7 @@ export default function Navbar() {
             <p>Catalogue</p>
             <p>Settings</p>
           </div>
-          <div className="">
+          <div className="mx-28">
             <p>Logout</p>
           </div>
         </div>
