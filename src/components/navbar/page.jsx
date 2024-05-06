@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import { React, useState } from "react";
 import Image from "next/image";
 import Logo from "@/images/steet-logo.png";
 import Link from "next/link";
@@ -12,9 +12,15 @@ import Catalogue from "@/images/catalogue.png";
 import Settings from "@/images/settings.png";
 import Logout from "@/images/logout.png";
 import { usePathname } from "next/navigation";
+import Hamburger from "@/images/hamburger.png";
 
 export default function Navbar() {
+  // const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
+
+  // const toggleMenu = () => {
+  //   setIsOpen(!isOpen);
+  // };
 
   const isActive = (path) => path === pathname;
 
@@ -92,18 +98,28 @@ export default function Navbar() {
       </div>
 
       {/* MOBILE VIEW OF THE NAVBAR */}
-      <div className="sm:hidden bg-yellow-500">
-        <Image src={Logo} alt="logo" className="" />
-        <div className="hidden">
-          <p>Dashboard</p>
-          <p>Customer Folder</p>
-          <p>Orders</p>
-          <p>Add Tasks</p>
-          <p>Catalogue</p>
-          <p>Settings</p>
+      <div className="sm:hidden bg-[#2b2b29]">
+        <div className="flex justify-between items-center px-4 py-3 top-0 fixed z-50 w-full bg-[#2b2b29]">
+          <Image src={Logo} alt="logo" className="" />
+          <Image
+            src={Hamburger}
+            alt="ham"
+            className="h-7 w-7 bg-slate-100 rounded-sm cursor-pointer"
+          />
         </div>
-        <div className="hidden">
-          <p>Logout</p>
+
+        <div className="fixed z-50 bg-[#2b2b29] py-10 px-20 h-full text-neutral-50">
+          <div className="">
+            <p>Dashboard</p>
+            <p>Customer Folder</p>
+            <p>Orders</p>
+            <p>Add Tasks</p>
+            <p>Catalogue</p>
+            <p>Settings</p>
+          </div>
+          <div className="">
+            <p>Logout</p>
+          </div>
         </div>
       </div>
     </div>
