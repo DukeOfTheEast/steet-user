@@ -16,12 +16,12 @@ import { usePathname } from "next/navigation";
 import Hamburger from "@/images/hamburger.png";
 
 export default function Navbar() {
-  // const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
 
-  // const toggleMenu = () => {
-  //   setIsOpen(!isOpen);
-  // };
+  const openMenu = () => {
+    setIsOpen(!isOpen);
+  };
 
   const isActive = (path) => path === pathname;
 
@@ -106,31 +106,46 @@ export default function Navbar() {
             src={Hamburger}
             alt="ham"
             className="h-7 w-7 bg-slate-100 rounded-sm cursor-pointer"
+            onClick={openMenu}
           />
         </div>
-
-        <div className="fixed z-50 bg-[#2b2b29] h-full text-neutral-50">
-          {/* <div className="fixed z-40 inset-0 bg-black opacity-90"></div> */}
-          <div className="flex justify-between items-center mx-4">
-            <Image src={Logo} alt="" />
-            <Image
-              src={Cancel}
-              alt=""
-              className="w-10 h-10 bg-slate-50 rounded-2xl"
-            />
+        {isOpen && (
+          <div className="fixed z-50 bg-[#2b2b29] h-full text-neutral-50">
+            {/* <div className="fixed z-40 inset-0 bg-black opacity-90"></div> */}
+            <div className="flex justify-between items-center mx-4">
+              <Image src={Logo} alt="" />
+              <Image
+                src={Cancel}
+                alt=""
+                className="w-10 h-10 bg-slate-50 rounded-2xl cursor-pointer"
+                onClick={openMenu}
+              />
+            </div>
+            <div className="mx-28 my-16 flex flex-col gap-5">
+              <Link href="/dashboard/home">
+                <p>Dashboard</p>
+              </Link>
+              <Link href="/dashboard/folder">
+                <p>Customer Folder</p>
+              </Link>
+              <Link href="/dashboard/orders">
+                <p>Orders</p>
+              </Link>
+              <Link href="/dashboard/tasks">
+                <p>Add Tasks</p>
+              </Link>
+              <Link href="/dashboard/catalogue">
+                <p>Catalogue</p>
+              </Link>
+              <Link href="/dashboard/settings">
+                <p>Settings</p>
+              </Link>
+            </div>
+            <div className="mx-28 pt-20">
+              <p>Logout</p>
+            </div>
           </div>
-          <div className="mx-28 my-16 flex flex-col gap-5">
-            <p>Dashboard</p>
-            <p>Customer Folder</p>
-            <p>Orders</p>
-            <p>Add Tasks</p>
-            <p>Catalogue</p>
-            <p>Settings</p>
-          </div>
-          <div className="mx-28">
-            <p>Logout</p>
-          </div>
-        </div>
+        )}
       </div>
     </div>
   );
