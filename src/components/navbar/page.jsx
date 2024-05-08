@@ -100,7 +100,7 @@ export default function Navbar() {
 
       {/* MOBILE VIEW OF THE NAVBAR */}
       <div className="sm:hidden bg-[#2b2b29]">
-        <div className="flex justify-between items-center px-4 py-3 top-0 fixed z-50 w-full bg-[#2b2b29]">
+        <div className="flex justify-between items-center px-4 py-3 mb-40 top-0 fixed z-50 w-full bg-[#2b2b29]">
           <Image src={Logo} alt="logo" className="" />
           <Image
             src={Hamburger}

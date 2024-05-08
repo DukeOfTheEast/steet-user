@@ -35,7 +35,7 @@ const Home = () => {
   return (
     <div className="sm:flex">
       <Navbar />
-      <div className="sm:pl-80 sm:pt-20">
+      <div className="sm:pl-80 sm:pt-20 pt-20">
         <DesktopHeader />
         <ul className="flex md:flex-wrap lg:flex-row flex-col  m-4 sm:gap-6 gap-4 items-center justify-center">
           {data?.map((repo) => (
