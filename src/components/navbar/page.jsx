@@ -110,8 +110,7 @@ export default function Navbar() {
           />
         </div>
         {isOpen && (
-          <div className="fixed z-50 bg-[#2b2b29] h-full text-neutral-50">
-            {/* <div className="fixed z-40 inset-0 bg-black opacity-90"></div> */}
+          <div className="fixed z-50 bg-[#2b2b29] h-full text-neutral-50 transform transition-transform ease-in-out duration-10000">
             <div className="flex justify-between items-center mx-4">
               <Image src={Logo} alt="" />
               <Image
