@@ -7,7 +7,7 @@ export default function Settings() {
     <div>
       <Navbar />
       <DesktopHeader />
-      <div className="sm:pl-96 sm:pt-20">
+      <div className="sm:pl-96 sm:pt-20 pt-20">
         <h1>Settings</h1>
       </div>
     </div>

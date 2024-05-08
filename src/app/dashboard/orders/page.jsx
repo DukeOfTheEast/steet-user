@@ -7,7 +7,7 @@ export default function Orders() {
     <div>
       <Navbar />
       <DesktopHeader />
-      <div className="sm:pl-96 sm:pt-20">
+      <div className="sm:pl-96 sm:pt-20 pt-20">
         <h1>Orders</h1>
       </div>
     </div>
