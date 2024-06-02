@@ -1,37 +1,31 @@
 "use client";
-import { useRef, useState } from "react";
-import Image from "next/image";
-// import SignupImg from "../../images/signup.png";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import app from "@/app/firebase/config";
-import { useRouter } from "next/navigation";
-// import auth from "../../app/firebase/config";
+import { useState, useRef } from "react";
+
 import Link from "next/link";
+import { AuthProvider, useAuth } from "@/context/AuthContext";
+import { useRouter } from "next/navigation";
 
 const SignUp = () => {
-  const emailInputRef = useRef(null);
-  const passwordInputRef = useRef(null);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
+  const { signup } = useAuth();
   const router = useRouter();
 
-  const handleSignup = async () => {
-    const email = emailInputRef.current.value;
-    const password = passwordInputRef.current.value;
-
+  const handleSignup = async (e) => {
+    e.preventDefault();
+    setError("");
     try {
-      const auth = getAuth(app);
-      const res = await createUserWithEmailAndPassword(auth, email, password);
-      console.log({ res });
+      await signup(email, password);
       router.push("/signin");
     } catch (error) {
       setError(error.message);
       setTimeout(() => {
         setError("");
       }, 3000);
+      setEmail("");
+      setPassword("");
     }
-
-    emailInputRef.current.value = "";
-    passwordInputRef.current.value = "";
   };
 
   return (
@@ -45,40 +39,46 @@ const SignUp = () => {
           folder.
         </p>
       </div>
-      {error && (
-        <p className="text-red-500 bg-white rounded-md px-3 py-1 absolute top-5">
-          Input cannot be empty!
-        </p>
-      )}
-      <div className="sm:w-[400px] w-[300] bg-white px-5 py-8 rounded-2xl sm:mb-20">
-        <div className="flex flex-col gap-5">
-          <input
-            className="rounded-2xl p-3 bg-slate-300 focus:outline-none"
-            type="email"
-            placeholder="Email"
-            ref={emailInputRef}
-          />
+      <form onSubmit={handleSignup} className="w-full max-w-sm">
+        {error && (
+          <p className="text-red-500 bg-white rounded-md px-3 py-1 absolute top-5">
+            Input cannot be empty!
+          </p>
+        )}
+        <div className="sm:w-[400px] w-[300] bg-white px-5 py-8 rounded-2xl sm:mb-20">
+          <div className="flex flex-col gap-5">
+            <input
+              className="rounded-2xl p-3 bg-slate-300 focus:outline-none"
+              type="email"
+              id="signup-email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
 
-          <input
-            className="rounded-2xl p-3 bg-slate-300 focus:outline-none"
-            type="password"
-            placeholder="Password"
-            ref={passwordInputRef}
-          />
-          <button
-            onClick={handleSignup}
-            className="bg-black hover:opacity-70 text-white rounded-2xl p-3"
-          >
-            Sign Up
-          </button>
+            <input
+              className="rounded-2xl p-3 bg-slate-300 focus:outline-none"
+              type="password"
+              id="signup-password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <button
+              type="submit"
+              className="bg-black hover:opacity-70 text-white rounded-2xl p-3"
+            >
+              Sign Up
+            </button>
+          </div>
+          <p className="my-5">
+            Already have an account?{" "}
+            <Link href="/signin" className="text-blue-500">
+              Sign in
+            </Link>
+          </p>
         </div>
-        <p className="my-5">
-          Already have an account?{" "}
-          <Link href="/signin" className="text-blue-500">
-            Sign in
-          </Link>
-        </p>
-      </div>
+      </form>
     </main>
   );
 };

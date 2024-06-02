@@ -1,41 +1,38 @@
 "use client";
-// import Image from "next/image";
-import { useState } from "react";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import app from "../firebase/config";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
-// import ReactModal from "react-modal";
 
-// ReactModal.setAppElement("#__next");
+import { useState } from "react";
+import Link from "next/link";
+import { useAuth } from "@/context/AuthContext";
+import { useRouter } from "next/navigation";
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
+  const [isLoggingIn, setIsLoggingIn] = useState(true);
+  const currentUser = useAuth();
   const router = useRouter();
-  // const [isOpen, setIsOpen] = useState(false);
 
-  // const openModal = () => {
-  //   setIsOpen(true);
-  //   setTimeout(() => setIsOpen(false), 3000);
-  // };
+  const { login } = useAuth();
 
   const handleSignIn = async (e) => {
     e.preventDefault();
 
-    try {
-      const auth = getAuth(app);
-      const res = await signInWithEmailAndPassword(auth, email, password);
-      console.log({ res });
-      router.push("/dashboard/home");
-    } catch (error) {
-      setError(error.message);
-      setTimeout(() => {
-        setError("");
-      }, 3000);
-      setEmail("");
-      setPassword("");
+    if (isLoggingIn) {
+      try {
+        await login(email, password);
+        if (currentUser) {
+          router.push("/dashboard/home");
+        }
+      } catch (err) {
+        setError("Incorrect email or password");
+        setTimeout(() => {
+          setError("");
+        }, 3000);
+        setEmail("");
+        setPassword("");
+      }
+      return;
     }
   };
 

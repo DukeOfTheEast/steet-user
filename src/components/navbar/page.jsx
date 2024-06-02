@@ -14,10 +14,14 @@ import Logout from "@/images/logout.png";
 import Cancel from "@/images/cancel.png";
 import { usePathname } from "next/navigation";
 import Hamburger from "@/images/hamburger.png";
+import { useAuth } from "@/context/AuthContext";
+import { useRouter } from "next/navigation";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
+  const auth = useAuth();
+  const router = useRouter();
 
   const openMenu = () => {
     setIsOpen(!isOpen);
@@ -25,9 +29,14 @@ export default function Navbar() {
 
   const isActive = (path) => path === pathname;
 
-  // const getClassName = (href) => {
-  //   return isActive(href) ? "bg-blue-500 text-white" : "text-gray-700";
-  // };
+  const handleLogout = async () => {
+    try {
+      await auth.logout();
+      router.push("/signin");
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
+  };
 
   return (
     <div>
@@ -91,10 +100,10 @@ export default function Navbar() {
           </Link>
         </div>
         <div className=" text-neutral-50 mx-16 mt-32">
-          <Link href="/" className="flex gap-1">
+          <button onClick={handleLogout} className="flex gap-1">
             <Image src={Logout} alt="logo" />
             <p>Logout</p>
-          </Link>
+          </button>
         </div>
       </div>
 
@@ -141,7 +150,9 @@ export default function Navbar() {
               </Link>
             </div>
             <div className="mx-28 pt-20">
-              <p>Logout</p>
+              <button onClick={handleLogout}>
+                <p>Logout</p>
+              </button>
             </div>
           </div>
         )}
