@@ -7,10 +7,12 @@ import React from "react";
 import { useState, useEffect } from "react";
 import Navbar from "@/components/navbar/page";
 import { DesktopHeader } from "@/components/desktop-header/page";
+import { useAuth } from "@/context/AuthContext";
 
 const Home = () => {
   const [data, setData] = useState([]);
   const [error, setError] = useState(null);
+  const { currentUser, loading } = useAuth();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -37,6 +39,13 @@ const Home = () => {
       <Navbar />
       <div className="sm:pl-80 sm:pt-20 pt-20">
         <DesktopHeader />
+        {currentUser && (
+          <p className="sm:pl-28 font-bold lg:text-3xl my-10">
+            Welcome,
+            <br />
+            {currentUser.email}
+          </p>
+        )}
         <ul className="flex md:flex-wrap lg:flex-row flex-col  m-4 sm:gap-6 gap-4 items-center justify-center">
           {data?.map((repo) => (
             <li
