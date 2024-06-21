@@ -45,7 +45,7 @@ function Style() {
           <div>
             <div
               onClick={handleOpenWomen}
-              className="flex justify-between bg-gray-500 p-3 rounded-xl cursor-pointer"
+              className="flex justify-between shadow-xl p-3 rounded-xl cursor-pointer"
             >
               <p>Women</p>
               {openWomen ? (
@@ -59,7 +59,7 @@ function Style() {
           <div>
             <div
               onClick={handleOpenMen}
-              className="flex justify-between bg-gray-500 p-3 rounded-xl cursor-pointer"
+              className="flex justify-between p-3 shadow-xl rounded-xl cursor-pointer"
             >
               <p>Men</p>
               {openMen ? (
