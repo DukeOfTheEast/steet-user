@@ -18,7 +18,7 @@ export default function Catalogue() {
         <h1 className="font-extrabold mb-7">Catalogue</h1>
         <h1>Select a folder</h1>
         <div className="sm:flex items-center justify-center gap-10">
-          <Link href="/" className="text-center">
+          <Link href="/dashboard/catalogue/style" className="text-center">
             <Image
               src={Styles}
               alt="Profile"
