@@ -3,7 +3,7 @@ import Link from "next/link";
 import React from "react";
 import Freeze from "@/images/freeze.png";
 import Logo from "@/images/steet-logo.png";
-// import { useImage } from "@/context/ImageContext";
+
 import { useProfile } from "@/context/ProfileContext";
 
 export const DesktopHeader = () => {
