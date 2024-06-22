@@ -13,13 +13,14 @@ import { doc, setDoc, getDoc } from "firebase/firestore";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import Edit from "@/images/edit-btn.png";
 import { RiImageEditFill } from "react-icons/ri";
+import { useProfile } from "@/context/ProfileContext";
 
 export default function Settings() {
   // const [selectedImage, setSelectedImage] = useState(Default);
   // const [imageURL, setImageURL] = useState("");
   const { userInfo } = useAuth();
   const [openEdit, setOpenEdit] = useState(false);
-  const [photoURL, setPhotoURL] = useState(Default.src);
+  const { photoURL, setPhotoURL } = useProfile();
 
   const { currentUser, loading } = useAuth();
   const [userData, setUserData] = useState("");
@@ -47,7 +48,7 @@ export default function Settings() {
       };
       fetchUserData();
     }
-  }, [currentUser]);
+  }, [currentUser, setPhotoURL]);
 
   const handleInputChange = (e) => {
     setUserData(e.target.value);
