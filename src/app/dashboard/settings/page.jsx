@@ -10,58 +10,24 @@ import EditImg from "@/images/edit-image.png";
 import { useAuth } from "@/context/AuthContext";
 import { db, storage } from "@/app/firebase/config";
 import { doc, setDoc, getDoc } from "firebase/firestore";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import Edit from "@/images/edit-btn.png";
+import { RiImageEditFill } from "react-icons/ri";
 
 export default function Settings() {
-  const [selectedImage, setSelectedImage] = useState(Default);
-  const [imageURL, setImageURL] = useState("");
+  // const [selectedImage, setSelectedImage] = useState(Default);
+  // const [imageURL, setImageURL] = useState("");
   const { userInfo } = useAuth();
   const [openEdit, setOpenEdit] = useState(false);
+  const [photoURL, setPhotoURL] = useState(Default.src);
 
   const { currentUser, loading } = useAuth();
   const [userData, setUserData] = useState("");
   const [savedData, setSavedData] = useState("");
 
-  const handleImageChange = (event) => {
-    const file = event.target.files[0];
-    // Check if a file is selected
-    if (file) {
-      // Validate file type (optional)
-      if (file.type.startsWith("image/")) {
-        // Set selected image
-        setSelectedImage(URL.createObjectURL(file));
-      } else {
-        // Handle invalid file type
-        alert("Please select an image file.");
-      }
-    }
-  };
-
   const editUser = () => {
     setOpenEdit(true);
   };
-
-  // const handleImageUpload = async () => {
-  //   if (selectedImage && currentUser) {
-  //     const storageRef = ref(storage, `users/${currentUser.uid}/profile.jpg`);
-  //     try {
-  //       // Upload the image to Firebase Storage
-  //       await uploadBytes(storageRef, selectedImage);
-  //       // Get the image's URL
-  //       const url = await getDownloadURL(storageRef);
-  //       setImageURL(url);
-
-  //       // Save the URL to Firestore
-  //       const docRef = doc(db, "users", currentUser.uid);
-  //       await setDoc(docRef, { imageURL: url }, { merge: true });
-  //       alert("Image uploaded successfully!");
-  //     } catch (error) {
-  //       console.error("Error uploading image: ", error);
-  //       alert("Failed to upload image.");
-  //     }
-  //   }
-  // };
 
   useEffect(() => {
     if (currentUser) {
@@ -69,8 +35,14 @@ export default function Settings() {
       const fetchUserData = async () => {
         const docRef = doc(db, "users", currentUser.uid);
         const docSnap = await getDoc(docRef);
+        const userData = docSnap.data();
         if (docSnap.exists()) {
           setSavedData(docSnap.data().inputValue || "");
+
+          // Update photoURL if user has a profile photo
+          if (userData.photoURL) {
+            setPhotoURL(userData.photoURL);
+          }
         }
       };
       fetchUserData();
@@ -98,33 +70,66 @@ export default function Settings() {
     setOpenEdit(false);
   };
 
+  const handleImageChange = async (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      // Validate file type
+      if (!file.type.startsWith("image/")) {
+        alert("Please select a valid image file.");
+        return;
+      }
+
+      // Reference to where the image will be stored in Firebase Storage
+      const imageRef = ref(storage, `users/${currentUser.uid}/profile.jpg`);
+
+      // Upload the file to Firebase Storage
+      const uploadTask = uploadBytesResumable(imageRef, file);
+
+      uploadTask.on(
+        "state_changed",
+        null, // No need to track progress
+        (error) => {
+          console.error("Upload to Firebase failed:", error);
+          alert("Failed to upload image to Firebase. Please try again.");
+        },
+        async () => {
+          try {
+            // Get the download URL
+            const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+            setPhotoURL(downloadURL);
+
+            // Update Firestore with the image URL
+            await setDoc(
+              doc(db, "users", currentUser.uid),
+              { photoURL: downloadURL },
+              { merge: true }
+            );
+          } catch (error) {
+            console.error("Error uploading image: ", error);
+            alert("Failed to upload image. Please try again.");
+          }
+        }
+      );
+    }
+  };
+
   return (
     <div>
       <Navbar />
       <DesktopHeader />
       <div className="sm:pl-96 sm:pt-20 pt-20">
-        <input
-          type="file"
-          accept="image/*"
-          onChange={handleImageChange}
-          className="hidden"
-          id="profileImageInput"
-        />
-        <label
-          htmlFor="profileImageInput"
-          className="font-bold py-2 px-4 rounded cursor-pointer "
-        >
-          <Image src={EditImg} alt="edit" />
-        </label>
-        {selectedImage && (
-          <div>
-            <Image
-              src={selectedImage}
-              alt="Profile"
-              className="mt-2 rounded-full"
-              width={300}
-              height={300}
-            />
+        <div className="mt-4">
+          <h2>Saved Data:</h2>
+          <p>{savedData}</p>
+        </div>
+        <div className="mt-4">
+          <h2>Upload Profile Picture:</h2>
+          <input type="file" onChange={handleImageChange} />
+        </div>
+        {photoURL && (
+          <div className="mt-4">
+            <h2>Uploaded Image:</h2>
+            <img src={photoURL} alt="profile" className="max-w-xs" />
           </div>
         )}
 
