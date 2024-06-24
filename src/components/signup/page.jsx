@@ -4,6 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
+import { GoEye } from "react-icons/go";
+import { GoEyeClosed } from "react-icons/go";
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
@@ -11,6 +13,11 @@ const SignUp = () => {
   const [error, setError] = useState(null);
   const { signup } = useAuth();
   const router = useRouter();
+  const [viewPass, setViewPass] = useState(false);
+
+  const togglePass = () => {
+    setViewPass(!viewPass);
+  };
 
   const handleSignup = async (e) => {
     e.preventDefault();
@@ -56,14 +63,31 @@ const SignUp = () => {
               onChange={(e) => setEmail(e.target.value)}
             />
 
-            <input
-              className="rounded-2xl p-3 bg-slate-300 focus:outline-none"
-              type="password"
-              id="signup-password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
+            <div className="flex items-center bg-slate-300 rounded-2xl">
+              <input
+                className="rounded-s-2xl p-3 bg-slate-300 focus:outline-none"
+                type={viewPass ? "text" : "password"}
+                id="signup-password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              {/* <GoEye /> */}
+              {viewPass ? (
+                <GoEyeClosed
+                  size={50}
+                  className="p-3 flex-1 rounded-r-2xl cursor-pointer"
+                  onClick={togglePass}
+                />
+              ) : (
+                <GoEye
+                  size={50}
+                  className="p-3 flex-1 rounded-r-2xl cursor-pointer"
+                  onClick={togglePass}
+                />
+              )}
+            </div>
+
             <button
               type="submit"
               className="bg-black hover:opacity-70 text-white rounded-2xl p-3"
@@ -71,6 +95,7 @@ const SignUp = () => {
               Sign Up
             </button>
           </div>
+
           <p className="my-5">
             Already have an account?{" "}
             <Link href="/signin" className="text-blue-500">
