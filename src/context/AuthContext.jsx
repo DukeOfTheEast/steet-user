@@ -1,85 +1,63 @@
-import React, {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-  useRef,
-} from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { auth, db } from "@/app/firebase/config";
 import {
-  signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
-  signOut,
+  signInWithEmailAndPassword,
   onAuthStateChanged,
+  signOut,
 } from "firebase/auth";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 
-export const AuthContext = createContext();
+const AuthContext = createContext();
 
 export const useAuth = () => useContext(AuthContext);
 
-export function AuthProvider({ children }) {
+export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const userInfo = useRef();
-
-  const signup = async (email, password) => {
-    try {
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      setCurrentUser(userCredential.user);
-      return userCredential.user;
-    } catch (error) {
-      // Handle errors here if needed
-      console.error("Error signing up:", error);
-      throw error; // rethrow the error if you want it to propagate
-    }
-  };
-
-  const login = async (email, password) => {
-    try {
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      setCurrentUser(userCredential.user);
-      return userCredential.user;
-    } catch (error) {
-      console.error("Error logging in:", error);
-      throw error;
-    }
-  };
-
-  function logout() {
-    return signOut(auth);
-  }
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      if (user) {
-        setCurrentUser(user);
-        setLoading(false);
-      }
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setCurrentUser(user);
+      setLoading(false);
     });
     return unsubscribe;
   }, []);
 
-  const value = {
-    currentUser,
-    login,
-    signup,
-    logout,
-    userInfo,
+  const signup = async (email, password) => {
+    const userCredential = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+    const user = userCredential.user;
+
+    // Save user data to Firestore
+    await setDoc(doc(db, "users", user.uid), {
+      uid: user.uid,
+      email: user.email,
+      createdAt: new Date(),
+    });
+
+    setCurrentUser(user);
+    return user;
   };
 
+  const login = async (email, password) => {
+    const userCredential = await signInWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+    setCurrentUser(userCredential.user);
+    return userCredential.user;
+  };
+
+  const logout = () => signOut(auth);
+
   return (
-    <AuthContext.Provider value={value}>
-      {/* {!loading && children} */}
+    <AuthContext.Provider value={{ currentUser, signup, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
-}
+};

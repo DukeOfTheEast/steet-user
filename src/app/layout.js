@@ -5,6 +5,7 @@ import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
 import CatProvider from "@/context/CatContext";
 import { ProfileProvider } from "@/context/ProfileContext";
+import { ChatProvider } from "@/context/ChatContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,11 +18,13 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <ProfileProvider>
-          <CatProvider>
-            <AuthProvider>{children}</AuthProvider>
-          </CatProvider>
-        </ProfileProvider>
+        <ChatProvider>
+          <ProfileProvider>
+            <CatProvider>
+              <AuthProvider>{children}</AuthProvider>
+            </CatProvider>
+          </ProfileProvider>
+        </ChatProvider>
 
         {/* {children} */}
       </body>

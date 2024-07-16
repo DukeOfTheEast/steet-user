@@ -5,19 +5,14 @@ import Navbar from "@/components/navbar/page";
 import { DesktopHeader } from "@/components/desktop-header/page";
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import Default from "@/images/default-image.png";
-import EditImg from "@/images/edit-image.png";
 import { useAuth } from "@/context/AuthContext";
 import { db, storage } from "@/app/firebase/config";
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import Edit from "@/images/edit-btn.png";
-import { RiImageEditFill } from "react-icons/ri";
 import { useProfile } from "@/context/ProfileContext";
 
 export default function Settings() {
-  // const [selectedImage, setSelectedImage] = useState(Default);
-  // const [imageURL, setImageURL] = useState("");
   const { userInfo } = useAuth();
   const [openEdit, setOpenEdit] = useState(false);
   const { photoURL, setPhotoURL } = useProfile();
@@ -72,45 +67,47 @@ export default function Settings() {
   };
 
   const handleImageChange = async (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      // Validate file type
-      if (!file.type.startsWith("image/")) {
-        alert("Please select a valid image file.");
-        return;
-      }
-
-      // Reference to where the image will be stored in Firebase Storage
-      const imageRef = ref(storage, `users/${currentUser.uid}/profile.jpg`);
-
-      // Upload the file to Firebase Storage
-      const uploadTask = uploadBytesResumable(imageRef, file);
-
-      uploadTask.on(
-        "state_changed",
-        null, // No need to track progress
-        (error) => {
-          console.error("Upload to Firebase failed:", error);
-          alert("Failed to upload image to Firebase. Please try again.");
-        },
-        async () => {
-          try {
-            // Get the download URL
-            const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-            setPhotoURL(downloadURL);
-
-            // Update Firestore with the image URL
-            await setDoc(
-              doc(db, "users", currentUser.uid),
-              { photoURL: downloadURL },
-              { merge: true }
-            );
-          } catch (error) {
-            console.error("Error uploading image: ", error);
-            alert("Failed to upload image. Please try again.");
-          }
+    if (currentUser) {
+      const file = e.target.files[0];
+      if (file) {
+        // Validate file type
+        if (!file.type.startsWith("image/")) {
+          alert("Please select a valid image file.");
+          return;
         }
-      );
+
+        // Reference to where the image will be stored in Firebase Storage
+        const imageRef = ref(storage, `users/${currentUser.uid}/profile.jpg`);
+
+        // Upload the file to Firebase Storage
+        const uploadTask = uploadBytesResumable(imageRef, file);
+
+        uploadTask.on(
+          "state_changed",
+          null, // No need to track progress
+          (error) => {
+            console.error("Upload to Firebase failed:", error);
+            alert("Failed to upload image to Firebase. Please try again.");
+          },
+          async () => {
+            try {
+              // Get the download URL
+              const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+              setPhotoURL(downloadURL);
+
+              // Update Firestore with the image URL
+              await setDoc(
+                doc(db, "users", currentUser.uid),
+                { photoURL: downloadURL },
+                { merge: true }
+              );
+            } catch (error) {
+              console.error("Error uploading image: ", error);
+              alert("Failed to upload image. Please try again.");
+            }
+          }
+        );
+      }
     }
   };
 

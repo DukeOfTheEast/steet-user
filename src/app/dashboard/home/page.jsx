@@ -8,6 +8,7 @@ import { useState, useEffect } from "react";
 import Navbar from "@/components/navbar/page";
 import { DesktopHeader } from "@/components/desktop-header/page";
 import { useAuth } from "@/context/AuthContext";
+import ProgressBar from "@/components/progressBar/page";
 
 const Home = () => {
   const [data, setData] = useState([]);
@@ -46,6 +47,7 @@ const Home = () => {
             {currentUser.email}
           </p>
         )}
+        <ProgressBar />
         <ul className="flex md:flex-wrap lg:flex-row flex-col  m-4 sm:gap-6 gap-4 items-center justify-center">
           {data?.map((repo) => (
             <li

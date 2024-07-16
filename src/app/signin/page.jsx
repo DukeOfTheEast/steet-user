@@ -6,6 +6,7 @@ import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 import { GoEye } from "react-icons/go";
 import { GoEyeClosed } from "react-icons/go";
+import Spinner from "@/components/spinner/page";
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
@@ -15,6 +16,7 @@ const SignIn = () => {
   const currentUser = useAuth();
   const router = useRouter();
   const [viewPass, setViewPass] = useState(false);
+  const [dashLoading, setDashLoading] = useState(false);
 
   const togglePass = () => {
     setViewPass(!viewPass);
@@ -31,6 +33,7 @@ const SignIn = () => {
         if (currentUser) {
           router.push("/dashboard/home");
         }
+        setDashLoading(true);
       } catch (err) {
         setError("Incorrect email or password");
         setTimeout(() => {
@@ -38,6 +41,7 @@ const SignIn = () => {
         }, 3000);
         setEmail("");
         setPassword("");
+        setDashLoading(false);
       }
       return;
     }
@@ -91,7 +95,7 @@ const SignIn = () => {
           type="submit"
           className="bg-black hover:opacity-70 text-white rounded-2xl p-3"
         >
-          Sign In
+          {dashLoading ? <Spinner /> : "Sign In"}
         </button>
         <p className="my-3">
           Don&apos;t have an account?{" "}
