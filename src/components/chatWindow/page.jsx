@@ -19,16 +19,14 @@ const ChatWindow = ({ selectedUser }) => {
   const [newMessage, setNewMessage] = useState("");
 
   useEffect(() => {
-    if (selectedUser) {
-      const messagesRef = collection(db, "messages");
-      const q = query(
-        messagesRef,
-        where("participants", "array-contains-any", [
-          currentUser.uid,
-          selectedUser,
-        ]),
-        orderBy("createdAt", "asc")
+    if (selectedUser && currentUser) {
+      const messagesRef = collection(
+        db,
+        "conversations",
+        `${currentUser.uid}_${selectedUser}`,
+        "messages"
       );
+      const q = query(messagesRef, orderBy("createdAt", "asc"));
 
       const unsubscribe = onSnapshot(q, (querySnapshot) => {
         const messagesList = querySnapshot.docs.map((doc) => doc.data());
@@ -37,17 +35,25 @@ const ChatWindow = ({ selectedUser }) => {
 
       return () => unsubscribe();
     }
-  }, [selectedUser, currentUser.uid]);
+  }, [selectedUser, currentUser]);
 
   const handleSendMessage = async () => {
-    if (newMessage.trim() !== "") {
+    if (newMessage.trim() !== "" && currentUser && selectedUser) {
       try {
-        await addDoc(collection(db, "messages"), {
-          text: newMessage,
-          sender: currentUser.uid,
-          participants: [currentUser.uid, selectedUser],
-          createdAt: new Date(),
-        });
+        await addDoc(
+          collection(
+            db,
+            "conversations",
+            `${currentUser.uid}_${selectedUser}`,
+            "messages"
+          ),
+          {
+            text: newMessage,
+            sender: currentUser.uid,
+            participants: [currentUser.uid, selectedUser],
+            createdAt: new Date(),
+          }
+        );
         setNewMessage("");
       } catch (error) {
         console.error("Error sending message: ", error);
