@@ -181,7 +181,7 @@ const ChatWindow = ({ selectedUser, closeChat }) => {
             {messages.map((message, index) => (
               <div key={index} className="flex">
                 <p
-                  className={`text-white p-1 rounded-lg min-w-10 text-center ${
+                  className={`text-white p-1 rounded-lg min-w-10 max-w-48 text-center ${
                     message.sender === currentUser.uid
                       ? "bg-blue-500 ml-auto my-0.5"
                       : "bg-gray-500 my-0.5"

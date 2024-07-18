@@ -26,10 +26,14 @@ const UserList = ({ onSelectUser }) => {
 
   return (
     <div>
-      <h2>Users</h2>
+      <h2 className="text-3xl font-extrabold text-center">Chat With Vendors</h2>
       <ul>
         {users.map((user) => (
-          <li key={user.uid} onClick={() => onSelectUser(user.uid)}>
+          <li
+            className="cursor-pointer"
+            key={user.uid}
+            onClick={() => onSelectUser(user.uid)}
+          >
             {user.inputValue}
           </li>
         ))}
