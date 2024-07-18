@@ -20,11 +20,6 @@ const ChatWindow = ({ selectedUser, closeChat }) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const chatEndRef = useRef(null);
-  // const [closeModal, setCloseModal] = useState(false);
-
-  // const exitChat = () => {
-  //   setCloseModal(!closeModal);
-  // };
 
   useEffect(() => {
     let unsubscribeMessages;
@@ -147,9 +142,9 @@ const ChatWindow = ({ selectedUser, closeChat }) => {
   return (
     <div>
       <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-50 ">
-        <div className="bg-white rounded-lg shadow-lg w-full max-w-md">
+        <div className="bg-white rounded-lg shadow-lg w-full sm:max-w-md max-w-sm">
           <div className="flex justify-between items-center p-4 border-b">
-            <h2 className="text-lg font-semibold">Chat with {selectedUser}</h2>
+            <h2 className="text-lg font-semibold">{selectedUser}</h2>
             <AiOutlineClose size={24} onClick={closeChat} />
           </div>
           <div className="p-4 h-96 overflow-y-auto">
