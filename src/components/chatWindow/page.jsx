@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { db } from "@/app/firebase/config";
 import {
   collection,
@@ -12,6 +12,7 @@ import {
   where,
   orderBy,
   onSnapshot,
+  Timestamp,
 } from "firebase/firestore";
 
 import { useAuth } from "@/context/AuthContext";
@@ -20,6 +21,7 @@ const ChatWindow = ({ selectedUser }) => {
   const { currentUser } = useAuth();
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
+  const chatEndRef = useRef(null);
 
   useEffect(() => {
     if (selectedUser) {
@@ -53,7 +55,7 @@ const ChatWindow = ({ selectedUser }) => {
               const messagesList = messagesSnapshot.docs.map((doc) =>
                 doc.data()
               );
-              setMessages(messagesList);
+              setMessages(messagesList.reverse());
             }
           );
 
@@ -104,7 +106,7 @@ const ChatWindow = ({ selectedUser }) => {
           {
             text: newMessage,
             sender: currentUser.uid,
-            createdAt: new Date(),
+            createdAt: Timestamp.now(),
           }
         );
 
@@ -114,6 +116,12 @@ const ChatWindow = ({ selectedUser }) => {
       }
     }
   };
+
+  useEffect(() => {
+    if (chatEndRef.current) {
+      chatEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]);
 
   return (
     <div>
