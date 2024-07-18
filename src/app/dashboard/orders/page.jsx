@@ -9,9 +9,15 @@ import ChatWindow from "@/components/chatWindow/page";
 
 const Dashboard = () => {
   const [selectedUser, setSelectedUser] = useState(null);
+  const [isChatOpen, setIsChatOpen] = useState(false);
 
   const handleSelectUser = (uid) => {
     setSelectedUser(uid);
+  };
+
+  const closeChat = () => {
+    setSelectedUser(null);
+    setIsChatOpen(false);
   };
 
   return (
@@ -20,7 +26,9 @@ const Dashboard = () => {
       <DesktopHeader />
       <div className="sm:pl-96 sm:pt-20 pt-20">
         <UserList onSelectUser={handleSelectUser} />
-        {selectedUser && <ChatWindow selectedUser={selectedUser} />}
+        {selectedUser && (
+          <ChatWindow selectedUser={selectedUser} closeChat={closeChat} />
+        )}
       </div>
     </div>
   );
