@@ -26,10 +26,16 @@ const ChatWindow = ({ selectedUser }) => {
         `${currentUser.uid}_${selectedUser}`,
         "messages"
       );
-      const q = query(messagesRef, orderBy("createdAt", "asc"));
+      const q = query(
+        messagesRef,
+        where("participants", "array-contains", currentUser.uid),
+        orderBy("createdAt", "asc")
+      );
 
       const unsubscribe = onSnapshot(q, (querySnapshot) => {
-        const messagesList = querySnapshot.docs.map((doc) => doc.data());
+        const messagesList = querySnapshot.docs
+          .map((doc) => doc.data())
+          .filter((message) => message.participants.includes(selectedUser));
         setMessages(messagesList);
       });
 
