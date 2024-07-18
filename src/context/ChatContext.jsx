@@ -44,8 +44,6 @@ export const ChatProvider = ({ children }) => {
     setUsers(usersList);
   };
 
-  console.log(currentUser);
-
   useEffect(() => {
     fetchUsers();
     if (currentUser) {

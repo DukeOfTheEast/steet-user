@@ -24,8 +24,6 @@ const UserList = ({ onSelectUser }) => {
     fetchUsers();
   }, []);
 
-  console.log(users);
-
   return (
     <div>
       <h2>Users</h2>

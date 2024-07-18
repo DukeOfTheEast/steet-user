@@ -21,6 +21,28 @@ const ChatWindow = ({ selectedUser, closeChat }) => {
   const [newMessage, setNewMessage] = useState("");
   const chatEndRef = useRef(null);
 
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, "users"));
+        const usersList = querySnapshot.docs.map((doc) => ({
+          uid: doc.id,
+          ...doc.data(),
+        }));
+        setUsers(usersList);
+      } catch (error) {
+        console.error("Error fetching users: ", error);
+      }
+    };
+
+    fetchUsers();
+  }, []);
+
+  console.log(users);
+  console.log(selectedUser);
+
   useEffect(() => {
     let unsubscribeMessages;
 
@@ -144,9 +166,17 @@ const ChatWindow = ({ selectedUser, closeChat }) => {
       <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-50 ">
         <div className="bg-white rounded-lg shadow-lg w-full sm:max-w-md max-w-sm">
           <div className="flex justify-between items-center p-4 border-b">
-            <h2 className="text-lg font-semibold">{selectedUser}</h2>
+            <div>
+              {users.map((user) => (
+                <h2 key={user.uid} className="text-lg font-semibold">
+                  {user.uid === selectedUser ? user.inputValue : ""}
+                </h2>
+              ))}
+            </div>
+            {/* <h2 className="text-lg font-semibold">{selectedUser}</h2> */}
             <AiOutlineClose size={24} onClick={closeChat} />
           </div>
+
           <div className="p-4 h-96 overflow-y-auto">
             {messages.map((message, index) => (
               <div key={index} className="flex">
