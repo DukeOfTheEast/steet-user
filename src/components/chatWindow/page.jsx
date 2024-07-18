@@ -1,16 +1,19 @@
-// src/components/ChatWindow.js
 "use client";
 
 import React, { useState, useEffect } from "react";
 import { db } from "@/app/firebase/config";
 import {
   collection,
+  doc,
   addDoc,
+  setDoc,
+  getDocs,
   query,
   where,
   orderBy,
   onSnapshot,
 } from "firebase/firestore";
+
 import { useAuth } from "@/context/AuthContext";
 
 const ChatWindow = ({ selectedUser }) => {
@@ -19,47 +22,92 @@ const ChatWindow = ({ selectedUser }) => {
   const [newMessage, setNewMessage] = useState("");
 
   useEffect(() => {
-    if (selectedUser && currentUser) {
-      const messagesRef = collection(
-        db,
-        "conversations",
-        `${currentUser.uid}_${selectedUser}`,
-        "messages"
-      );
-      const q = query(
-        messagesRef,
-        where("participants", "array-contains", currentUser.uid),
-        orderBy("createdAt", "asc")
+    if (selectedUser) {
+      const conversationRef = query(
+        collection(db, "conversations"),
+        where("participants", "array-contains", currentUser.uid)
       );
 
-      const unsubscribe = onSnapshot(q, (querySnapshot) => {
-        const messagesList = querySnapshot.docs
-          .map((doc) => doc.data())
-          .filter((message) => message.participants.includes(selectedUser));
-        setMessages(messagesList);
+      const unsubscribe = onSnapshot(conversationRef, (querySnapshot) => {
+        let conversationId;
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          if (
+            data.participants.includes(currentUser.uid) &&
+            data.participants.includes(selectedUser)
+          ) {
+            conversationId = doc.id;
+          }
+        });
+
+        if (conversationId) {
+          const messagesRef = collection(
+            db,
+            `conversations/${conversationId}/messages`
+          );
+          const messagesQuery = query(messagesRef, orderBy("createdAt", "asc"));
+
+          const unsubscribeMessages = onSnapshot(
+            messagesQuery,
+            (messagesSnapshot) => {
+              const messagesList = messagesSnapshot.docs.map((doc) =>
+                doc.data()
+              );
+              setMessages(messagesList);
+            }
+          );
+
+          return () => unsubscribeMessages();
+        }
       });
 
       return () => unsubscribe();
     }
-  }, [selectedUser, currentUser]);
+  }, [selectedUser, currentUser.uid]);
 
   const handleSendMessage = async () => {
-    if (newMessage.trim() !== "" && currentUser && selectedUser) {
+    if (newMessage.trim() !== "") {
       try {
+        let conversationId;
+
+        // Check if conversation already exists
+        const conversationRef = query(
+          collection(db, "conversations"),
+          where("participants", "array-contains", currentUser.uid)
+        );
+
+        const querySnapshot = await getDocs(conversationRef);
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          if (
+            data.participants.includes(currentUser.uid) &&
+            data.participants.includes(selectedUser)
+          ) {
+            conversationId = doc.id;
+          }
+        });
+
+        // If conversation doesn't exist, create it
+        if (!conversationId) {
+          const newConversationRef = await addDoc(
+            collection(db, "conversations"),
+            {
+              participants: [currentUser.uid, selectedUser],
+            }
+          );
+          conversationId = newConversationRef.id;
+        }
+
+        // Add message to the conversation
         await addDoc(
-          collection(
-            db,
-            "conversations",
-            `${currentUser.uid}_${selectedUser}`,
-            "messages"
-          ),
+          collection(db, `conversations/${conversationId}/messages`),
           {
             text: newMessage,
             sender: currentUser.uid,
-            participants: [currentUser.uid, selectedUser],
             createdAt: new Date(),
           }
         );
+
         setNewMessage("");
       } catch (error) {
         console.error("Error sending message: ", error);
