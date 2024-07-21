@@ -3,9 +3,11 @@
 import React, { useEffect, useState } from "react";
 import { db } from "@/app/firebase/config";
 import { collection, getDocs } from "firebase/firestore";
+import { useAuth } from "@/context/AuthContext";
 
 const UserList = ({ onSelectUser }) => {
   const [users, setUsers] = useState([]);
+  const { currentUser } = useAuth();
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -15,14 +17,22 @@ const UserList = ({ onSelectUser }) => {
           uid: doc.id,
           ...doc.data(),
         }));
-        setUsers(usersList);
+
+        // Sort users to place the current user at the top
+        const sortedUsers = usersList.sort((a, b) => {
+          if (a.uid === currentUser.uid) return -1;
+          if (b.uid === currentUser.uid) return 1;
+          return 0;
+        });
+
+        setUsers(sortedUsers);
       } catch (error) {
         console.error("Error fetching users: ", error);
       }
     };
 
     fetchUsers();
-  }, []);
+  }, [currentUser]);
 
   return (
     <div>
@@ -34,7 +44,7 @@ const UserList = ({ onSelectUser }) => {
             key={user.uid}
             onClick={() => onSelectUser(user.uid)}
           >
-            {user.inputValue}
+            {user.inputValue} {user.uid === currentUser.uid && "(Me)"}
           </li>
         ))}
       </ul>
