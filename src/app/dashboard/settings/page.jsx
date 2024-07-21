@@ -115,61 +115,71 @@ export default function Settings() {
     <div>
       <Navbar />
       <DesktopHeader />
-      <div className="sm:pl-96 sm:pt-20 pt-20">
-        <div className="mt-4">
+      <div className="sm:pl-96 sm:pt-20 pt-20 font-serif">
+        {/* <div className="mt-4">
           <h2>Saved Data:</h2>
           <p>{savedData}</p>
-        </div>
-        <div className="mt-4">
-          <h2>Upload Profile Picture:</h2>
-          <input type="file" onChange={handleImageChange} />
-        </div>
-        {photoURL && (
-          <div className="mt-4">
-            <h2>Uploaded Image:</h2>
-            <img src={photoURL} alt="profile" className="max-w-xs" />
-          </div>
-        )}
+        </div> */}
+        <h1 className="font-extrabold text-xl sm:text-3xl my-3 mb-6 font-serif">
+          Settings
+        </h1>
+        <div className="bg-gray-300 mx-3 sm:w-2/3 rounded-2xl">
+          <div className="flex items-center mx-10 gap-2">
+            <div className="mt-4 text-sm font-bold">
+              <p>JPEG or PNG</p>
+              <p>File Size: Max. 5MB</p>
+              <input
+                type="file"
+                onChange={handleImageChange}
+                className="sm:w-56 w-28"
+              />
+            </div>
 
-        {currentUser && (
-          <div className="bg-gray-200 p-5 rounded-2xl sm:mr-20 my-10">
-            {openEdit && (
-              <form onSubmit={handleSubmit}>
-                <label htmlFor="userInput">Enter something:</label>
-                <input
-                  id="userInput"
-                  type="text"
-                  value={userData}
-                  onChange={handleInputChange}
-                  className="border border-gray-300 rounded p-2 mb-2"
-                />
-                <button
-                  type="submit"
-                  className="bg-blue-500 text-white rounded p-2"
-                >
-                  Save
-                </button>
-              </form>
-            )}
-            <div className="mt-4">
-              <h2 className="font-extrabold">Email: {currentUser.email}</h2>
-              <div className="flex items-center ">
-                <h2 className="font-extrabold">
-                  Username:
-                  <span className="bg-gray-500 p-5 rounded-2xl">
-                    {savedData}
-                  </span>
-                </h2>
-                <Image
-                  onClick={editUser}
-                  src={Edit}
-                  alt="edit-btn"
-                  className="w-13 h-13 bg-gray-500 p-5 rounded-2xl cursor-pointer"
+            {photoURL && (
+              <div className="mt-4">
+                <img
+                  src={photoURL}
+                  alt="profile"
+                  className="rounded-full sm:w-40 sm:h-40"
                 />
               </div>
-            </div>
+            )}
           </div>
-        )}
+
+          {currentUser && (
+            <div className="p-5 rounded-2xl sm:mr-20 my-10">
+              {openEdit && (
+                <form onSubmit={handleSubmit} className="">
+                  <input
+                    id="userInput"
+                    type="text"
+                    value={userData}
+                    onChange={handleInputChange}
+                    className="border border-gray-300 rounded p-2 mb-2"
+                  />
+                  <button
+                    type="submit"
+                    className="bg-blue-500 text-white rounded p-2"
+                  >
+                    Save
+                  </button>
+                </form>
+              )}
+              <div className="mt-4">
+                <h2 className="font-extrabold">Email: {currentUser.email}</h2>
+                <div className="flex items-center ">
+                  <h2 className="font-extrabold">Username: {savedData}</h2>
+                  <Image
+                    onClick={editUser}
+                    src={Edit}
+                    alt="edit-btn"
+                    className="w-11 h-11 bg-slate-100 p-2 rounded-2xl cursor-pointer"
+                  />
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

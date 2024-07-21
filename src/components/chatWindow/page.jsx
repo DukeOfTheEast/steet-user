@@ -181,30 +181,23 @@ const ChatWindow = ({ selectedUser, closeChat }) => {
             />
           </div>
 
-          {messages ? (
-            <div className="p-4 h-96 overflow-y-auto">
-              {messages.map((message, index) => (
-                <div key={index} className="flex">
-                  <p
-                    className={`text-white p-1 rounded-xl min-w-10 max-w-48 text-center ${
-                      message.sender === currentUser.uid
-                        ? "bg-blue-500 ml-auto my-0.5"
-                        : "bg-gray-500 my-0.5"
-                    }`}
-                  >
-                    {message.text}
-                  </p>
-                </div>
-              ))}
-              <div ref={chatEndRef}></div>
-            </div>
-          ) : (
-            <div>
-              <p className="flex items-center justify-center">
-                No messages yet
-              </p>
-            </div>
-          )}
+          <div className="p-4 h-96 overflow-y-auto">
+            {messages.map((message, index) => (
+              <div key={index} className="flex">
+                <p
+                  className={`text-white p-1 rounded-xl min-w-10 max-w-48 text-center ${
+                    message.sender === currentUser.uid
+                      ? "bg-blue-500 ml-auto my-0.5"
+                      : "bg-gray-500 my-0.5"
+                  }`}
+                >
+                  {message.text}
+                </p>
+              </div>
+            ))}
+            <div ref={chatEndRef}></div>
+          </div>
+
           <div className="p-4 border-t flex">
             <input
               type="text"

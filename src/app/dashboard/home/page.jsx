@@ -8,79 +8,81 @@ import { useState, useEffect } from "react";
 import Navbar from "@/components/navbar/page";
 import { DesktopHeader } from "@/components/desktop-header/page";
 import { useAuth } from "@/context/AuthContext";
-import ProgressBar from "@/components/progressBar/page";
+import { FiPlus } from "react-icons/fi";
+import { db } from "@/app/firebase/config";
+import {
+  collection,
+  getDocs,
+  addDoc,
+  doc,
+  updateDoc,
+} from "firebase/firestore";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import PostModal from "@/components/post-modal/page";
 
 const Home = () => {
-  const [data, setData] = useState([]);
-  const [error, setError] = useState(null);
-  const { currentUser, loading } = useAuth();
+  const { currentUser } = useAuth();
+  const [posts, setPosts] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchPosts = async () => {
       try {
-        const response = await fetch(
-          "https://api.spaceflightnewsapi.net/v4/articles/?format=json"
-        );
-        if (!response.ok) {
-          throw new Error("Failed to fetch data");
-        }
-        const jsonData = await response.json();
-        setData(jsonData.results);
-        console.log(jsonData);
+        const querySnapshot = await getDocs(collection(db, "posts"));
+        const postsList = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setPosts(postsList);
       } catch (error) {
-        setError(error.message);
+        console.error("Error fetching posts: ", error);
       }
     };
 
-    fetchData();
+    fetchPosts();
   }, []);
+
+  const handleLike = async (postId) => {
+    try {
+      const postRef = doc(db, "posts", postId);
+      const post = posts.find((p) => p.id === postId);
+      const updatedLikes = post.likes.includes(currentUser.uid)
+        ? post.likes.filter((uid) => uid !== currentUser.uid)
+        : [...post.likes, currentUser.uid];
+
+      await updateDoc(postRef, { likes: updatedLikes });
+      setPosts((prevPosts) =>
+        prevPosts.map((p) =>
+          p.id === postId ? { ...p, likes: updatedLikes } : p
+        )
+      );
+    } catch (error) {
+      console.error("Error liking post: ", error);
+    }
+  };
 
   return (
     <div className="sm:flex">
       <Navbar />
-      <div className="sm:pl-80 sm:pt-20 pt-20">
-        <DesktopHeader />
-        {currentUser && (
-          <p className="sm:pl-28 font-bold lg:text-3xl my-10">
-            Welcome,
-            <br />
-            {currentUser.email}
-          </p>
-        )}
-        <ProgressBar />
-        <ul className="flex md:flex-wrap lg:flex-row flex-col  m-4 sm:gap-6 gap-4 items-center justify-center">
-          {data?.map((repo) => (
-            <li
-              key={repo.id}
-              className="md:w-2/5 shadow-md rounded-3xl hover:cursor-pointer bg-slate-100 sm:h-40"
-            >
-              <a
-                href={repo.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex"
-              >
-                <h2 className="sm:text-lg py-4 pl-4">{repo.title}</h2>
-
-                {/* <Image
-              src={repo.image_url}
-              alt="images"
-              width="300"
-              height="300"
-              className="rounded-r-3xl"
-            /> */}
-
-                <img
-                  src={repo.image_url}
-                  alt="images"
-                  // width="200"
-                  // height="200"
-                  className="rounded-r-3xl sm:w-48 w-24 sm:h-40 h-28"
-                />
-              </a>
-            </li>
+      <DesktopHeader />
+      <div className="sm:pl-96 sm:pt-20 pt-20">
+        <FiPlus size={30} onClick={() => setIsModalOpen(true)} />
+        <PostModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          currentUser={currentUser}
+        />
+        <div>
+          {posts.map((post) => (
+            <div key={post.id}>
+              <img src={post.imageUrl} alt="Post" />
+              <button onClick={() => handleLike(post.id)}>
+                {post.likes.includes(currentUser.uid) ? "Unlike" : "Like"} (
+                {post.likes.length})
+              </button>
+            </div>
           ))}
-        </ul>
+        </div>
       </div>
     </div>
   );
