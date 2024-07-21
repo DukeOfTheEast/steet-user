@@ -40,8 +40,8 @@ const ChatWindow = ({ selectedUser, closeChat }) => {
     fetchUsers();
   }, []);
 
-  console.log(users);
-  console.log(selectedUser);
+  // console.log(users);
+  // console.log(selectedUser);
 
   useEffect(() => {
     let unsubscribeMessages;

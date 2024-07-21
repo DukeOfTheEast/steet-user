@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { db } from "@/app/firebase/config";
 import { collection, getDocs } from "firebase/firestore";
 import { useAuth } from "@/context/AuthContext";
+import { MdOutlineChat } from "react-icons/md";
 
 const UserList = ({ onSelectUser }) => {
   const [users, setUsers] = useState([]);
@@ -36,16 +37,21 @@ const UserList = ({ onSelectUser }) => {
 
   return (
     <div>
-      <h2 className="text-3xl font-extrabold text-center">Chat With Vendors</h2>
+      <h2 className="text-3xl font-extrabold text-center mb-6">
+        Chat With Vendors
+      </h2>
       <ul>
         {users.map((user) => (
-          <li
-            className="cursor-pointer"
-            key={user.uid}
+          <div
             onClick={() => onSelectUser(user.uid)}
+            key={user.uid}
+            className="cursor-pointer flex items-center justify-between max-w-80 border-b-4 hover:bg-slate-300 rounded-2xl py-1 px-2"
           >
-            {user.inputValue} {user.uid === currentUser.uid && "(Me)"}
-          </li>
+            <li className="my-2">
+              {user.inputValue} {user.uid === currentUser.uid && "(Me)"}
+            </li>
+            <MdOutlineChat />
+          </div>
         ))}
       </ul>
     </div>
