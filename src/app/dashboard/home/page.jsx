@@ -19,6 +19,8 @@ import {
 } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import PostModal from "@/components/post-modal/page";
+import { FaRegHeart } from "react-icons/fa";
+import { FaHeart } from "react-icons/fa";
 
 const Home = () => {
   const { currentUser } = useAuth();
@@ -72,21 +74,28 @@ const Home = () => {
           onClose={() => setIsModalOpen(false)}
           currentUser={currentUser}
         />
-        <div className="max-h-36 w-2/3">
+        <div className="max-h-36 sm:w-2/3 mx-4">
           {posts.map((post) => (
-            <div key={post.id}>
+            <div key={post.id} className="my-3">
               {post.text && <p className="mb-4">{post.text}</p>}
               {post.imageUrl && (
                 <img
                   src={post.imageUrl}
                   alt="Post"
-                  className="w-full rounded mb-4"
+                  className="w-full rounded-xl mb-4"
                 />
               )}
-              <button onClick={() => handleLike(post.id)}>
-                {post.likes.includes(currentUser.uid) ? "Unlike" : "Like"} (
-                {post.likes.length})
-              </button>
+              <div className="flex items-center gap-1">
+                <button onClick={() => handleLike(post.id)}>
+                  {post.likes.includes(currentUser.uid) ? (
+                    <FaHeart />
+                  ) : (
+                    <FaRegHeart />
+                  )}{" "}
+                </button>
+                <p>{post.likes.length}</p>
+              </div>
+              <hr />
             </div>
           ))}
         </div>
