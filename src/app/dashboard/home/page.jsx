@@ -76,7 +76,7 @@ const Home = () => {
         />
         <div className="max-h-36 sm:w-2/3 mx-4">
           {posts.map((post) => (
-            <div key={post.id} className="my-3">
+            <div key={post.id} className="my-3 flex flex-col">
               {post.text && <p className="mb-4">{post.text}</p>}
               {post.imageUrl && (
                 <img
@@ -85,7 +85,7 @@ const Home = () => {
                   className="w-full rounded-xl mb-4"
                 />
               )}
-              <div className="flex items-center gap-1">
+              <div className="flex ml-auto items-center gap-1">
                 <button onClick={() => handleLike(post.id)}>
                   {post.likes.includes(currentUser.uid) ? (
                     <FaHeart />
@@ -95,7 +95,7 @@ const Home = () => {
                 </button>
                 <p>{post.likes.length}</p>
               </div>
-              <hr />
+              <hr className="mb-5" />
             </div>
           ))}
         </div>
