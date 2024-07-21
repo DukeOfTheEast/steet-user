@@ -68,7 +68,10 @@ const Home = () => {
       <Navbar />
       <DesktopHeader />
       <div className="sm:pl-96 sm:pt-20 pt-20">
-        <FiPlus size={30} onClick={() => setIsModalOpen(true)} />
+        <FiPlus
+          onClick={() => setIsModalOpen(true)}
+          className="fixed sm:bottom-10 bottom-4 sm:right-10 right-4 bg-slate-100 rounded-xl shadow-lg cursor-pointer w-10 h-10 sm:w-16 sm:h-16"
+        />
         <PostModal
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
