@@ -72,10 +72,17 @@ const Home = () => {
           onClose={() => setIsModalOpen(false)}
           currentUser={currentUser}
         />
-        <div>
+        <div className="max-h-36 w-2/3">
           {posts.map((post) => (
             <div key={post.id}>
-              <img src={post.imageUrl} alt="Post" />
+              {post.text && <p className="mb-4">{post.text}</p>}
+              {post.imageUrl && (
+                <img
+                  src={post.imageUrl}
+                  alt="Post"
+                  className="w-full rounded mb-4"
+                />
+              )}
               <button onClick={() => handleLike(post.id)}>
                 {post.likes.includes(currentUser.uid) ? "Unlike" : "Like"} (
                 {post.likes.length})
