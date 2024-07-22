@@ -108,6 +108,9 @@ const Home = () => {
         <div className="max-h-36 sm:w-2/3 mx-4">
           {posts.map((post) => (
             <div key={post.id} className="my-3 flex flex-col">
+              <div className="font-bold mb-2">
+                <p>@{post.createdByUsername}</p>
+              </div>
               {post.text && <p className="mb-4">{post.text}</p>}
               {post.imageUrl && (
                 <img

@@ -7,6 +7,7 @@ import {
   signOut,
 } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
+import { getDoc } from "firebase/firestore";
 
 const AuthContext = createContext();
 
@@ -17,9 +18,21 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setCurrentUser(user);
-      setLoading(false);
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        // Fetch additional user details
+        const userDoc = doc(db, "users", user.uid);
+        const userSnapshot = await getDoc(userDoc);
+        const userData = userSnapshot.data();
+
+        setCurrentUser({
+          uid: user.uid,
+          inputValue: userData?.inputValue || "Default UserName", // Ensure this is set correctly
+        });
+        setLoading(false);
+      } else {
+        setCurrentUser(null);
+      }
     });
     return unsubscribe;
   }, []);

@@ -1,45 +1,66 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { db } from "@/app/firebase/config";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, Timestamp, getDocs } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { useAuth } from "@/context/AuthContext";
 
 const PostModal = ({ isOpen, onClose, currentUser }) => {
   const [image, setImage] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
   const [text, setText] = useState("");
+  const { currentUser: user } = useAuth();
+  // const [users, setUsers] = useState([]);
 
   const handleImageChange = (e) => {
     if (e.target.files[0]) {
-      const file = e.target.files[0];
-      setImage(file);
-      setImageUrl(URL.createObjectURL(file));
+      setImage(e.target.files[0]);
+      setImageUrl(URL.createObjectURL(e.target.files[0]));
     }
   };
 
-  const handleSubmit = async () => {
-    if (!image && !text.trim()) return;
-
-    const storage = getStorage();
-    const storageRef = ref(storage, `posts/${image.name}`);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
-      await uploadBytes(storageRef, image);
-      const uploadedImageUrl = await getDownloadURL(storageRef);
+      let postImageUrl = "";
+
+      if (image) {
+        const storageRef = ref(storage, `posts/${image.name}`);
+        const uploadTask = uploadBytesResumable(storageRef, image);
+
+        await new Promise((resolve, reject) => {
+          uploadTask.on(
+            "state_changed",
+            () => {},
+            (error) => reject(error),
+            () => {
+              getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                postImageUrl = downloadURL;
+                resolve();
+              });
+            }
+          );
+        });
+      }
 
       await addDoc(collection(db, "posts"), {
-        imageUrl: uploadedImageUrl,
-        text: text.trim(),
+        text,
+        imageUrl: postImageUrl,
+        createdBy: user.uid,
+        createdByUsername: user.inputValue || "Anonymous", // Assuming inputValue is the username
+        createdAt: Timestamp.now(),
         likes: [],
-        createdBy: currentUser.uid,
-        createdAt: new Date(),
       });
 
-      setImage(null);
-      setImageUrl(null);
       setText("");
+      setImage(null);
+      setImageUrl("");
       onClose();
     } catch (error) {
-      console.error("Error uploading image: ", error);
+      console.error("Error creating post: ", error);
     }
+    console.log(user.inputValue);
+    console.log(user.uid);
+    console.log(user);
   };
 
   if (!isOpen) return null;
