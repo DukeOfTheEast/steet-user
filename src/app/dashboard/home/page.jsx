@@ -113,7 +113,7 @@ const Home = () => {
                 <img
                   src={post.imageUrl}
                   alt="Post"
-                  className="w-full rounded-xl mb-4"
+                  className="w-full rounded-xl mb-4 max-h-96"
                 />
               )}
               <div className="flex flex-row-reverse items-center justify-between">
