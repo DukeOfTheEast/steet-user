@@ -145,6 +145,7 @@ const ChatWindow = ({ selectedUser, closeChat }) => {
             text: newMessage,
             sender: currentUser.uid,
             createdAt: Timestamp.now(),
+            read: false,
           }
         );
 
