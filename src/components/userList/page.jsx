@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { db } from "@/app/firebase/config";
-import { collection, query, where, getDocs } from "firebase/firestore";
+import { collection, query, where, getDocs, orderBy } from "firebase/firestore";
 import { useAuth } from "@/context/AuthContext";
 import { MdOutlineChat } from "react-icons/md";
 
@@ -22,7 +22,11 @@ const fetchUnreadMessagesCount = async (currentUser) => {
       db,
       `conversations/${conversationId}/messages`
     );
-    const messagesQuery = query(messagesRef, where("read", "==", false));
+    const messagesQuery = query(
+      messagesRef,
+      where("read", "==", false),
+      orderBy("createdAt", "asc")
+    );
     const messagesSnapshot = await getDocs(messagesQuery);
 
     const unreadCount = messagesSnapshot.docs.filter(
@@ -35,7 +39,7 @@ const fetchUnreadMessagesCount = async (currentUser) => {
         : null;
 
     unreadMessagesCount[conversationId] = {
-      count: unreadCount,
+      count: unreadCount.length,
       lastMessageSender,
     };
   }
@@ -86,16 +90,13 @@ const UserList = ({ onSelectUser }) => {
   }
 
   return (
-    <div>
-      <h2 className="text-3xl font-extrabold text-center mb-6">
-        Chat With Vendors
-      </h2>
-      <ul>
+    <div className="mx-10">
+      <ul className="">
         {users.map((user) => (
           <div
             onClick={() => onSelectUser(user.uid)}
             key={user.uid}
-            className="cursor-pointer flex items-center justify-between max-w-80 border-b-4 hover:bg-slate-300 rounded-2xl py-1 px-2"
+            className="cursor-pointer flex items-center justify-between max-w-80 sm:border-b-4 hover:bg-slate-300 sm:rounded-2xl py-1 px-2"
           >
             <li className="my-2">
               <span>

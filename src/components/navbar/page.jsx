@@ -50,7 +50,7 @@ export default function Navbar() {
           >
             <div className="route flex gap-1">
               <Image src={Dash} alt="logo" />
-              <p>Dashboard</p>
+              <p>Home</p>
             </div>
           </Link>
           <Link
@@ -68,7 +68,7 @@ export default function Navbar() {
           >
             <div className="route flex gap-1">
               <Image src={Orders} alt="logo" />
-              <p>Orders</p>
+              <p>Chat</p>
             </div>
           </Link>
           <Link
@@ -95,7 +95,7 @@ export default function Navbar() {
           >
             <div className="route flex gap-1">
               <Image src={Settings} alt="logo" />
-              <p>Settings</p>
+              <p>Profile</p>
             </div>
           </Link>
         </div>
@@ -131,13 +131,13 @@ export default function Navbar() {
             </div>
             <div className="mx-28 my-16 flex flex-col gap-5">
               <Link href="/dashboard/home">
-                <p>Dashboard</p>
+                <p>Home</p>
               </Link>
               <Link href="/dashboard/folder">
                 <p>Customer Folder</p>
               </Link>
               <Link href="/dashboard/orders">
-                <p>Orders</p>
+                <p>Chat</p>
               </Link>
               <Link href="/dashboard/tasks">
                 <p>Add Tasks</p>
@@ -146,7 +146,7 @@ export default function Navbar() {
                 <p>Catalogue</p>
               </Link>
               <Link href="/dashboard/settings">
-                <p>Settings</p>
+                <p>Profile</p>
               </Link>
             </div>
             <div className="mx-28 pt-20">

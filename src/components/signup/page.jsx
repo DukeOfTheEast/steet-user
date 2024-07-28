@@ -46,7 +46,7 @@ const SignUp = () => {
           folder.
         </p>
       </div>
-      <form onSubmit={handleSignup} className="w-full max-w-sm">
+      <form onSubmit={handleSignup} className="sm:w-[400px] w-[300] px-5">
         {error && (
           <p className="text-red-500 bg-white rounded-md px-3 py-1 absolute top-5">
             Input cannot be empty!
@@ -63,7 +63,7 @@ const SignUp = () => {
               onChange={(e) => setEmail(e.target.value)}
             />
 
-            <div className="flex items-center bg-slate-300 rounded-2xl">
+            <div className="flex items-center justify-between pr-3 bg-slate-300 rounded-2xl">
               <input
                 className="rounded-s-2xl p-3 bg-slate-300 focus:outline-none"
                 type={viewPass ? "text" : "password"}
@@ -72,20 +72,14 @@ const SignUp = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
-              {/* <GoEye /> */}
-              {viewPass ? (
-                <GoEyeClosed
-                  size={50}
-                  className="p-3 flex-1 rounded-r-2xl cursor-pointer"
-                  onClick={togglePass}
-                />
-              ) : (
-                <GoEye
-                  size={50}
-                  className="p-3 flex-1 rounded-r-2xl cursor-pointer"
-                  onClick={togglePass}
-                />
-              )}
+
+              <div className="rounded-r-2xl cursor-pointer">
+                {viewPass ? (
+                  <GoEyeClosed size={25} onClick={togglePass} />
+                ) : (
+                  <GoEye size={25} onClick={togglePass} />
+                )}
+              </div>
             </div>
 
             <button

@@ -69,7 +69,7 @@ const SignIn = () => {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-        <div className="flex items-center bg-slate-300 rounded-2xl">
+        <div className="flex items-center justify-between bg-slate-300 rounded-2xl pr-3">
           <input
             className="rounded-2xl p-3 bg-slate-300 focus:outline-none"
             type={viewPass ? "text" : "password"}
@@ -77,19 +77,13 @@ const SignIn = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          {viewPass ? (
-            <GoEyeClosed
-              size={50}
-              className="p-3 flex-1 rounded-r-2xl cursor-pointer"
-              onClick={togglePass}
-            />
-          ) : (
-            <GoEye
-              size={50}
-              className="p-3 flex-1 rounded-r-2xl cursor-pointer"
-              onClick={togglePass}
-            />
-          )}
+          <div className="rounded-r-2xl cursor-pointer">
+            {viewPass ? (
+              <GoEyeClosed size={25} onClick={togglePass} />
+            ) : (
+              <GoEye size={25} onClick={togglePass} />
+            )}
+          </div>
         </div>
         <button
           type="submit"
