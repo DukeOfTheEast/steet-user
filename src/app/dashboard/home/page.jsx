@@ -23,6 +23,7 @@ import PostModal from "@/components/post-modal/page";
 import { FaRegHeart } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa";
 import { AiOutlineDelete, AiOutlineDownload } from "react-icons/ai";
+import Image from "next/image";
 
 const Home = () => {
   const { currentUser } = useAuth();
@@ -118,6 +119,13 @@ const Home = () => {
                   alt="Post"
                   className="w-full rounded-xl mb-4 max-h-96"
                 />
+                // <Image
+                //   src={post.imageUrl}
+                //   alt="post"
+                //   className="w-full rounded-xl mb-4 max-h-96"
+                //   width={300}
+                //   height={300}
+                // />
               )}
               <div className="flex flex-row-reverse items-center justify-between">
                 <div className="flex items-center gap-1">

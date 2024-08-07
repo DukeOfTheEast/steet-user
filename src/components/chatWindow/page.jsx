@@ -170,7 +170,7 @@ const ChatWindow = ({ selectedUser, closeChat }) => {
             <div>
               {users.map((user) => (
                 <h2 key={user.uid} className="text-lg font-semibold">
-                  {user.uid === selectedUser ? user.inputValue : ""}
+                  {user.uid === selectedUser ? user.inputValue || user.uid : ""}
                 </h2>
               ))}
             </div>

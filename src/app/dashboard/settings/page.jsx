@@ -167,6 +167,7 @@ export default function Settings() {
               )}
               <div className="mt-4">
                 <h2 className="font-extrabold">Email: {currentUser.email}</h2>
+                {/* <h2 className="font-extrabold">User Id: {currentUser.uid}</h2> */}
                 <div className="flex items-center ">
                   <h2 className="font-extrabold">Username: {savedData}</h2>
                   <Image

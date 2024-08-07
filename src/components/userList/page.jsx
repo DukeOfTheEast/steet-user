@@ -100,7 +100,8 @@ const UserList = ({ onSelectUser }) => {
           >
             <li className="my-2">
               <span>
-                {user.inputValue} {user.uid === currentUser.uid && "(Me)"}
+                {user.inputValue || user.uid}{" "}
+                {user.uid === currentUser.uid && "(Me)"}
               </span>
               <div className="flex items-center space-x-2">
                 {unreadMessages[user.uid] &&
