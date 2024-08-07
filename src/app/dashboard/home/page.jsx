@@ -1,9 +1,6 @@
 "use client";
 
-// import Image from "next/image";
-import Link from "next/link";
 import React from "react";
-// import { addDoc } from "firebase/firestore";
 import { useState, useEffect } from "react";
 import Navbar from "@/components/navbar/page";
 import { DesktopHeader } from "@/components/desktop-header/page";
@@ -18,12 +15,11 @@ import {
   updateDoc,
   deleteDoc,
 } from "firebase/firestore";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+// import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import PostModal from "@/components/post-modal/page";
 import { FaRegHeart } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa";
 import { AiOutlineDelete, AiOutlineDownload } from "react-icons/ai";
-import Image from "next/image";
 
 const Home = () => {
   const { currentUser } = useAuth();

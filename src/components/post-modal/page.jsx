@@ -1,15 +1,22 @@
 import React, { useState, useEffect } from "react";
-import { db } from "@/app/firebase/config";
+import { db, storage } from "@/app/firebase/config";
 import { collection, addDoc, Timestamp, getDocs } from "firebase/firestore";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import {
+  getStorage,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+} from "firebase/storage";
 import { useAuth } from "@/context/AuthContext";
 import { FaTimes } from "react-icons/fa";
+import Spinner from "../spinner/page";
 
 const PostModal = ({ isOpen, onClose, currentUser }) => {
   const [image, setImage] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
   const [text, setText] = useState("");
   const { currentUser: user } = useAuth();
+  const [postLoading, setPostLoading] = useState(false);
 
   const handleImageChange = (e) => {
     if (e.target.files[0]) {
@@ -20,6 +27,7 @@ const PostModal = ({ isOpen, onClose, currentUser }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setPostLoading(true);
     try {
       let postImageUrl = "";
 
@@ -31,7 +39,10 @@ const PostModal = ({ isOpen, onClose, currentUser }) => {
           uploadTask.on(
             "state_changed",
             () => {},
-            (error) => reject(error),
+            (error) => {
+              console.error("Error uploading image: ", error);
+              reject(error);
+            },
             () => {
               getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
                 postImageUrl = downloadURL;
@@ -53,7 +64,7 @@ const PostModal = ({ isOpen, onClose, currentUser }) => {
 
       setText("");
       setImage(null);
-      setImageUrl("");
+      setImageUrl(null);
       onClose();
     } catch (error) {
       console.error("Error creating post: ", error);
@@ -91,8 +102,15 @@ const PostModal = ({ isOpen, onClose, currentUser }) => {
               className="mb-4 border border-gray-300 rounded p-2 w-full resize-none"
               rows="3"
             />
-            <input type="file" onChange={handleImageChange} />
-            <button onClick={handleSubmit}>Post</button>
+            <div className="flex items-center justify-between">
+              <input type="file" onChange={handleImageChange} />
+              <button
+                onClick={handleSubmit}
+                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+              >
+                {postLoading ? <Spinner /> : "Post"}
+              </button>
+            </div>
           </div>
         </div>
       </div>
