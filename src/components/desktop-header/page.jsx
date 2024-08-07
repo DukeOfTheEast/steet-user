@@ -3,21 +3,38 @@
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import Freeze from "@/images/freeze.png";
-import Logo from "@/images/steet-logo.png";
 import Logout from "@/images/logout.png";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "@/app/firebase/config";
 
 import { useProfile } from "@/context/ProfileContext";
 
 export const DesktopHeader = () => {
-  // const photoURL = useImage();
   const { photoURL, setPhotoURL } = useProfile();
   const [isHovered, setIsHovered] = useState(false);
   const auth = useAuth();
   const router = useRouter();
+  const { currentUser, loading } = useAuth();
+
+  useEffect(() => {
+    if (currentUser) {
+      // Fetch user's saved data when component mounts
+      const fetchUserData = async () => {
+        const docRef = doc(db, "users", currentUser.uid);
+        const docSnap = await getDoc(docRef);
+        const userData = docSnap.data();
+        if (docSnap.exists()) {
+          if (userData.photoURL) {
+            setPhotoURL(userData.photoURL);
+          }
+        }
+      };
+      fetchUserData();
+    }
+  }, [currentUser, setPhotoURL]);
 
   const handleLogout = async () => {
     try {
