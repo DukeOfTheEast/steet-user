@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { db, storage } from "@/app/firebase/config";
-import { collection, addDoc, Timestamp, getDocs } from "firebase/firestore";
+import { collection, addDoc, Timestamp, getDoc, doc } from "firebase/firestore";
 import {
   getStorage,
   ref,
@@ -10,6 +10,7 @@ import {
 import { useAuth } from "@/context/AuthContext";
 import { FaTimes } from "react-icons/fa";
 import Spinner from "../spinner/page";
+import { useProfile } from "@/context/ProfileContext";
 
 const PostModal = ({ isOpen, onClose, currentUser }) => {
   const [image, setImage] = useState(null);
@@ -17,6 +18,24 @@ const PostModal = ({ isOpen, onClose, currentUser }) => {
   const [text, setText] = useState("");
   const { currentUser: user } = useAuth();
   const [postLoading, setPostLoading] = useState(false);
+  const { photoURL, setPhotoURL } = useProfile();
+
+  useEffect(() => {
+    if (currentUser) {
+      // Fetch user's saved data when component mounts
+      const fetchUserData = async () => {
+        const docRef = doc(db, "users", currentUser.uid);
+        const docSnap = await getDoc(docRef);
+        const userData = docSnap.data();
+        if (docSnap.exists()) {
+          if (userData.photoURL) {
+            setPhotoURL(userData.photoURL);
+          }
+        }
+      };
+      fetchUserData();
+    }
+  }, [currentUser, setPhotoURL]);
 
   const handleImageChange = (e) => {
     if (e.target.files[0]) {
@@ -60,6 +79,7 @@ const PostModal = ({ isOpen, onClose, currentUser }) => {
         createdByUsername: user.inputValue || "Anonymous", // Assuming inputValue is the username
         createdAt: Timestamp.now(),
         likes: [],
+        createdByProfileImage: photoURL || user.photoURL,
       });
 
       setText("");

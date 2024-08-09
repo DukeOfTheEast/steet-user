@@ -14,17 +14,37 @@ import {
   doc,
   updateDoc,
   deleteDoc,
+  getDoc,
 } from "firebase/firestore";
 // import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import PostModal from "@/components/post-modal/page";
 import { FaRegHeart } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa";
 import { AiOutlineDelete, AiOutlineDownload } from "react-icons/ai";
+import { useProfile } from "@/context/ProfileContext";
 
 const Home = () => {
+  const { photoURL, setPhotoURL } = useProfile();
   const { currentUser } = useAuth();
   const [posts, setPosts] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  useEffect(() => {
+    if (currentUser) {
+      // Fetch user's saved data when component mounts
+      const fetchUserData = async () => {
+        const docRef = doc(db, "users", currentUser.uid);
+        const docSnap = await getDoc(docRef);
+        const userData = docSnap.data();
+        if (docSnap.exists()) {
+          if (userData.photoURL) {
+            setPhotoURL(userData.photoURL);
+          }
+        }
+      };
+      fetchUserData();
+    }
+  }, [currentUser, setPhotoURL]);
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -106,6 +126,11 @@ const Home = () => {
           {posts.map((post) => (
             <div key={post.id} className="my-3 flex flex-col">
               <div className="font-bold mb-2">
+                <img
+                  src={post.createdByProfileImage}
+                  alt="profile"
+                  className="max-w-5 max-h-5"
+                />
                 <p>@{post.createdByUsername}</p>
               </div>
               {post.text && <p className="mb-4">{post.text}</p>}
