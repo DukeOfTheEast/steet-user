@@ -7,10 +7,33 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { useAuth } from "@/context/AuthContext";
 import { db, storage } from "@/app/firebase/config";
-import { doc, setDoc, getDoc } from "firebase/firestore";
+import {
+  doc,
+  setDoc,
+  getDoc,
+  updateDoc,
+  collection,
+  query,
+  where,
+  getDocs,
+  writeBatch,
+} from "firebase/firestore";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import Edit from "@/images/edit-btn.png";
 import { useProfile } from "@/context/ProfileContext";
+
+const updateUserPostsWithNewImage = async (userId, newPhotoURL) => {
+  const postsRef = collection(db, "posts");
+  const q = query(postsRef, where("createdBy", "==", userId));
+  const querySnapshot = await getDocs(q);
+
+  const batch = writeBatch(db);
+  querySnapshot.forEach((doc) => {
+    batch.update(doc.ref, { createdByProfileImage: newPhotoURL });
+  });
+
+  await batch.commit();
+};
 
 export default function Settings() {
   const { userInfo } = useAuth();
@@ -101,6 +124,9 @@ export default function Settings() {
                 { photoURL: downloadURL },
                 { merge: true }
               );
+
+              // Update all posts by this user with the new image URL
+              await updateUserPostsWithNewImage(currentUser.uid, downloadURL);
             } catch (error) {
               console.error("Error uploading image: ", error);
               alert("Failed to upload image. Please try again.");
