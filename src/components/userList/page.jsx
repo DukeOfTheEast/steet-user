@@ -4,7 +4,9 @@ import React, { useEffect, useState } from "react";
 import { db } from "@/app/firebase/config";
 import { collection, query, where, getDocs, orderBy } from "firebase/firestore";
 import { useAuth } from "@/context/AuthContext";
-import { MdOutlineChat } from "react-icons/md";
+import { markMessagesAsRead } from "@/utils/messageUtils";
+import Default from "@/images/default-image.png";
+import SpinnerLarge from "../spinnerLarge/page";
 
 const fetchUnreadMessagesCount = async (currentUser) => {
   const conversationsRef = collection(db, "conversations");
@@ -18,6 +20,8 @@ const fetchUnreadMessagesCount = async (currentUser) => {
 
   for (const doc of querySnapshot.docs) {
     const conversationId = doc.id;
+    const participants = doc.data().participants;
+    const otherUserId = participants.find((id) => id !== currentUser.uid);
     const messagesRef = collection(
       db,
       `conversations/${conversationId}/messages`
@@ -25,7 +29,8 @@ const fetchUnreadMessagesCount = async (currentUser) => {
     const messagesQuery = query(
       messagesRef,
       where("read", "==", false),
-      orderBy("createdAt", "asc")
+      where("sender", "==", otherUserId),
+      orderBy("createdAt", "desc")
     );
     const messagesSnapshot = await getDocs(messagesQuery);
 
@@ -38,9 +43,12 @@ const fetchUnreadMessagesCount = async (currentUser) => {
         ? messagesSnapshot.docs[messagesSnapshot.docs.length - 1].data().sender
         : null;
 
-    unreadMessagesCount[conversationId] = {
-      count: unreadCount.length,
-      lastMessageSender,
+    unreadMessagesCount[otherUserId] = {
+      count: messagesSnapshot.size,
+      lastMessageSender:
+        messagesSnapshot.size > 0
+          ? messagesSnapshot.docs[0].data().sender
+          : null,
     };
   }
 
@@ -85,8 +93,24 @@ const UserList = ({ onSelectUser }) => {
     }
   }, [currentUser]);
 
+  const handleSelectUser = async (userId) => {
+    await markMessagesAsRead(currentUser.uid, userId);
+    const updatedUnreadCounts = await fetchUnreadMessagesCount(currentUser);
+    setUnreadMessages(updatedUnreadCounts);
+    onSelectUser(userId);
+  };
+
+  const formatUserId = (userId) => {
+    if (userId.length <= 11) return userId; // Return as is if it's already short
+    return `${userId.slice(0, 5)}...${userId.slice(-5)}`;
+  };
+
   if (!currentUser) {
-    return <div>Loading...</div>; // Or any loading state/UI
+    return (
+      <div className="flex items-center justify-center h-screen w-full">
+        <SpinnerLarge />
+      </div>
+    ); // Or any loading state/UI
   }
 
   return (
@@ -94,32 +118,31 @@ const UserList = ({ onSelectUser }) => {
       <ul className="">
         {users.map((user) => (
           <div
-            onClick={() => onSelectUser(user.uid)}
+            onClick={() => handleSelectUser(user.uid)}
             key={user.uid}
-            className="cursor-pointer flex items-center justify-between max-w-80 sm:border-b-4 hover:bg-slate-300 sm:rounded-2xl py-1 px-2"
+            className="cursor-pointer max-w-80 sm:border-b-4 hover:bg-slate-300 sm:rounded-2xl py-1 px-2"
           >
-            <li className="my-2">
-              <span>
-                {user.inputValue || user.uid}{" "}
-                {user.uid === currentUser.uid && "(Me)"}
-              </span>
+            <li className="my-2 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <img
+                  src={user.photoURL ? user.photoURL : Default.src}
+                  alt="profile"
+                  className="max-w-8 max-h-8 rounded-full"
+                />
+                <span>
+                  {user.inputValue || formatUserId(user.uid)}{" "}
+                  {user.uid === currentUser.uid && "(Me)"}
+                </span>
+              </div>
               <div className="flex items-center space-x-2">
                 {unreadMessages[user.uid] &&
                   unreadMessages[user.uid].count > 0 && (
                     <span className="bg-red-500 text-white rounded-full px-2 py-1 text-xs">
-                      {unreadMessages[user.uid].count} new
-                    </span>
-                  )}
-                {unreadMessages[user.uid] &&
-                  unreadMessages[user.uid].lastMessageSender && (
-                    <span className="text-gray-500 text-xs">
-                      Last message from:{" "}
-                      {unreadMessages[user.uid].lastMessageSender}
+                      {unreadMessages[user.uid].count}
                     </span>
                   )}
               </div>
             </li>
-            <MdOutlineChat />
           </div>
         ))}
       </ul>

@@ -205,7 +205,7 @@ const ChatWindow = ({ selectedUser, closeChat }) => {
               value={newMessage}
               onChange={(e) => setNewMessage(e.target.value)}
               placeholder="Type a message..."
-              className="flex-grow border rounded p-2 mr-2"
+              className="flex-grow border rounded p-2 mr-2 focus:outline-none"
             />
             <button
               onClick={handleSendMessage}

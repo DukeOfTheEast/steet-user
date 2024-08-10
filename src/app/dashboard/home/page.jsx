@@ -21,6 +21,7 @@ import PostModal from "@/components/post-modal/page";
 import { FaRegHeart } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa";
 import { AiOutlineDelete, AiOutlineDownload } from "react-icons/ai";
+import SpinnerLarge from "@/components/spinnerLarge/page";
 
 const Home = () => {
   const { currentUser } = useAuth();
@@ -93,6 +94,7 @@ const Home = () => {
     <div className="sm:flex">
       <Navbar />
       <DesktopHeader />
+
       <div className="sm:pl-96 sm:pt-20 pt-20">
         <FiPlus
           onClick={() => setIsModalOpen(true)}
@@ -104,59 +106,64 @@ const Home = () => {
           currentUser={currentUser}
         />
         <div className="max-h-36 sm:w-2/3 mx-4">
-          {posts.map((post) => (
-            <div key={post.id} className="my-3 flex flex-col">
-              <div className="font-bold mb-2 flex items-center gap-2">
-                <img
-                  src={post.createdByProfileImage}
-                  alt="profile"
-                  className="max-w-8 max-h-8 rounded-full"
-                />
-                <p>@{post.createdByUsername}</p>
-              </div>
-              {post.text && <p className="mb-4">{post.text}</p>}
-              {post.imageUrl && (
-                <img
-                  src={post.imageUrl}
-                  alt="Post"
-                  className="w-full rounded-xl mb-4 max-h-96"
-                />
-                // <Image
-                //   src={post.imageUrl}
-                //   alt="post"
-                //   className="w-full rounded-xl mb-4 max-h-96"
-                //   width={300}
-                //   height={300}
-                // />
-              )}
-              <div className="flex flex-row-reverse items-center justify-between">
-                <div className="flex items-center gap-1">
-                  <button onClick={() => handleLike(post.id)}>
-                    {post.likes.includes(currentUser.uid) ? (
-                      <FaHeart />
-                    ) : (
-                      <FaRegHeart />
-                    )}{" "}
-                  </button>
-                  <p>{post.likes.length}</p>
+          <div>
+            {posts.map((post) => (
+              <div key={post.id} className="my-3 flex flex-col">
+                <div className="font-bold mb-2 flex items-center gap-2">
+                  <img
+                    src={post.createdByProfileImage}
+                    alt="profile"
+                    className="max-w-8 max-h-8 rounded-full"
+                  />
+                  <p>@{post.createdByUsername}</p>
                 </div>
-                <button
-                  onClick={() => handleDownload(post.imageUrl)}
-                  className=""
-                >
-                  <AiOutlineDownload size={20} />
-                </button>
-                <div>
-                  {post.createdBy === currentUser.uid && (
-                    <button onClick={() => handleDelete(post.id)} className="">
-                      <AiOutlineDelete size={20} className="mr-2" />
+                {post.text && <p className="mb-4">{post.text}</p>}
+                {post.imageUrl && (
+                  <img
+                    src={post.imageUrl}
+                    alt="Post"
+                    className="w-full rounded-xl mb-4 max-h-96"
+                  />
+                  // <Image
+                  //   src={post.imageUrl}
+                  //   alt="post"
+                  //   className="w-full rounded-xl mb-4 max-h-96"
+                  //   width={300}
+                  //   height={300}
+                  // />
+                )}
+                <div className="flex flex-row-reverse items-center justify-between">
+                  <div className="flex items-center gap-1">
+                    <button onClick={() => handleLike(post.id)}>
+                      {post.likes.includes(currentUser.uid) ? (
+                        <FaHeart />
+                      ) : (
+                        <FaRegHeart />
+                      )}{" "}
                     </button>
-                  )}
+                    <p>{post.likes.length}</p>
+                  </div>
+                  <button
+                    onClick={() => handleDownload(post.imageUrl)}
+                    className=""
+                  >
+                    <AiOutlineDownload size={20} />
+                  </button>
+                  <div>
+                    {post.createdBy === currentUser.uid && (
+                      <button
+                        onClick={() => handleDelete(post.id)}
+                        className=""
+                      >
+                        <AiOutlineDelete size={20} className="mr-2" />
+                      </button>
+                    )}
+                  </div>
                 </div>
+                <hr className="mb-5" />
               </div>
-              <hr className="mb-5" />
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </div>
