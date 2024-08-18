@@ -16,12 +16,20 @@ const fetchUnreadMessagesCount = async (currentUser) => {
   );
 
   const querySnapshot = await getDocs(conversationsQuery);
+  // const unreadMessagesCount = {};
+  // unreadMessagesCount[otherUserId] = {
+  //   count: messagesSnapshot.size,
+  //   hasUnread: messagesSnapshot.size > 0,
+  // };
+
   const unreadMessagesCount = {};
 
   for (const doc of querySnapshot.docs) {
     const conversationId = doc.id;
     const participants = doc.data().participants;
     const otherUserId = participants.find((id) => id !== currentUser.uid);
+
+    if (!otherUserId) continue;
     const messagesRef = collection(
       db,
       `conversations/${conversationId}/messages`
@@ -34,14 +42,20 @@ const fetchUnreadMessagesCount = async (currentUser) => {
     );
     const messagesSnapshot = await getDocs(messagesQuery);
 
+    // const unreadMessagesCount = {};
+    unreadMessagesCount[otherUserId] = {
+      count: messagesSnapshot.size,
+      hasUnread: messagesSnapshot.size > 0,
+    };
+
     const unreadCount = messagesSnapshot.docs.filter(
       (msg) => msg.data().sender !== currentUser.uid
     ).length;
 
-    const lastMessageSender =
-      messagesSnapshot.docs.length > 0
-        ? messagesSnapshot.docs[messagesSnapshot.docs.length - 1].data().sender
-        : null;
+    // const lastMessageSender =
+    //   messagesSnapshot.docs.length > 0
+    //     ? messagesSnapshot.docs[messagesSnapshot.docs.length - 1].data().sender
+    //     : null;
 
     unreadMessagesCount[otherUserId] = {
       count: messagesSnapshot.size,
@@ -69,10 +83,17 @@ const UserList = ({ onSelectUser }) => {
           ...doc.data(),
         }));
 
+        const unreadCounts = await fetchUnreadMessagesCount(currentUser);
+        setUnreadMessages(unreadCounts);
+
         // Sort users to place the current user at the top
         const sortedUsers = usersList.sort((a, b) => {
           if (a.uid === currentUser.uid) return -1;
           if (b.uid === currentUser.uid) return 1;
+          if (unreadCounts[a.uid]?.hasUnread && !unreadCounts[b.uid]?.hasUnread)
+            return -1;
+          if (!unreadCounts[a.uid]?.hasUnread && unreadCounts[b.uid]?.hasUnread)
+            return 1;
           return 0;
         });
 
