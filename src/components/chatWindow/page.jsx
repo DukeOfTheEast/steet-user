@@ -14,6 +14,7 @@ import {
 } from "firebase/firestore";
 import { useAuth } from "@/context/AuthContext";
 import { AiOutlineClose } from "react-icons/ai";
+import Default from "@/images/default-image.png";
 
 const ChatWindow = ({ selectedUser, closeChat }) => {
   const { currentUser } = useAuth();
@@ -156,6 +157,11 @@ const ChatWindow = ({ selectedUser, closeChat }) => {
     }
   };
 
+  const formatUserId = (userId) => {
+    if (userId.length <= 11) return userId; // Return as is if it's already short
+    return `${userId.slice(0, 5)}...${userId.slice(-5)}`;
+  };
+
   useEffect(() => {
     if (chatEndRef.current) {
       chatEndRef.current.scrollIntoView({ behavior: "smooth" });
@@ -168,13 +174,22 @@ const ChatWindow = ({ selectedUser, closeChat }) => {
         <div className="bg-white rounded-lg shadow-lg w-full sm:max-w-md max-w-sm">
           <div className="flex justify-between items-center p-4 border-b">
             <div>
-              {users.map((user) => (
-                <h2 key={user.uid} className="text-lg font-semibold">
-                  {user.uid === selectedUser ? user.inputValue || user.uid : ""}
-                </h2>
-              ))}
+              {users.map(
+                (user) =>
+                  user.uid === selectedUser && (
+                    <div key={user.uid} className="flex gap-2">
+                      <img
+                        src={user.photoURL || Default.src}
+                        alt="profile"
+                        className="max-w-8 max-h-8 rounded-full"
+                      />
+                      <h2 key={user.uid} className="text-lg font-semibold">
+                        {user.inputValue || formatUserId(user.uid)}
+                      </h2>
+                    </div>
+                  )
+              )}
             </div>
-            {/* <h2 className="text-lg font-semibold">{selectedUser}</h2> */}
             <AiOutlineClose
               size={24}
               onClick={closeChat}
