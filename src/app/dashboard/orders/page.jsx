@@ -12,8 +12,7 @@ import { db } from "@/app/firebase/config";
 
 const Orders = () => {
   const [selectedUser, setSelectedUser] = useState(null);
-  const router = useRouter();
-  const searchParams = useSearchParams();
+  // const router = useRouter();
 
   const [users, setUsers] = useState([]);
   const { currentUser } = useAuth();
@@ -70,16 +69,23 @@ const Orders = () => {
   //   window.location.hash = "";
   // };
   useEffect(() => {
-    const chatParam = searchParams.get("chat");
-    if (chatParam) {
-      const user = users.find(
-        (u) => u.username === chatParam || u.uid === chatParam
-      );
-      if (user) {
-        setSelectedUser(user.uid);
+    if (users.length > 0) {
+      const searchParams = new URLSearchParams(window.location.search);
+      const chatParam = searchParams.get("chat");
+      console.log("URL:", window.location.href);
+      console.log("chatParam:", chatParam);
+      console.log("users:", users);
+      if (chatParam) {
+        const user = users.find(
+          (u) => u.inputValue === chatParam || u.uid === chatParam
+        );
+        console.log("Matched User:", user);
+        if (user) {
+          setSelectedUser(user.uid);
+        }
       }
     }
-  }, [searchParams, users]);
+  }, [users]);
 
   const handleSelectUser = (uid) => {
     const user = users.find((u) => u.uid === uid);
