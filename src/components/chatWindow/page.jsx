@@ -15,6 +15,7 @@ import {
 import { useAuth } from "@/context/AuthContext";
 import { AiOutlineClose } from "react-icons/ai";
 import Default from "@/images/default-image.png";
+import { VscSend } from "react-icons/vsc";
 
 const ChatWindow = ({ selectedUser, closeChat }) => {
   const { currentUser } = useAuth();
@@ -224,9 +225,9 @@ const ChatWindow = ({ selectedUser, closeChat }) => {
             />
             <button
               onClick={handleSendMessage}
-              className="bg-blue-500 text-white rounded p-2"
+              className="bg-blue-500 hover:bg-blue-400 text-white rounded p-2"
             >
-              Send
+              <VscSend size={25} className="" />
             </button>
           </div>
         </div>
