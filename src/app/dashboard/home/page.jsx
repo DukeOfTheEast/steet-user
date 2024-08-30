@@ -22,6 +22,8 @@ import { FaRegHeart } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa";
 import { AiOutlineDelete, AiOutlineDownload } from "react-icons/ai";
 import SpinnerLarge from "@/components/spinnerLarge/page";
+import { BsFillChatRightTextFill } from "react-icons/bs";
+import Link from "next/link";
 
 const Home = () => {
   const { currentUser } = useAuth();
@@ -109,13 +111,22 @@ const Home = () => {
           <div>
             {posts.map((post) => (
               <div key={post.id} className="my-3 flex flex-col">
-                <div className="font-bold mb-2 flex items-center gap-2">
-                  <img
-                    src={post.createdByProfileImage}
-                    alt="profile"
-                    className="max-w-8 max-h-8 rounded-full"
-                  />
-                  <p>@{post.createdByUsername}</p>
+                <div className="flex items-center justify-between">
+                  <div className="font-bold mb-2 flex items-center gap-2">
+                    <img
+                      src={post.createdByProfileImage}
+                      alt="profile"
+                      className="max-w-8 max-h-8 rounded-full"
+                    />
+                    <p>@{post.createdByUsername}</p>
+                  </div>
+                  <Link
+                    href={`/dashboard/orders?chat=${
+                      post.createdByUsername || post.createdBy
+                    }`}
+                  >
+                    <BsFillChatRightTextFill size={25} />
+                  </Link>
                 </div>
                 {post.text && <p className="mb-4">{post.text}</p>}
                 {post.imageUrl && (

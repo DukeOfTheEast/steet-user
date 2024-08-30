@@ -105,7 +105,7 @@ const ChatWindow = ({ selectedUser, closeChat }) => {
         unsubscribeMessages();
       }
     };
-  }, [selectedUser, currentUser.uid]);
+  }, [selectedUser, currentUser]);
 
   const handleSendMessage = async () => {
     if (newMessage.trim() !== "") {
