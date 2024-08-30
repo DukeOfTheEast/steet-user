@@ -21,7 +21,6 @@ import PostModal from "@/components/post-modal/page";
 import { FaRegHeart } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa";
 import { AiOutlineDelete, AiOutlineDownload } from "react-icons/ai";
-import SpinnerLarge from "@/components/spinnerLarge/page";
 import { BsFillChatRightTextFill } from "react-icons/bs";
 import Link from "next/link";
 
