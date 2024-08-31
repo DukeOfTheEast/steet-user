@@ -1,11 +1,8 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
-
-// module.exports = {
-//   ...nextConfig,
-//   images: {
-//     domains: ["i0.wp.com"],
-//   },
-// };
+const nextConfig = {
+  images: {
+    domains: ["firebasestorage.googleapis.com"],
+  },
+};
 
 export default nextConfig;

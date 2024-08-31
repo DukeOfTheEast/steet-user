@@ -1,9 +1,9 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import UserList from "@/components/UserList/page";
+import UserList from "@/components/userList/page";
 import Navbar from "@/components/navbar/page";
 import { DesktopHeader } from "@/components/desktop-header/page";
-import ChatWindow from "@/components/ChatWindow/page";
+import ChatWindow from "@/components/chatWindow/page";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { useSearchParams } from "next/navigation";

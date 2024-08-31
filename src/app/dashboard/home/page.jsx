@@ -23,6 +23,7 @@ import { FaHeart } from "react-icons/fa";
 import { AiOutlineDelete, AiOutlineDownload } from "react-icons/ai";
 import { BsFillChatRightTextFill } from "react-icons/bs";
 import Link from "next/link";
+import Image from "next/image";
 
 const Home = () => {
   const { currentUser } = useAuth();
@@ -112,10 +113,12 @@ const Home = () => {
               <div key={post.id} className="my-3 flex flex-col">
                 <div className="flex items-center justify-between">
                   <div className="font-bold mb-2 flex items-center gap-2">
-                    <img
+                    <Image
                       src={post.createdByProfileImage}
                       alt="profile"
                       className="max-w-8 max-h-8 rounded-full"
+                      width={30}
+                      height={30}
                     />
                     <p>@{post.createdByUsername}</p>
                   </div>
@@ -129,18 +132,13 @@ const Home = () => {
                 </div>
                 {post.text && <p className="mb-4">{post.text}</p>}
                 {post.imageUrl && (
-                  <img
+                  <Image
                     src={post.imageUrl}
-                    alt="Post"
+                    alt="post"
                     className="w-full rounded-xl mb-4 max-h-96"
+                    width={800}
+                    height={800}
                   />
-                  // <Image
-                  //   src={post.imageUrl}
-                  //   alt="post"
-                  //   className="w-full rounded-xl mb-4 max-h-96"
-                  //   width={300}
-                  //   height={300}
-                  // />
                 )}
                 <div className="flex flex-row-reverse items-center justify-between">
                   <div className="flex items-center gap-1">
