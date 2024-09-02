@@ -16,6 +16,7 @@ import { useAuth } from "@/context/AuthContext";
 import { AiOutlineClose } from "react-icons/ai";
 import Default from "@/images/default-image.png";
 import { VscSend } from "react-icons/vsc";
+import Image from "next/image";
 
 const ChatWindow = ({ selectedUser, closeChat }) => {
   const { currentUser } = useAuth();
@@ -179,9 +180,11 @@ const ChatWindow = ({ selectedUser, closeChat }) => {
                 (user) =>
                   user.uid === selectedUser && (
                     <div key={user.uid} className="flex gap-2">
-                      <img
+                      <Image
                         src={user.photoURL || Default.src}
                         alt="profile"
+                        width={30}
+                        height={30}
                         className="max-w-8 max-h-8 rounded-full"
                       />
                       <h2 key={user.uid} className="text-lg font-semibold">

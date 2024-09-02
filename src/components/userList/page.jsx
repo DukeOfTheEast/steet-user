@@ -7,6 +7,7 @@ import { useAuth } from "@/context/AuthContext";
 import { markMessagesAsRead } from "@/utils/messageUtils";
 import Default from "@/images/default-image.png";
 import SpinnerLarge from "../spinnerLarge/page";
+import Image from "next/image";
 
 const fetchUnreadMessagesCount = async (currentUser) => {
   const conversationsRef = collection(db, "conversations");
@@ -145,9 +146,11 @@ const UserList = ({ onSelectUser }) => {
           >
             <li className="my-2 flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <img
+                <Image
                   src={user.photoURL ? user.photoURL : Default.src}
                   alt="profile"
+                  width={30}
+                  height={30}
                   className="max-w-8 max-h-8 rounded-full"
                 />
                 <span>
