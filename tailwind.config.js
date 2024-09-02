@@ -10,6 +10,7 @@ module.exports = {
       backgroundImage: {
         "signup-bg": "url(../images/signup.png)",
         "signin-bg": "url(../images/signin.png)",
+        "signUp-bg": "url(../images/signup-bg.png)",
       },
     },
   },
