@@ -1,22 +1,24 @@
 "use client";
 
-import React, { useRef } from "react";
+import React from "react";
 import Navbar from "@/components/navbar/page";
 import { DesktopHeader } from "@/components/desktop-header/page";
 import { useState } from "react";
+import ProgressBar from "@/components/progressBar/page";
 
 export default function Tasks() {
-  const [todos, setTodos] = useState([]);
-  const inputRef = useRef(null);
+  const [currentDiv, setCurrentDiv] = useState(0);
 
-  const addTodo = () => {
-    const newTodo = inputRef.current.value.trim();
-    if (newTodo !== "") {
-      // setTodos(todos.push(newTodo));
-      setTodos((prevTodos) => [newTodo, ...prevTodos]);
-      inputRef.current.value = "";
-    }
-    console.log(newTodo);
+  const divContents = [
+    "This is the content of the first div",
+    "Here's the second div with different content",
+    "And finally, the third div's content",
+  ];
+
+  const steps = ["Step 1", "Step 2", "Step 3"];
+
+  const handleNext = () => {
+    setCurrentDiv((prev) => (prev + 1) % divContents.length);
   };
 
   return (
@@ -24,20 +26,18 @@ export default function Tasks() {
       <Navbar />
       <DesktopHeader />
       <div className="sm:pl-96 sm:pt-20 pt-20">
-        <input
-          type="text"
-          className="bg-gray-400"
-          // value={newTodo}
-          ref={inputRef}
-        />
-        <button onClick={addTodo}>Add</button>
+        <ProgressBar steps={steps} currentStep={currentDiv} />
         <div>
-          <ul>
-            {todos.map((todo, index) => (
-              <li key={index}>{todo}</li>
-            ))}
-          </ul>
+          <p className="border border-slate-500 rounded-md p-2 m-2 max-w-40">
+            {divContents[currentDiv]}
+          </p>
         </div>
+        <button
+          onClick={handleNext}
+          className="bg-black text-white py-2 px-3 rounded-md"
+        >
+          {currentDiv === divContents.length - 1 ? "Check out" : "Next"}
+        </button>
       </div>
     </div>
   );
