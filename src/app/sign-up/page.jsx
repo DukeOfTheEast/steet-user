@@ -1,4 +1,5 @@
 import React from "react";
+import Link from 'next/link';
 
 const Signup = () => {
   return (
@@ -8,16 +9,19 @@ const Signup = () => {
       </div>
       
       <div className="items-center mt-10">
-      <div>
-        
-        <button className="bg-[#FF5C00] py-1 px-64  mb-2 font-sans text-[#FFFFFF] ">  Sign up as a designer </button>
-         
 
-      </div>
       <div>
-      <button className="bg-[#FF5C00] py-1 px-64 mt-2 ml-1 text-[#FFFFFF]"><a href="">Sign up as a customer </a></button>
-
+        <Link href= ""> 
+        <button className="bg-[#FF5C00] py-1 px-64  mb-2 font-sans text-[#FFFFFF] rounded ">  Sign up as a designer </button>
+        </Link>
       </div>
+
+      <div>
+        <Link href= "">
+      <button className="bg-[#FF5C00] py-1 px-64 mt-2 ml-1 text-[#FFFFFF] rounded">Sign up as a customer</button>
+        </Link>
+      </div>
+       
       </div>
 
       <div>
