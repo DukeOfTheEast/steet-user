@@ -21,7 +21,7 @@ const Signup = () => {
         <div>
           <Link href={"/sign-up/client"}>
             <button className="bg-[#FF5C00] py-3 mt-2 text-[#FFFFFF] sm:w-96 w-60 rounded-lg">
-              Sign up as a Customer
+              Sign up as a Client
             </button>
           </Link>
         </div>
