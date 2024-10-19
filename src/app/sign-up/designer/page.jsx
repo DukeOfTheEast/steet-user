@@ -6,7 +6,7 @@ const DesignerSignUp = () => {
     <div className="bg-signUp-bg bg-no-repeat h-full w-screen bg-cover flex flex-col items-center pt-32">
       <div>
         <h1 className="font-sans font-bold sm:text-3xl text-lg mb-5 text-[#000000] ">
-          Create your Meet &apos;n&apos; Style account
+          Create your Meet ‘n’ Style account
         </h1>
       </div>
 
@@ -76,7 +76,7 @@ const DesignerSignUp = () => {
         <div className="mt-2 mb-4">
           <p>
             <input type="checkbox" className="w-2.5 h-2.5  " /> Signing up for a
-            Meet `n` Style account means you agree to our privacy <br /> policy
+            Meet 'n' Style account means you agree to our privacy <br /> policy
             and terms & conditions
           </p>
         </div>
@@ -89,10 +89,10 @@ const DesignerSignUp = () => {
           </Link>
         </div>
 
-        <div className="flex items-center ">
-          <div className="flex-grow my-12 border-t border-[#000000]"></div>
-          <span className="mx-4 text-[#000000]">OR</span>
-          <div className="flex-grow border-t border-[#000000]"></div>
+        <div class="flex items-center ">
+          <div class="flex-grow my-12 border-t border-[#000000]"></div>
+          <span class="mx-4 text-[#000000]">OR</span>
+          <div class="flex-grow border-t border-[#000000]"></div>
         </div>
 
         <div className="items-center text-center">

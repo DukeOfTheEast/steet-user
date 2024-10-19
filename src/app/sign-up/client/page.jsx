@@ -6,7 +6,7 @@ const ClientSignUp = () => {
     <div className="bg-signUp-bg bg-no-repeat h-full w-screen bg-cover flex flex-col items-center pt-32">
       <div>
         <h1 className="font-sans font-bold sm:text-3xl text-lg mb-5 text-[#000000] ">
-          Create your Meet &apos;n&apos; Style account
+          Create your Meet ‘n’ Style account
         </h1>
       </div>
 
@@ -65,7 +65,7 @@ const ClientSignUp = () => {
 
         <div className=" items-center text-center ">
           <Link href={""}>
-            <button className=" text-[#FFFFFF] bg-[#FF5C00]  py-2 px-64 text-lg rounded-xl ">
+            <button className=" text-[#FFFFFF] bg-[#FF5C00]  py-2 px-64 text-lg ">
               Create fashionista account
             </button>
           </Link>
