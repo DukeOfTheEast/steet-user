@@ -6,7 +6,7 @@ const ClientSignUp = () => {
     <div className="bg-signUp-bg bg-no-repeat h-full w-screen bg-cover flex flex-col items-center pt-32">
       <div>
         <h1 className="font-sans font-bold sm:text-3xl text-lg mb-5 text-[#000000] ">
-          Create your Meet ‘n’ Style account
+          Create your Meet &apos;n&apos; Style account
         </h1>
       </div>
 
@@ -58,8 +58,8 @@ const ClientSignUp = () => {
         <div className="mt-2 mb-4">
           <p>
             <input type="checkbox" className="w-2.5 h-2.5  " /> Signing up for a
-            Meet `n` Style account means you agree to our privacy <br /> policy
-            and terms & conditions
+            Meet &apos;n&apos; Style account means you agree to our privacy{" "}
+            <br /> policy and terms & conditions
           </p>
         </div>
 
