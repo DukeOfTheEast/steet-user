@@ -13,14 +13,14 @@ const Signup = () => {
       <div className="items-center my-5">
         <div>
           <Link href={"/sign-up/designer"}>
-            <button className="bg-[#FF5C00] py-3 mb-2 font-sans text-[#FFFFFF] sm:w-96 w-60 rounded-lg">
+            <button className="bg-[#FF5C00] py-3 mb-2 font-sans text-[#FFFFFF] sm:w-96 w-60 rounded-xl">
               Sign up as a Designer
             </button>
           </Link>
         </div>
         <div>
           <Link href={"/sign-up/client"}>
-            <button className="bg-[#FF5C00] py-3 mt-2 text-[#FFFFFF] sm:w-96 w-60 rounded-lg">
+            <button className="bg-[#FF5C00] py-3 mt-2 text-[#FFFFFF] sm:w-96 w-60 rounded-xl">
               Sign up as a Client
             </button>
           </Link>

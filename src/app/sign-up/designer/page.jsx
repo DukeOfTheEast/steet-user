@@ -15,12 +15,12 @@ const DesignerSignUp = () => {
           <input
             type="text"
             placeholder="Full Name"
-            className="py-1 pl-2 pr-14 mr-20 border border-[#000000] focus:outline-none placeholder-[#A9A2A2]"
+            className="py-1 pl-2 pr-14 mr-20 border border-[#000000] focus:outline-none placeholder-[#A9A2A2] rounded-xl"
           />
           <input
             type="text"
             placeholder="Business Name"
-            className="py-1 pl-2 pr-14 border border-[#000000] focus:outline-none placeholder-[#A9A2A2]"
+            className="py-1 pl-2 pr-14 border border-[#000000] focus:outline-none placeholder-[#A9A2A2] rounded-xl"
           />
         </div>
 
@@ -29,7 +29,7 @@ const DesignerSignUp = () => {
             <input
               type="email"
               placeholder="Email"
-              className="py-1 pl-2 pr-64 mb-5 border border-[#000000]  focus:outline-none placeholder-[#A9A2A2]"
+              className="py-1 pl-2 pr-64 mb-5 border border-[#000000]  focus:outline-none placeholder-[#A9A2A2] rounded-xl"
             />
           </div>
 
@@ -37,21 +37,21 @@ const DesignerSignUp = () => {
             <input
               type="password"
               placeholder="Password"
-              className="py-1 pl-2 pr-64  border border-[#000000]  focus:outline-none placeholder-[#A9A2A2] "
+              className="py-1 pl-2 pr-64  border border-[#000000]  focus:outline-none placeholder-[#A9A2A2] rounded-xl"
             />
           </div>
         </div>
         <div className="mt-2">
-          <p> must contain 8 characters</p>
-          <p> must contain a number</p>
-          <p> must contain a letter</p>
+          <p><input type="checkbox" className="w-2.5 h-2.5  " /> must contain 8 characters</p>
+          <p> <input type="checkbox" className="w-2.5 h-2.5  " /> must contain a number</p>
+          <p><input type="checkbox" className="w-2.5 h-2.5  " /> must contain a letter</p>
         </div>
 
         <div className="mt-2">
           <input
             type="password"
             placeholder="Confirm Password"
-            className="py-1 pl-2 pr-64  border border-[#000000]  focus:outline-none placeholder-[#A9A2A2] "
+            className="py-1 pl-2 pr-64  border border-[#000000]  focus:outline-none placeholder-[#A9A2A2] rounded-xl"
           />
         </div>
 
@@ -60,7 +60,7 @@ const DesignerSignUp = () => {
             <input
               type="text"
               placeholder="Select business location"
-              className="border border-[#000000]  focus:outline-none placeholder-[#A9A2A2] py-1 pl-2 pr-16 my-4"
+              className="border border-[#000000]  focus:outline-none placeholder-[#A9A2A2] py-1 pl-2 pr-16 my-4 rounded-xl"
             />
           </div>
 
@@ -68,7 +68,7 @@ const DesignerSignUp = () => {
             <input
               type="text"
               placeholder="Select fashion category"
-              className="border border-[#000000]  focus:outline-none placeholder-[#A9A2A2] py-1 pl-2 pr-16 "
+              className="border border-[#000000]  focus:outline-none placeholder-[#A9A2A2] py-1 pl-2 pr-16 rounded-xl"
             />
           </div>
         </div>
@@ -83,7 +83,7 @@ const DesignerSignUp = () => {
 
         <div className=" items-center text-center ">
           <Link href={""}>
-            <button className=" text-[#FFFFFF] bg-[#FF5C00]  py-2 px-64 text-lg ">
+            <button className=" text-[#FFFFFF] bg-[#FF5C00]  py-2 px-64 text-lg rounded-xl">
               Create Designer account
             </button>
           </Link>
@@ -98,13 +98,13 @@ const DesignerSignUp = () => {
         <div className="items-center text-center">
           <Link href={""}>
             <div>
-              <button className=" mb-2 border border-[#000000] w-full py-2.5 text-[#000000] font-bold text-lg">
+              <button className=" mb-2 border border-[#000000] w-full py-2.5 text-[#000000] font-bold text-lg rounded-xl">
                 Sign up with Google
               </button>
             </div>
 
             <div>
-              <button className=" mt-2 border border-[#000000] w-full py-2.5 font-bold text-lg">
+              <button className=" mt-2 border border-[#000000] w-full py-2.5 font-bold text-lg rounded-xl">
                 Sign up with Facebook
               </button>
             </div>
