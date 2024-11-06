@@ -1,7 +1,39 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
 
 const DesignerSignUp = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [businessName, setBusinessName] = useState("");
+  const [error, setError] = useState(null);
+  const { signup } = useAuth();
+  const router = useRouter();
+  const [viewPass, setViewPass] = useState(false);
+
+  const handleSignup = async (e) => {
+    e.preventDefault();
+    setError("");
+    try {
+      await signup(email, password, "designer", fullName, businessName);
+      router.push("/signin");
+      console.log("user signed up");
+    } catch (error) {
+      setError(error.message);
+      setTimeout(() => {
+        setError("");
+      }, 3000);
+      setEmail("");
+      setPassword("");
+    }
+    console.log("clicked");
+  };
+
   return (
     <div className="bg-signUp-bg bg-no-repeat h-full w-screen bg-cover flex flex-col items-center pt-32">
       <div>
@@ -16,11 +48,15 @@ const DesignerSignUp = () => {
             type="text"
             placeholder="Full Name"
             className="py-1 pl-2 pr-14 mr-20 border border-[#000000] focus:outline-none placeholder-[#A9A2A2]"
+            value={fullName}
+            onChange={(e) => setFullName(e.target.value)}
           />
           <input
             type="text"
             placeholder="Business Name"
             className="py-1 pl-2 pr-14 border border-[#000000] focus:outline-none placeholder-[#A9A2A2]"
+            value={businessName}
+            onChange={(e) => setBusinessName(e.target.value)}
           />
         </div>
 
@@ -30,6 +66,8 @@ const DesignerSignUp = () => {
               type="email"
               placeholder="Email"
               className="py-1 pl-2 pr-64 mb-5 border border-[#000000]  focus:outline-none placeholder-[#A9A2A2]"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
 
@@ -38,6 +76,8 @@ const DesignerSignUp = () => {
               type="password"
               placeholder="Password"
               className="py-1 pl-2 pr-64  border border-[#000000]  focus:outline-none placeholder-[#A9A2A2] "
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
           </div>
         </div>
@@ -52,6 +92,8 @@ const DesignerSignUp = () => {
             type="password"
             placeholder="Confirm Password"
             className="py-1 pl-2 pr-64  border border-[#000000]  focus:outline-none placeholder-[#A9A2A2] "
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
           />
         </div>
 
@@ -82,11 +124,12 @@ const DesignerSignUp = () => {
         </div>
 
         <div className=" items-center text-center ">
-          <Link href={""}>
-            <button className=" text-[#FFFFFF] bg-[#FF5C00]  py-2 px-64 text-lg ">
-              Create Designer account
-            </button>
-          </Link>
+          <button
+            onClick={handleSignup}
+            className=" text-[#FFFFFF] bg-[#FF5C00]  py-2 px-64 text-lg "
+          >
+            Create Designer account
+          </button>
         </div>
 
         <div className="flex items-center ">

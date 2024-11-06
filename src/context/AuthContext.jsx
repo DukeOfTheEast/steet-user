@@ -37,7 +37,13 @@ export const AuthProvider = ({ children }) => {
     return unsubscribe;
   }, []);
 
-  const signup = async (email, password) => {
+  const signup = async (
+    email,
+    password,
+    role,
+    fullName,
+    businessName = null
+  ) => {
     const userCredential = await createUserWithEmailAndPassword(
       auth,
       email,
@@ -49,7 +55,10 @@ export const AuthProvider = ({ children }) => {
     await setDoc(doc(db, "users", user.uid), {
       uid: user.uid,
       email: user.email,
+      role: role,
+      fullName: fullName,
       createdAt: new Date(),
+      ...(businessName && { businessName: businessName }),
     });
 
     setCurrentUser(user);

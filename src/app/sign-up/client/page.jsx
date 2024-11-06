@@ -1,7 +1,36 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
 
 const ClientSignUp = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [error, setError] = useState(null);
+  const { signup } = useAuth();
+  const router = useRouter();
+  const [viewPass, setViewPass] = useState(false);
+
+  const handleSignup = async (e) => {
+    e.preventDefault();
+    setError("");
+    try {
+      await signup(email, password, "client", fullName);
+      router.push("/signin");
+    } catch (error) {
+      setError(error.message);
+      setTimeout(() => {
+        setError("");
+      }, 3000);
+      setEmail("");
+      setPassword("");
+    }
+  };
+
   return (
     <div className="bg-signUp-bg bg-no-repeat h-full w-screen bg-cover flex flex-col items-center pt-32">
       <div>
@@ -11,18 +40,13 @@ const ClientSignUp = () => {
       </div>
 
       <div>
-        <div className="items-center mt-8">
-          <input
-            type="text"
-            placeholder="First Name"
-            className="py-1 pl-2 pr-14 mr-20 border border-[#000000] focus:outline-none placeholder-[#A9A2A2]"
-          />
-          <input
-            type="text"
-            placeholder="Last Name"
-            className="py-1 pl-2 pr-14 border border-[#000000] focus:outline-none placeholder-[#A9A2A2]"
-          />
-        </div>
+        <input
+          type="text"
+          placeholder="Full Name"
+          className="py-1 pl-2 pr-64 mr-20 border border-[#000000] focus:outline-none placeholder-[#A9A2A2]"
+          value={fullName}
+          onChange={(e) => setFullName(e.target.value)}
+        />
 
         <div className="items-center mt-5 ">
           <div>
@@ -30,6 +54,8 @@ const ClientSignUp = () => {
               type="email"
               placeholder="Email"
               className="py-1 pl-2 pr-64 mb-5 border border-[#000000]  focus:outline-none placeholder-[#A9A2A2]"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
 
@@ -38,6 +64,8 @@ const ClientSignUp = () => {
               type="password"
               placeholder="Password"
               className="py-1 pl-2 pr-64  border border-[#000000]  focus:outline-none placeholder-[#A9A2A2] "
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
           </div>
         </div>
@@ -52,6 +80,8 @@ const ClientSignUp = () => {
             type="password"
             placeholder="Confirm Password"
             className="py-1 pl-2 pr-64  border border-[#000000]  focus:outline-none placeholder-[#A9A2A2] "
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
           />
         </div>
 
@@ -64,11 +94,12 @@ const ClientSignUp = () => {
         </div>
 
         <div className=" items-center text-center ">
-          <Link href={""}>
-            <button className=" text-[#FFFFFF] bg-[#FF5C00]  py-2 px-64 text-lg ">
-              Create fashionista account
-            </button>
-          </Link>
+          <button
+            onClick={handleSignup}
+            className=" text-[#FFFFFF] bg-[#FF5C00]  py-2 px-64 text-lg "
+          >
+            Create fashionista account
+          </button>
         </div>
 
         <div className="flex items-center ">
