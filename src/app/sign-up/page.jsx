@@ -30,7 +30,7 @@ const Signup = () => {
         <p className="font-sans text-sm p-5">
           Already have an account?{" "}
           <span className="text-[#FF5C00]">
-            <a href="">Log in</a>
+            <a href="/signin">Log in</a>
           </span>
         </p>
       </div>

@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
+import { CheckCircle } from "lucide-react";
 
 const ClientSignUp = () => {
   const [email, setEmail] = useState("");
@@ -14,6 +15,14 @@ const ClientSignUp = () => {
   const { signup } = useAuth();
   const router = useRouter();
   const [viewPass, setViewPass] = useState(false);
+
+  function containsNumber(value) {
+    return /\d/.test(value);
+  }
+
+  function containsLetter(value) {
+    return /[a-zA-Z]/.test(value);
+  }
 
   const handleSignup = async (e) => {
     e.preventDefault();
@@ -70,9 +79,27 @@ const ClientSignUp = () => {
           </div>
         </div>
         <div className="mt-2">
-          <p> must contain 8 characters</p>
-          <p> must contain a number</p>
-          <p> must contain a letter</p>
+          <div className="flex items-center gap-1">
+            <CheckCircle
+              color={`${password.length >= 8 ? "green" : "white"}`}
+              size={15}
+            />{" "}
+            <p> must contain 8 characters</p>
+          </div>
+          <div className="flex items-center gap-1">
+            <CheckCircle
+              color={`${containsNumber(password) ? "green" : "white"}`}
+              size={15}
+            />
+            <p> must contain a number</p>
+          </div>
+          <div className="flex items-center gap-1">
+            <CheckCircle
+              color={`${containsLetter(password) ? "green" : "white"}`}
+              size={15}
+            />
+            <p> must contain a letter</p>
+          </div>
         </div>
 
         <div className="mt-2">
@@ -129,7 +156,7 @@ const ClientSignUp = () => {
         <p className="font-sans text-sm p-5">
           Already have an account?{" "}
           <span className="text-[#FF5C00]">
-            <a href="">Log in</a>
+            <a href="/signin">Log in</a>
           </span>
         </p>
       </div>

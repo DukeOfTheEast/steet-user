@@ -42,7 +42,9 @@ export const AuthProvider = ({ children }) => {
     password,
     role,
     fullName,
-    businessName = null
+    businessName = null,
+    selectedState = null,
+    selectedFashion = null
   ) => {
     const userCredential = await createUserWithEmailAndPassword(
       auth,
@@ -59,6 +61,8 @@ export const AuthProvider = ({ children }) => {
       fullName: fullName,
       createdAt: new Date(),
       ...(businessName && { businessName: businessName }),
+      ...(selectedState && { selectedState: selectedState }),
+      ...(selectedFashion && { selectedFashion: selectedFashion }),
     });
 
     setCurrentUser(user);
