@@ -48,36 +48,31 @@ const ClientSignUp = () => {
         </h1>
       </div>
 
-      <div>
+      <form className="flex flex-col gap-2">
         <input
           type="text"
           placeholder="Full Name"
-          className="py-1 pl-2 pr-64 mr-20 border border-[#000000] focus:outline-none placeholder-[#A9A2A2]"
+          className="py-1 px-2 rounded-lg border border-[#FF5C00] focus:outline-none placeholder-[#A9A2A2] w-full"
           value={fullName}
           onChange={(e) => setFullName(e.target.value)}
         />
 
-        <div className="items-center mt-5 ">
-          <div>
-            <input
-              type="email"
-              placeholder="Email"
-              className="py-1 pl-2 pr-64 mb-5 border border-[#000000]  focus:outline-none placeholder-[#A9A2A2]"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
+        <input
+          type="email"
+          placeholder="Email"
+          className="py-1 px-2 rounded-lg border border-[#FF5C00] focus:outline-none placeholder-[#A9A2A2] w-full"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
 
-          <div>
-            <input
-              type="password"
-              placeholder="Password"
-              className="py-1 pl-2 pr-64  border border-[#000000]  focus:outline-none placeholder-[#A9A2A2] "
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
-        </div>
+        <input
+          type="password"
+          placeholder="Password"
+          className="py-1 px-2 rounded-lg border border-[#FF5C00] focus:outline-none placeholder-[#A9A2A2] w-full"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+
         <div className="mt-2">
           <div className="flex items-center gap-1">
             <CheckCircle
@@ -102,15 +97,13 @@ const ClientSignUp = () => {
           </div>
         </div>
 
-        <div className="mt-2">
-          <input
-            type="password"
-            placeholder="Confirm Password"
-            className="py-1 pl-2 pr-64  border border-[#000000]  focus:outline-none placeholder-[#A9A2A2] "
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-          />
-        </div>
+        <input
+          type="password"
+          placeholder="Confirm Password"
+          className="py-1 px-2 rounded-lg border border-[#FF5C00] focus:outline-none placeholder-[#A9A2A2] w-full"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+        />
 
         <div className="mt-2 mb-4">
           <p>
@@ -120,36 +113,34 @@ const ClientSignUp = () => {
           </p>
         </div>
 
-        <div className=" items-center text-center ">
-          <button
-            onClick={handleSignup}
-            className=" text-[#FFFFFF] bg-[#FF5C00]  py-2 px-64 text-lg "
-          >
-            Create fashionista account
-          </button>
-        </div>
+        <button
+          onClick={handleSignup}
+          className=" text-[#FFFFFF] bg-[#FF5C00] w-full py-2 text-lg "
+        >
+          Create fashionista account
+        </button>
+      </form>
 
-        <div className="flex items-center ">
-          <div className="flex-grow my-12 border-t border-[#000000]"></div>
-          <span className="mx-4 text-[#000000]">OR</span>
-          <div className="flex-grow border-t border-[#000000]"></div>
-        </div>
+      <div className="flex items-center ">
+        <div className="flex-grow my-12 border-t border-[#000000]"></div>
+        <span className="mx-4 text-[#000000]">OR</span>
+        <div className="flex-grow border-t border-[#000000]"></div>
+      </div>
 
-        <div className="items-center text-center">
-          <Link href={""}>
-            <div>
-              <button className=" mb-2 border border-[#000000] w-full py-2.5 text-[#000000] font-bold text-lg">
-                Sign up with Google
-              </button>
-            </div>
+      <div className="items-center text-center">
+        <Link href={""}>
+          <div>
+            <button className=" mb-2 border border-[#000000] w-full py-2.5 text-[#000000] font-bold text-lg">
+              Sign up with Google
+            </button>
+          </div>
 
-            <div>
-              <button className=" mt-2 border border-[#000000] w-full py-2.5 font-bold text-lg">
-                Sign up with Facebook
-              </button>
-            </div>
-          </Link>
-        </div>
+          <div>
+            <button className=" mt-2 border border-[#000000] w-full py-2.5 font-bold text-lg">
+              Sign up with Facebook
+            </button>
+          </div>
+        </Link>
       </div>
 
       <div>
