@@ -59,11 +59,14 @@ const CarouselComp = () => {
       </SlidingCarousel>
       <div className="hidden sm:block sm:w-1/2">
         <div>
-          <h1>THE BEST WAY TO STYLE AND BE STYLED</h1>
-          <p>
+          <h1 className="text-7xl">THE BEST WAY TO STYLE AND GET STYLED</h1>
+          <p className="my-3 pr-36">
             Meet ‘n’ Style is your all-in-one fashion retail design store to
             display and sell your fashion products and or services and connect
             with anyone in Nigeria.
+          </p>
+          <p className="text-[#FF5C00] italic">
+            Meet your designers, style your clients.
           </p>
         </div>
       </div>

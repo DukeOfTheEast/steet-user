@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import React, { useState } from "react";
 import MeetStyle from "@/images/MeetnStyle-removebg-preview.png";
@@ -30,12 +32,16 @@ const LandingNav = () => {
       </div>
       <div className="hidden sm:block">
         <div className="flex gap-2">
-          <button className="border border-[#FF5C00] py-2 px-4 rounded-lg text-[#FF5C00]">
-            Sign Up
-          </button>
-          <button className="bg-[#FF5C00] text-white py-2 px-4 rounded-lg">
-            Sign In
-          </button>
+          <Link href={"/sign-up"}>
+            <button className="border border-[#FF5C00] py-2 px-4 rounded-lg text-[#FF5C00]">
+              Sign Up
+            </button>
+          </Link>
+          <Link href={"/signin"}>
+            <button className="bg-[#FF5C00] text-white py-2 px-4 rounded-lg">
+              Sign In
+            </button>
+          </Link>
         </div>
       </div>
       <div className="sm:hidden cursor-pointer">
