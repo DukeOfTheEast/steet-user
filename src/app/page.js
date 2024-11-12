@@ -2,12 +2,12 @@
 
 // import SignUp from "@/components/signup/page";
 import { AuthProvider, useAuth } from "@/context/AuthContext";
-import Signup from "./sign-up/page";
+import LandingPage from "./landingPage/page";
 
 export default function Home() {
   return (
     <main className="">
-      <Signup />
+      <LandingPage />
     </main>
   );
 }

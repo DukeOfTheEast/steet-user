@@ -5,6 +5,9 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { CheckCircle } from "lucide-react";
+import Image from "next/image";
+import Google from "@/images/google.png";
+import Facebook from "@/images/facebook.png";
 
 const ClientSignUp = () => {
   const [email, setEmail] = useState("");
@@ -41,14 +44,14 @@ const ClientSignUp = () => {
   };
 
   return (
-    <div className="bg-signUp-bg bg-no-repeat h-full w-screen bg-cover flex flex-col items-center pt-32">
+    <div className="bg-signUp-bg bg-no-repeat h-full w-screen bg-cover flex flex-col items-center pt-16">
       <div>
-        <h1 className="font-sans font-bold sm:text-3xl text-lg mb-5 text-[#000000] ">
+        <h1 className="font-sans font-bold sm:text-3xl text-2xl text-center mb-5 text-[#000000] ">
           Create your Meet &apos;n&apos; Style account
         </h1>
       </div>
 
-      <form className="flex flex-col gap-2">
+      <form className="flex flex-col gap-2 mx-3">
         <input
           type="text"
           placeholder="Full Name"
@@ -76,21 +79,21 @@ const ClientSignUp = () => {
         <div className="mt-2">
           <div className="flex items-center gap-1">
             <CheckCircle
-              color={`${password.length >= 8 ? "green" : "white"}`}
+              color={`${password.length >= 8 ? "green" : "grey"}`}
               size={15}
             />{" "}
             <p> must contain 8 characters</p>
           </div>
           <div className="flex items-center gap-1">
             <CheckCircle
-              color={`${containsNumber(password) ? "green" : "white"}`}
+              color={`${containsNumber(password) ? "green" : "grey"}`}
               size={15}
             />
             <p> must contain a number</p>
           </div>
           <div className="flex items-center gap-1">
             <CheckCircle
-              color={`${containsLetter(password) ? "green" : "white"}`}
+              color={`${containsLetter(password) ? "green" : "grey"}`}
               size={15}
             />
             <p> must contain a letter</p>
@@ -105,42 +108,36 @@ const ClientSignUp = () => {
           onChange={(e) => setConfirmPassword(e.target.value)}
         />
 
-        <div className="mt-2 mb-4">
-          <p>
-            <input type="checkbox" className="w-2.5 h-2.5  " /> Signing up for a
-            Meet &apos;n&apos; Style account means you agree to our privacy{" "}
-            <br /> policy and terms & conditions
+        <div className="flex items-center gap-2 my-4">
+          <input type="checkbox" className="w-5 h-5  " />
+          <p className="text-xs sm:text-sm">
+            Signing up for a Meet &apos;n&apos; Style account means you agree to
+            our privacy policy and terms & conditions
           </p>
         </div>
 
         <button
           onClick={handleSignup}
-          className=" text-[#FFFFFF] bg-[#FF5C00] w-full py-2 text-lg "
+          className=" text-[#FFFFFF] bg-[#FF5C00] w-full py-2 text-lg rounded-lg"
         >
           Create fashionista account
         </button>
       </form>
 
-      <div className="flex items-center ">
-        <div className="flex-grow my-12 border-t border-[#000000]"></div>
-        <span className="mx-4 text-[#000000]">OR</span>
-        <div className="flex-grow border-t border-[#000000]"></div>
+      <div className="flex items-center my-6 ">
+        <p className="mx-4 text-[#000000]">OR</p>
       </div>
 
-      <div className="items-center text-center">
-        <Link href={""}>
-          <div>
-            <button className=" mb-2 border border-[#000000] w-full py-2.5 text-[#000000] font-bold text-lg">
-              Sign up with Google
-            </button>
-          </div>
+      <div className="items-center text-center mx-3">
+        <button className="flex gap-2 rounded-lg mb-2 border border-[#000000] py-2.5 font-bold lg:text-lg w-full px-12">
+          <Image src={Google} alt="google" width={25} height={25} />
+          <p>Sign up with Google</p>
+        </button>
 
-          <div>
-            <button className=" mt-2 border border-[#000000] w-full py-2.5 font-bold text-lg">
-              Sign up with Facebook
-            </button>
-          </div>
-        </Link>
+        <button className="flex items-center justify-center gap-2 rounded-lg mt-2 border border-[#000000] py-2.5 font-bold lg:text-lg w-full px-12">
+          <Image src={Facebook} alt="google" width={25} height={25} />
+          <p>Sign up with Facebook</p>
+        </button>
       </div>
 
       <div>

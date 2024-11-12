@@ -48,11 +48,13 @@ const SignIn = () => {
   };
 
   return (
-    <main className="bg-signin-bg bg-no-repeat h-screen w-screen bg-cover flex flex-col items-center pt-32">
+    <main className="bg-signin-bg bg-no-repeat h-screen w-screen bg-cover flex flex-col items-center pt-24">
       <h2 className="sm:text-5xl text-3xl font-extrabold text-black ">
         Hello! Welcome back.
       </h2>
-      <p className="italic text-slate-100">Enter your information to login.</p>
+      <p className="italic text-slate-100 mb-10">
+        Enter your information to login.
+      </p>
       {error && (
         <p className="text-red-500 bg-white rounded-md px-3 py-1 absolute top-5">
           Invalid Email or Password!
@@ -63,15 +65,15 @@ const SignIn = () => {
         onSubmit={handleSignIn}
       >
         <input
-          className="rounded-2xl p-3 bg-slate-300 focus:outline-none"
+          className="rounded-2xl p-2  bg-white focus:outline-none border border-[#FF5C00]"
           type="email"
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-        <div className="flex items-center justify-between bg-slate-300 rounded-2xl pr-3">
+        <div className="flex items-center justify-between rounded-2xl pr-3 border border-[#FF5C00]">
           <input
-            className="rounded-2xl p-3 bg-slate-300 focus:outline-none"
+            className="rounded-2xl p-2 bg-white focus:outline-none"
             type={viewPass ? "text" : "password"}
             placeholder="Password"
             value={password}
@@ -87,13 +89,13 @@ const SignIn = () => {
         </div>
         <button
           type="submit"
-          className="bg-black hover:opacity-70 text-white rounded-2xl p-3"
+          className="bg-[#FF5C00] hover:opacity-70 text-white rounded-2xl p-3"
         >
           {dashLoading ? <Spinner /> : "Sign In"}
         </button>
         <p className="my-3">
           Don&apos;t have an account?{" "}
-          <Link href="/" className="text-blue-500">
+          <Link href="/" className="text-[#FF5C00]">
             Sign Up
           </Link>
         </p>
