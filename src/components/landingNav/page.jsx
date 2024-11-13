@@ -15,7 +15,7 @@ const LandingNav = () => {
   };
 
   return (
-    <div className="flex items-center justify-between sm:pr-10 sm:pl-5 pr-4 shadow-md fixed top-0 left-0 right-0 bg-white">
+    <div className="flex items-center justify-between sm:pr-10 sm:pl-5 pr-4 shadow-md fixed top-0 left-0 right-0 bg-white z-50">
       <Image
         src={MeetStyle}
         width={300}
@@ -51,13 +51,15 @@ const LandingNav = () => {
           <MenuIcon onClick={handleToggle} size={30} />
         )}
       </div>
-      <div className="sm:hidden fixed w-full top-24">
+
+      {/* NAV FOR SMALL SCREENS */}
+      <div className="sm:hidden w-full top-24 fixed">
         <div
           className={`flex flex-col transition-all duration-500 ${
             toggleMenu
               ? "max-h-[9999px] opacity-100 translate-y-0"
               : "max-h-0 hidden -translate-y-4"
-          } mx-auto bg-white p-3 py-7 gap-4 shadow-md absolute w-full z-100`}
+          } mx-auto bg-white p-3 py-7 gap-4 shadow-md absolute w-full`}
         >
           <div className="flex flex-col gap-3">
             <div className="flex flex-col gap-3 text-[#FF5C00]">

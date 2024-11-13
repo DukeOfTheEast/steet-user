@@ -6,6 +6,7 @@ import { AuthProvider } from "@/context/AuthContext";
 import CatProvider from "@/context/CatContext";
 import { ProfileProvider } from "@/context/ProfileContext";
 import { ChatProvider } from "@/context/ChatContext";
+import { CarouselProvider } from "@/context/CarouselContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,13 +19,15 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <ChatProvider>
-          <ProfileProvider>
-            <CatProvider>
-              <AuthProvider>{children}</AuthProvider>
-            </CatProvider>
-          </ProfileProvider>
-        </ChatProvider>
+        <CarouselProvider>
+          <ChatProvider>
+            <ProfileProvider>
+              <CatProvider>
+                <AuthProvider>{children}</AuthProvider>
+              </CatProvider>
+            </ProfileProvider>
+          </ChatProvider>
+        </CarouselProvider>
 
         {/* {children} */}
       </body>

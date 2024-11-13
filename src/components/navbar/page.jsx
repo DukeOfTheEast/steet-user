@@ -12,6 +12,7 @@ import Catalogue from "@/images/catalogue.png";
 import Settings from "@/images/settings.png";
 import Logout from "@/images/logout.png";
 import Cancel from "@/images/cancel.png";
+import Meet from "@/images/MeetnStyle-removebg-preview.png";
 import { usePathname } from "next/navigation";
 import Hamburger from "@/images/hamburger.png";
 import { useAuth } from "@/context/AuthContext";
@@ -41,9 +42,9 @@ export default function Navbar() {
   return (
     <div>
       {/* DESKTOP VIEW OF THE NAVBAR */}
-      <div className="hidden sm:block px-12 bg-[#2b2b29] h-screen fixed z-50">
-        <Image src={Logo} alt="logo" className="w-48 h-20 mx-30" />
-        <div className="mx-16 flex flex-col gap-8 my-16 text-neutral-50">
+      <div className="hidden sm:block px-12  h-screen fixed z-50 bg-white shadow-lg">
+        <Image src={Meet} alt="logo" className="w-48 h-20 mx-30" />
+        <div className="mx-16 flex flex-col gap-8 my-16 text-black">
           <Link
             href="/dashboard/home"
             className={isActive("/dashboard/home") ? "active" : ""}

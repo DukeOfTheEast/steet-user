@@ -1,12 +1,15 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { useCallback } from "react";
+import { CarouselContext } from "@/context/CarouselContext";
 
 const SlidingCarousel = ({ children, autoPlayInterval = 5000 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const carouselRef = useRef(null);
   const timerRef = useRef(null);
+  // const [men, setMen] = useState(true);
+  const { men, setMen } = useContext(CarouselContext);
 
   const handleNext = useCallback(() => {
     setCurrentIndex(
@@ -27,8 +30,16 @@ const SlidingCarousel = ({ children, autoPlayInterval = 5000 }) => {
     return () => clearInterval(timerRef.current);
   }, [autoPlayInterval, handleNext]);
 
+  const menToggle = () => {
+    setMen(true);
+  };
+
+  const womenToggle = () => {
+    setMen(false);
+  };
+
   return (
-    <div className="relative w-full sm:w-1/2 h-[500px] overflow-hidden">
+    <div className="relative w-full sm:w-1/2 h-[500px] overflow-hidden z-0">
       <div
         ref={carouselRef}
         className="absolute top-0 left-0 w-full h-full flex transition-transform duration-500 ease-in-out"
@@ -47,6 +58,25 @@ const SlidingCarousel = ({ children, autoPlayInterval = 5000 }) => {
             {child}
           </div>
         ))}
+      </div>
+
+      <div className="absolute top-4 right-4 border border-white rounded-3xl py-1 px-2 flex gap-2 z-1">
+        <button
+          onClick={menToggle}
+          className={`${
+            men ? "bg-[#FF5C00] rounded-3xl px-2 text-white" : ""
+          }  `}
+        >
+          MEN
+        </button>
+        <button
+          onClick={womenToggle}
+          className={`${
+            !men ? "bg-[#FF5C00] rounded-3xl px-2 text-white" : ""
+          } `}
+        >
+          WOMEN
+        </button>
       </div>
 
       <button
