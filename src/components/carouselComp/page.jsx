@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useContext } from "react";
 import SlidingCarousel from "../slidingCarousel/page";
 import AnkaraFemale from "@/images/meet-ankara-female.png";
