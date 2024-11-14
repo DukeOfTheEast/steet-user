@@ -76,7 +76,7 @@ const LandingNav = () => {
                 <Link href={"/"}>FAQ</Link>
               </div>
             </div>
-            <Link href={"/signup"}>
+            <Link href={"/sign-up"}>
               <button className="w-full mt-5 border border-[#FF5C00] rounded-md px-3 py-2 text-[#FF5C00] sm:mr-2">
                 Sign Up
               </button>

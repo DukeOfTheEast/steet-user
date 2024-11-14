@@ -39,7 +39,7 @@ const SlidingCarousel = ({ children, autoPlayInterval = 5000 }) => {
   };
 
   return (
-    <div className="relative w-full sm:w-1/2 h-[500px] overflow-hidden z-0">
+    <div className="relative w-full sm:w-1/2 h-[500px] overflow-hidden z-0 rounded-3xl">
       <div
         ref={carouselRef}
         className="absolute top-0 left-0 w-full h-full flex transition-transform duration-500 ease-in-out"

@@ -197,10 +197,12 @@ const CarouselComp = () => {
 
         <div className="hidden sm:block sm:w-1/2">
           <div>
-            <h1 className="text-7xl font-medium font-serif">
-              THE BEST WAY TO STYLE AND GET STYLED
+            <h1 className="xl:text-7xl lg:text-6xl sm:text-4xl font-medium font-serif">
+              <span className="text-[#FF5C00] italic">THE BEST</span> WAY <br />{" "}
+              TO <span className="text-[#FF5C00] italic">STYLE</span> AND <br />{" "}
+              GET <span className="text-[#FF5C00] italic">STYLED</span>
             </h1>
-            <p className="my-5 pr-36 font-serif">
+            <p className="my-5 lg:pr-36 font-serif">
               Meet ‘n’ Style is your all-in-one fashion retail design store to
               display and sell your fashion products and or services and connect
               with anyone in Nigeria.
