@@ -3,6 +3,7 @@ import LandingNav from "@/components/landingNav/page";
 import Image from "next/image";
 import React from "react";
 import LiveChat from "@/images/landing-chat.jpg";
+import Footer from "@/components/footer/page";
 
 const LandingPage = () => {
   return (
@@ -21,6 +22,7 @@ const LandingPage = () => {
           className="sm:w-1/2 sm:h-96 w-full rounded-br-3xl rounded-bl-3xl"
         />
       </section>
+      <Footer />
     </div>
   );
 };
