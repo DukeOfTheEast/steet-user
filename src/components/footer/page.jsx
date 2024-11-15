@@ -13,7 +13,6 @@ import {
   X,
   Youtube,
 } from "lucide-react";
-import Twitter from "@/images/Twitter.png";
 
 const Footer = () => {
   return (
