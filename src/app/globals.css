@@ -3,9 +3,10 @@
 @tailwind utilities;
 
 .active .route {
-  background-color: rgba(177, 142, 114, 1);
-  padding: 3px 7px;
-  border-radius: 3px;
+  background-color: #ff5c00;
+  padding: 5px 16px;
+  border-radius: 16px;
+  color: white;
 }
 
 * {

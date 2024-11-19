@@ -17,6 +17,7 @@ import { usePathname } from "next/navigation";
 import Hamburger from "@/images/hamburger.png";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
+import { ArrowRight, LogOut, MenuIcon, X } from "lucide-react";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -24,9 +25,13 @@ export default function Navbar() {
   const auth = useAuth();
   const router = useRouter();
 
-  const openMenu = () => {
+  const handleToggle = () => {
     setIsOpen(!isOpen);
   };
+
+  // const openMenu = () => {
+  //   setIsOpen(!isOpen);
+  // };
 
   const isActive = (path) => path === pathname;
 
@@ -44,7 +49,7 @@ export default function Navbar() {
       {/* DESKTOP VIEW OF THE NAVBAR */}
       <div className="hidden sm:block px-12  h-screen fixed z-50 bg-white shadow-lg">
         <Image src={Meet} alt="logo" className="w-48 h-20 mx-30" />
-        <div className="mx-16 flex flex-col gap-8 my-16 text-black">
+        <div className="mx-16 flex flex-col gap-8 my-16 text-black font-bold text-lg">
           <Link
             href="/dashboard/home"
             className={isActive("/dashboard/home") ? "active" : ""}
@@ -110,53 +115,63 @@ export default function Navbar() {
 
       {/* MOBILE VIEW OF THE NAVBAR */}
       <div className="sm:hidden bg-[#2b2b29]">
-        <div className="flex justify-between items-center px-4 py-3 top-0 fixed z-50 w-full bg-[#2b2b29]">
-          <Image src={Logo} alt="logo" className="" />
-          <Image
-            src={Hamburger}
-            alt="ham"
-            className="h-7 w-7 bg-slate-100 rounded-sm cursor-pointer"
-            onClick={openMenu}
-          />
+        <div className="flex justify-between items-center pr-3 top-0 fixed z-50 w-full bg-white shadow-md">
+          <Image src={Meet} alt="logo" className="w-24 h-24" />
+          {isOpen ? (
+            <X onClick={handleToggle} size={30} />
+          ) : (
+            <MenuIcon onClick={handleToggle} size={30} />
+          )}
         </div>
-        {isOpen && (
-          <div className="fixed z-50 bg-[#2b2b29] h-full w-full text-neutral-50 transform transition-transform ease-in-out duration-10000">
-            <div className="flex justify-between items-center mx-4">
-              <Image src={Logo} alt="" />
-              <Image
-                src={Cancel}
-                alt=""
-                className="w-10 h-10 bg-slate-50 rounded-2xl cursor-pointer"
-                onClick={openMenu}
-              />
-            </div>
-            <div className="mx-28 my-16 flex flex-col gap-5">
-              <Link href="/dashboard/home">
-                <p>Home</p>
-              </Link>
-              <Link href="/dashboard/folder">
-                <p>Customer Folder</p>
-              </Link>
-              <Link href="/dashboard/orders">
-                <p>Chat</p>
-              </Link>
-              <Link href="/dashboard/tasks">
-                <p>Add Tasks</p>
-              </Link>
-              <Link href="/dashboard/catalogue">
-                <p>Catalogue</p>
-              </Link>
-              <Link href="/dashboard/settings">
-                <p>Profile</p>
-              </Link>
-            </div>
-            <div className="mx-28 pt-20">
-              <button onClick={handleLogout}>
+
+        <div className="sm:hidden w-full top-24 fixed">
+          <div
+            className={`flex flex-col transition-all duration-500 ${
+              isOpen
+                ? "max-h-[9999px] opacity-100 translate-y-0"
+                : "max-h-0 hidden -translate-y-4"
+            } mx-auto bg-white p-3 py-7 gap-4 shadow-md absolute w-full`}
+          >
+            <div className="flex flex-col gap-3">
+              <div
+                className="flex flex-col gap-4 text-[#FF5C00] font-bold"
+                onClick={handleToggle}
+              >
+                <div className="flex items-center gap-1">
+                  <ArrowRight size={20} />
+                  <Link href={"/dashboard/home"}>Home</Link>
+                </div>
+                <div className="flex items-center gap-1">
+                  <ArrowRight size={20} />
+                  <Link href={"/dashboard/folder"}>Folder</Link>
+                </div>
+                <div className="flex items-center gap-1">
+                  <ArrowRight size={20} />
+                  <Link href={"/dashboard/orders"}>Chat</Link>
+                </div>
+                <div className="flex items-center gap-1">
+                  <ArrowRight size={20} />
+                  <Link href={"/dashboard/tasks"}>Tasks</Link>
+                </div>
+                <div className="flex items-center gap-1">
+                  <ArrowRight size={20} />
+                  <Link href={"/dashboard/catalogue"}>Catalogue</Link>
+                </div>
+                <div className="flex items-center gap-1">
+                  <ArrowRight size={20} />
+                  <Link href={"/dashboard/settings"}>Profile</Link>
+                </div>
+              </div>
+              <button
+                onClick={handleLogout}
+                className="flex gap-1 items-center justify-center w-full mt-5 border border-[#FF5C00] rounded-md px-3 py-2 text-[#FF5C00] sm:mr-2"
+              >
+                <LogOut size={20} />
                 <p>Logout</p>
               </button>
             </div>
           </div>
-        )}
+        </div>
       </div>
     </div>
   );

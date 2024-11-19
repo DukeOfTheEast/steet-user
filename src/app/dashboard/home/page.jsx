@@ -22,6 +22,7 @@ import { FaRegHeart } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa";
 import { AiOutlineDelete, AiOutlineDownload } from "react-icons/ai";
 import { BsFillChatRightTextFill } from "react-icons/bs";
+import { SlOptionsVertical } from "react-icons/sl";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -97,10 +98,11 @@ const Home = () => {
       <Navbar />
       <DesktopHeader />
 
-      <div className="sm:pl-96 sm:pt-20 pt-20">
+      <div className="sm:pl-96 sm:pt-20 pt-24">
         <FiPlus
+          color="white"
           onClick={() => setIsModalOpen(true)}
-          className="fixed sm:bottom-10 bottom-4 sm:right-10 right-4 bg-slate-100 rounded-xl shadow-lg cursor-pointer w-10 h-10 sm:w-16 sm:h-16"
+          className="fixed sm:bottom-10 bottom-4 sm:right-10 right-4 bg-[#FF5C00] rounded-3xl shadow-lg cursor-pointer w-10 h-10 sm:w-14 sm:h-14"
         />
         <PostModal
           isOpen={isModalOpen}
@@ -122,13 +124,14 @@ const Home = () => {
                     />
                     <p>@{post.createdByUsername}</p>
                   </div>
-                  <Link
+                  <SlOptionsVertical size={20} />
+                  {/* <Link
                     href={`/dashboard/orders?chat=${
                       post.createdByUsername || post.createdBy
                     }`}
                   >
                     <BsFillChatRightTextFill size={25} />
-                  </Link>
+                  </Link> */}
                 </div>
                 {post.text && <p className="mb-4">{post.text}</p>}
                 {post.imageUrl && (

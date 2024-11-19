@@ -11,6 +11,7 @@ import { useAuth } from "@/context/AuthContext";
 import { FaTimes } from "react-icons/fa";
 import Spinner from "../spinner/page";
 import { useProfile } from "@/context/ProfileContext";
+import Image from "next/image";
 
 const PostModal = ({ isOpen, onClose, currentUser }) => {
   const [image, setImage] = useState(null);
@@ -108,10 +109,12 @@ const PostModal = ({ isOpen, onClose, currentUser }) => {
             />
             {imageUrl && (
               <div className="mb-4">
-                <img
+                <Image
                   src={imageUrl}
                   alt="Preview"
                   className="w-full h-auto max-h-72 rounded"
+                  width={300}
+                  height={300}
                 />
               </div>
             )}
@@ -126,7 +129,7 @@ const PostModal = ({ isOpen, onClose, currentUser }) => {
               <input type="file" onChange={handleImageChange} />
               <button
                 onClick={handleSubmit}
-                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                className="bg-[#FF5C00] text-white px-4 py-2 rounded hover:bg-[#eead88]"
               >
                 {postLoading ? <Spinner /> : "Post"}
               </button>

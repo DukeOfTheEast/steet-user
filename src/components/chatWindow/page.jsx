@@ -207,7 +207,7 @@ const ChatWindow = ({ selectedUser, closeChat }) => {
                 <p
                   className={`text-white p-1 rounded-xl min-w-10 max-w-48 text-center ${
                     message.sender === currentUser.uid
-                      ? "bg-blue-500 ml-auto my-0.5"
+                      ? "bg-[#FF5C00] ml-auto my-0.5 px-2"
                       : "bg-gray-500 my-0.5"
                   }`}
                 >
@@ -228,7 +228,7 @@ const ChatWindow = ({ selectedUser, closeChat }) => {
             />
             <button
               onClick={handleSendMessage}
-              className="bg-blue-500 hover:bg-blue-400 text-white rounded p-2"
+              className="bg-[#FF5C00] hover:bg-[#f7b38d] text-white rounded p-2"
             >
               <VscSend size={25} className="" />
             </button>
