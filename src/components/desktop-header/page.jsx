@@ -46,7 +46,7 @@ export const DesktopHeader = () => {
   };
 
   return (
-    <div className="hidden sm:block">
+    <div className="hidden sm:block z-40">
       <div className="flex justify-between p-5 shadow-lg fixed top-0 left-0 w-full bg-white">
         <div></div>
         <div className="inline-block">

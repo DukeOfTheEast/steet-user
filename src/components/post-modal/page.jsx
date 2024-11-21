@@ -77,10 +77,13 @@ const PostModal = ({ isOpen, onClose, currentUser }) => {
         text,
         imageUrl: postImageUrl,
         createdBy: user.uid,
-        createdByUsername: user.inputValue || "Anonymous", // Assuming inputValue is the username
+        createdByUsername: user.businessName || user.fullName || "Anonymous", // Assuming inputValue is the username
         createdAt: Timestamp.now(),
         likes: [],
         createdByProfileImage: photoURL || user.photoURL,
+        location: {
+          state: user.selectedState || null,
+        },
       });
 
       setText("");

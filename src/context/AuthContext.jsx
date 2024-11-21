@@ -26,8 +26,14 @@ export const AuthProvider = ({ children }) => {
         const userData = userSnapshot.data();
 
         setCurrentUser({
-          uid: user.uid,
+          ...user,
           inputValue: userData?.inputValue || "Default UserName", // Ensure this is set correctly
+          businessName: userData?.businessName || null,
+          role: userData?.role || null,
+          fullName: userData?.fullName || null,
+          selectedState: userData?.selectedState || null,
+          selectedFashion: userData?.selectedFashion || null,
+          bookmarks: userData?.bookmarks || [],
         });
         setLoading(false);
       } else {
@@ -63,6 +69,7 @@ export const AuthProvider = ({ children }) => {
       ...(businessName && { businessName: businessName }),
       ...(selectedState && { selectedState: selectedState }),
       ...(selectedFashion && { selectedFashion: selectedFashion }),
+      bookmarks: [],
     });
 
     setCurrentUser(user);

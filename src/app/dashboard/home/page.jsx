@@ -15,38 +15,92 @@ import {
   updateDoc,
   deleteDoc,
   getDoc,
+  onSnapshot,
 } from "firebase/firestore";
-// import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import PostModal from "@/components/post-modal/page";
 import { FaRegHeart } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa";
 import { AiOutlineDelete, AiOutlineDownload } from "react-icons/ai";
-import { BsFillChatRightTextFill } from "react-icons/bs";
+import {
+  BsBookmark,
+  BsBookmarkFill,
+  BsFillChatRightTextFill,
+} from "react-icons/bs";
 import { SlOptionsVertical } from "react-icons/sl";
 import Link from "next/link";
 import Image from "next/image";
+import { EllipsisVertical } from "lucide-react";
+import { GoLocation } from "react-icons/go";
+import PostOptions from "@/components/postOptions/page";
 
 const Home = () => {
-  const { currentUser } = useAuth();
+  const { currentUser, setCurrentUser } = useAuth();
   const [posts, setPosts] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const querySnapshot = await getDocs(collection(db, "posts"));
-        const postsList = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setPosts(postsList);
-      } catch (error) {
-        console.error("Error fetching posts: ", error);
-      }
-    };
+  const handleBookmark = async (postId) => {
+    if (!currentUser) return;
 
-    fetchPosts();
-  }, []);
+    try {
+      const userRef = doc(db, "users", currentUser.uid);
+
+      // Check if post is already bookmarked
+      const userDoc = await getDoc(userRef);
+      const currentBookmarks = userDoc.data().bookmarks || [];
+
+      const updatedBookmarks = currentBookmarks.includes(postId)
+        ? currentBookmarks.filter((id) => id !== postId)
+        : [...currentBookmarks, postId];
+
+      await updateDoc(userRef, {
+        bookmarks: updatedBookmarks,
+      });
+
+      // Modify this part to update posts with bookmark status
+      setPosts((prevPosts) =>
+        prevPosts.map((post) => ({
+          ...post,
+          isBookmarked: updatedBookmarks.includes(post.id),
+        }))
+      );
+
+      setCurrentUser((prev) => ({
+        ...prev,
+        bookmarks: updatedBookmarks,
+      }));
+    } catch (error) {
+      console.error("Error bookmarking post: ", error);
+    }
+  };
+
+  useEffect(() => {
+    if (!currentUser) return;
+
+    const unsubscribe = onSnapshot(
+      collection(db, "posts"),
+      async (snapshot) => {
+        const postsList = await Promise.all(
+          snapshot.docs.map(async (postDoc) => {
+            const postData = { id: postDoc.id, ...postDoc.data() };
+
+            // Check if this post is bookmarked by the current user
+            const userRef = doc(db, "users", currentUser.uid);
+            const userSnapshot = await getDoc(userRef);
+            const currentBookmarks = userSnapshot.data()?.bookmarks || [];
+
+            return {
+              ...postData,
+              isBookmarked: currentBookmarks.includes(postData.id),
+            };
+          })
+        );
+
+        setPosts(postsList);
+      }
+    );
+
+    return () => unsubscribe();
+  }, [currentUser]);
 
   const handleLike = async (postId) => {
     try {
@@ -76,23 +130,6 @@ const Home = () => {
     }
   };
 
-  const handleDownload = async (imageUrl) => {
-    try {
-      const response = await fetch(imageUrl);
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "image.jpg"; // You can set a more dynamic name if needed
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      window.URL.revokeObjectURL(url);
-    } catch (error) {
-      console.error("Error downloading image: ", error);
-    }
-  };
-
   return (
     <div className="sm:flex">
       <Navbar />
@@ -113,7 +150,7 @@ const Home = () => {
           <div>
             {posts.map((post) => (
               <div key={post.id} className="my-3 flex flex-col">
-                <div className="flex items-center justify-between">
+                <div className="relative flex items-center justify-between mb-2">
                   <div className="font-bold mb-2 flex items-center gap-2">
                     <Image
                       src={post.createdByProfileImage}
@@ -122,16 +159,21 @@ const Home = () => {
                       width={30}
                       height={30}
                     />
-                    <p>@{post.createdByUsername}</p>
+                    <p>{post.createdByUsername}</p>
                   </div>
-                  <SlOptionsVertical size={20} />
-                  {/* <Link
-                    href={`/dashboard/orders?chat=${
-                      post.createdByUsername || post.createdBy
-                    }`}
-                  >
-                    <BsFillChatRightTextFill size={25} />
-                  </Link> */}
+                  <div className="flex items-center">
+                    <div className="flex text-sm gap-1">
+                      <GoLocation size={15} className="text-[#FF5C00]" />
+                      <p className="text-xs">{post?.location?.state}</p>
+                    </div>
+                    <PostOptions
+                      postId={post.id}
+                      postOwnerId={post.createdBy}
+                      currentUserId={currentUser?.uid}
+                      onDelete={handleDelete}
+                      onReport={(id) => console.log("Reported Post ID: ", id)}
+                    />
+                  </div>
                 </div>
                 {post.text && <p className="mb-4">{post.text}</p>}
                 {post.imageUrl && (
@@ -146,7 +188,7 @@ const Home = () => {
                 <div className="flex flex-row-reverse items-center justify-between">
                   <div className="flex items-center gap-1">
                     <button onClick={() => handleLike(post.id)}>
-                      {post.likes.includes(currentUser.uid) ? (
+                      {post.likes.includes(currentUser?.uid) ? (
                         <FaHeart />
                       ) : (
                         <FaRegHeart />
@@ -155,21 +197,15 @@ const Home = () => {
                     <p>{post.likes.length}</p>
                   </div>
                   <button
-                    onClick={() => handleDownload(post.imageUrl)}
-                    className=""
+                    onClick={() => handleBookmark(post.id)}
+                    className="focus:outline-none"
                   >
-                    <AiOutlineDownload size={20} />
-                  </button>
-                  <div>
-                    {post.createdBy === currentUser.uid && (
-                      <button
-                        onClick={() => handleDelete(post.id)}
-                        className=""
-                      >
-                        <AiOutlineDelete size={20} className="mr-2" />
-                      </button>
+                    {post.isBookmarked ? (
+                      <BsBookmarkFill size={20} />
+                    ) : (
+                      <BsBookmark size={20} />
                     )}
-                  </div>
+                  </button>
                 </div>
                 <hr className="mb-5" />
               </div>

@@ -22,6 +22,8 @@ import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import Edit from "@/images/edit-btn.png";
 import { useProfile } from "@/context/ProfileContext";
 import { MdFileUpload } from "react-icons/md";
+import { LocateFixed } from "lucide-react";
+import { GoLocation } from "react-icons/go";
 
 const updateUserPostsWithNewImage = async (userId, newPhotoURL) => {
   const postsRef = collection(db, "posts");
@@ -215,6 +217,8 @@ export default function Settings() {
               </div>
             </div>
           )}
+
+          {/* <p>Business name: {currentUser?.businessName}</p> */}
         </div>
       </div>
     </div>

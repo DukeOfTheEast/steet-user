@@ -2,22 +2,35 @@
 
 import { React, useState } from "react";
 import Image from "next/image";
-import Logo from "@/images/steet-logo.png";
 import Link from "next/link";
-import Dash from "@/images/dashboard.png";
-import Folder from "@/images/folder.png";
-import Orders from "@/images/orders.png";
-import Tasks from "@/images/task-list.png";
-import Catalogue from "@/images/catalogue.png";
-import Settings from "@/images/settings.png";
-import Logout from "@/images/logout.png";
-import Cancel from "@/images/cancel.png";
+// import Dash from "@/images/dashboard.png";
+// import Folder from "@/images/folder.png";
+// import Orders from "@/images/orders.png";
+// import Tasks from "@/images/task-list.png";
+// import Catalogue from "@/images/catalogue.png";
+// import Settings from "@/images/settings.png";
+// import Logout from "@/images/logout.png";
+// import Cancel from "@/images/cancel.png";
 import Meet from "@/images/MeetnStyle-removebg-preview.png";
 import { usePathname } from "next/navigation";
-import Hamburger from "@/images/hamburger.png";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
-import { ArrowRight, LogOut, MenuIcon, X } from "lucide-react";
+import {
+  ArrowRight,
+  Bookmark,
+  BookmarkCheck,
+  BookMarked,
+  FolderArchive,
+  Home,
+  LogOut,
+  LogOutIcon,
+  Logs,
+  MenuIcon,
+  MessageCircle,
+  Settings2,
+  X,
+} from "lucide-react";
+import { BsBookmark, BsBookmarkFill } from "react-icons/bs";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -48,14 +61,15 @@ export default function Navbar() {
     <div>
       {/* DESKTOP VIEW OF THE NAVBAR */}
       <div className="hidden sm:block px-12  h-screen fixed z-50 bg-white shadow-lg">
-        <Image src={Meet} alt="logo" className="w-48 h-20 mx-30" />
+        <Image src={Meet} alt="logo" className="w-48 h-20 mx-30" priority />
         <div className="mx-16 flex flex-col gap-8 my-16 text-black font-bold text-lg">
           <Link
             href="/dashboard/home"
             className={isActive("/dashboard/home") ? "active" : ""}
           >
             <div className="route flex gap-1">
-              <Image src={Dash} alt="logo" />
+              {/* <Image src={Dash} alt="logo" /> */}
+              <Home size={25} />
               <p>Home</p>
             </div>
           </Link>
@@ -64,7 +78,8 @@ export default function Navbar() {
             className={isActive("/dashboard/folder") ? "active" : ""}
           >
             <div className="route flex gap-1">
-              <Image src={Folder} alt="logo" />
+              {/* <Image src={Folder} alt="logo" /> */}
+              <FolderArchive size={25} />
               <p>Folder</p>
             </div>
           </Link>
@@ -73,17 +88,19 @@ export default function Navbar() {
             className={isActive("/dashboard/orders") ? "active" : ""}
           >
             <div className="route flex gap-1">
-              <Image src={Orders} alt="logo" />
+              {/* <Image src={Orders} alt="logo" /> */}
+              <MessageCircle size={25} />
               <p>Chat</p>
             </div>
           </Link>
           <Link
-            href="/dashboard/tasks"
-            className={isActive("/dashboard/tasks") ? "active" : ""}
+            href="/dashboard/bookmarks"
+            className={isActive("/dashboard/bookmarks") ? "active" : ""}
           >
             <div className="route flex gap-1">
-              <Image src={Tasks} alt="logo" />
-              <p>Tasks</p>
+              {/* <Image src={Tasks} alt="logo" /> */}
+              <Bookmark size={25} />
+              <p>Bookmarks</p>
             </div>
           </Link>
           <Link
@@ -91,7 +108,8 @@ export default function Navbar() {
             className={isActive("/dashboard/catalogue") ? "active" : ""}
           >
             <div className="route flex gap-1">
-              <Image src={Catalogue} alt="logo" />
+              {/* <Image src={Catalogue} alt="logo" /> */}
+              <Logs size={25} />
               <p>Catalogue</p>
             </div>
           </Link>
@@ -100,14 +118,16 @@ export default function Navbar() {
             className={isActive("/dashboard/settings") ? "active" : ""}
           >
             <div className="route flex gap-1">
-              <Image src={Settings} alt="logo" />
-              <p>Profile</p>
+              {/* <Image src={Settings} alt="logo" /> */}
+              <Settings2 size={25} />
+              <p>Settings</p>
             </div>
           </Link>
         </div>
-        <div className=" text-neutral-50 mx-16 mt-32">
+        <div className="text-lg mx-16 mt-24">
           <button onClick={handleLogout} className="flex gap-1">
-            <Image src={Logout} alt="logo" />
+            {/* <Image src={Logout} alt="logo" /> */}
+            <LogOutIcon size={25} />
             <p>Logout</p>
           </button>
         </div>
@@ -124,7 +144,7 @@ export default function Navbar() {
           )}
         </div>
 
-        <div className="sm:hidden w-full top-24 fixed">
+        <div className="sm:hidden w-full top-24 fixed z-50">
           <div
             className={`flex flex-col transition-all duration-500 ${
               isOpen
@@ -138,28 +158,30 @@ export default function Navbar() {
                 onClick={handleToggle}
               >
                 <div className="flex items-center gap-1">
-                  <ArrowRight size={20} />
+                  <Home size={20} />
                   <Link href={"/dashboard/home"}>Home</Link>
                 </div>
                 <div className="flex items-center gap-1">
-                  <ArrowRight size={20} />
+                  <FolderArchive size={20} />
                   <Link href={"/dashboard/folder"}>Folder</Link>
                 </div>
                 <div className="flex items-center gap-1">
-                  <ArrowRight size={20} />
+                  <MessageCircle size={20} />
                   <Link href={"/dashboard/orders"}>Chat</Link>
                 </div>
                 <div className="flex items-center gap-1">
-                  <ArrowRight size={20} />
-                  <Link href={"/dashboard/tasks"}>Tasks</Link>
+                  {/* <BsBookmarkFill size={20} />
+                  <BsBookmark size={20} /> */}
+                  <Bookmark size={20} />
+                  <Link href={"/dashboard/bookmarks"}>Bookmarks</Link>
                 </div>
                 <div className="flex items-center gap-1">
-                  <ArrowRight size={20} />
+                  <Logs size={20} />
                   <Link href={"/dashboard/catalogue"}>Catalogue</Link>
                 </div>
                 <div className="flex items-center gap-1">
-                  <ArrowRight size={20} />
-                  <Link href={"/dashboard/settings"}>Profile</Link>
+                  <Settings2 size={20} />
+                  <Link href={"/dashboard/settings"}>Settings</Link>
                 </div>
               </div>
               <button
