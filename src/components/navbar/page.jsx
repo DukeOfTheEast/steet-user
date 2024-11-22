@@ -135,7 +135,7 @@ export default function Navbar() {
 
       {/* MOBILE VIEW OF THE NAVBAR */}
       <div className="sm:hidden bg-[#2b2b29]">
-        <div className="flex justify-between items-center pr-3 top-0 fixed z-50 w-full bg-white shadow-md">
+        <div className="flex justify-between items-center pr-3 top-0 fixed z-40 w-full bg-white shadow-md">
           <Image src={Meet} alt="logo" className="w-24 h-24" />
           {isOpen ? (
             <X onClick={handleToggle} size={30} />
