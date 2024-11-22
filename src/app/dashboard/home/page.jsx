@@ -32,6 +32,10 @@ import Image from "next/image";
 import { EllipsisVertical } from "lucide-react";
 import { GoLocation } from "react-icons/go";
 import PostOptions from "@/components/postOptions/page";
+// import { toast } from "react-toastify";
+// import { toast } from "react-hot-toast";
+// import { ToastBar, Toaster } from "react-hot-toast";
+import "react-toastify/dist/ReactToastify.css";
 
 const Home = () => {
   const { currentUser, setCurrentUser } = useAuth();
@@ -68,6 +72,11 @@ const Home = () => {
         ...prev,
         bookmarks: updatedBookmarks,
       }));
+      toast.success(
+        updatedBookmarks.includes(postId)
+          ? "Post bookmarked!"
+          : "Bookmark removed!"
+      );
     } catch (error) {
       console.error("Error bookmarking post: ", error);
     }
@@ -96,6 +105,7 @@ const Home = () => {
         );
 
         setPosts(postsList);
+        console.log(currentUser.role);
       }
     );
 
@@ -136,11 +146,15 @@ const Home = () => {
       <DesktopHeader />
 
       <div className="sm:pl-96 sm:pt-20 pt-24">
-        <FiPlus
-          color="white"
-          onClick={() => setIsModalOpen(true)}
-          className="fixed sm:bottom-10 bottom-4 sm:right-10 right-4 bg-[#FF5C00] rounded-3xl shadow-lg cursor-pointer w-10 h-10 sm:w-14 sm:h-14"
-        />
+        {currentUser?.role === "designer" ? (
+          <FiPlus
+            color="white"
+            onClick={() => setIsModalOpen(true)}
+            className="fixed sm:bottom-10 bottom-4 sm:right-10 right-4 bg-[#FF5C00] rounded-3xl shadow-lg cursor-pointer w-10 h-10 sm:w-14 sm:h-14"
+          />
+        ) : (
+          ""
+        )}
         <PostModal
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
