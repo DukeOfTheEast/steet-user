@@ -77,7 +77,8 @@ const PostModal = ({ isOpen, onClose, currentUser }) => {
         text,
         imageUrl: postImageUrl,
         createdBy: user.uid,
-        createdByUsername: user.businessName || user.fullName || "Anonymous", // Assuming inputValue is the username
+        createdByUsername:
+          user.inputValue || user.businessName || user.fullName || "Anonymous", // Assuming inputValue is the username
         createdAt: Timestamp.now(),
         likes: [],
         createdByProfileImage: photoURL || user.photoURL,
