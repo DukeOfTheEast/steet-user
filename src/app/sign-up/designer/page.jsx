@@ -95,6 +95,80 @@ const DesignerSignUp = () => {
   const handleSignup = async (e) => {
     e.preventDefault();
     setError("");
+
+    /*Validation checks */
+    if (!fullName.trim()) {
+      setError("Full Name is required");
+      setTimeout(() => {
+        setError(null);
+      }, 3000);
+      return;
+    }
+
+    if (!businessName.trim()) {
+      setError("Business Name is required");
+      setTimeout(() => {
+        setError(null);
+      }, 3000);
+      return;
+    }
+
+    if (!email.trim() || !email.includes("@")) {
+      setError("Please enter a valid email address");
+      setTimeout(() => {
+        setError(null);
+      }, 3000);
+      return;
+    }
+
+    if (password.length < 8) {
+      setError("Password must be at least 8 characters long");
+      setTimeout(() => {
+        setError(null);
+      }, 3000);
+      return;
+    }
+
+    if (!containsNumber(password)) {
+      setError("Password must contain at least one number");
+      setTimeout(() => {
+        setError(null);
+      }, 3000);
+      return;
+    }
+
+    if (!containsLetter(password)) {
+      setError("Password must contain at least one letter");
+      setTimeout(() => {
+        setError(null);
+      }, 3000);
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setError("Passwords do not match");
+      setTimeout(() => {
+        setError(null);
+      }, 3000);
+      return;
+    }
+
+    if (!selectedState) {
+      setError("Please select a state");
+      setTimeout(() => {
+        setError(null);
+      }, 3000);
+      return;
+    }
+
+    if (!selectedFashion) {
+      setError("Please select a fashion category");
+      setTimeout(() => {
+        setError(null);
+      }, 3000);
+      return;
+    }
+
     try {
       await signup(
         email,
@@ -110,13 +184,19 @@ const DesignerSignUp = () => {
     } catch (error) {
       setError(error.message);
       setTimeout(() => {
-        setError("");
+        setError(null);
       }, 3000);
       setEmail("");
       setPassword("");
     }
     console.log("clicked");
   };
+
+  // {
+  //   error && (
+  //     <div className="text-red-500 text-sm mb-4 text-center">{error}</div>
+  //   );
+  // }
 
   return (
     <div className="bg-signUp-bg bg-no-repeat h-full w-full bg-cover flex flex-col items-center pt-16">
@@ -127,6 +207,15 @@ const DesignerSignUp = () => {
       </div>
 
       <form className="mx-3">
+        {error && (
+          <div
+            className="text-sm mb-4 text-center fixed top-24 left-1/2 transform -translate-x-1/2 -translate-y-1/2
+    bg-red-500 text-white px-4 py-2 rounded-lg 
+    shadow-lg z-50 animate-bounce"
+          >
+            {error}
+          </div>
+        )}
         <div className="flex flex-col items-center mt-5 gap-3 ">
           <div className="flex gap-2 flex-col sm:flex-row items-center mt-8 w-full">
             <input

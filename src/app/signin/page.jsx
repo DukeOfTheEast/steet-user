@@ -95,7 +95,7 @@ const SignIn = () => {
         </button>
         <p className="my-3">
           Don&apos;t have an account?{" "}
-          <Link href="/" className="text-[#FF5C00]">
+          <Link href="/sign-up" className="text-[#FF5C00]">
             Sign Up
           </Link>
         </p>
