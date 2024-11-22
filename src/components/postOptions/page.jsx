@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { EllipsisVertical } from "lucide-react";
+import { EllipsisVertical, MessageCircle } from "lucide-react";
 import { GoReport } from "react-icons/go";
 
 const PostOptions = ({
@@ -10,6 +10,7 @@ const PostOptions = ({
   currentUserId,
   onDelete,
   onReport,
+  onChat,
 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -40,6 +41,18 @@ const PostOptions = ({
               <GoReport size={20} />
               Report Post
             </li>
+            {postOwnerId !== currentUserId && (
+              <li
+                className="flex gap-1 px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                onClick={() => {
+                  onChat();
+                  setIsMenuOpen(false);
+                }}
+              >
+                <MessageCircle size={20} />
+                Chat Designer
+              </li>
+            )}
             {postOwnerId === currentUserId && (
               <li
                 className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-red-500"

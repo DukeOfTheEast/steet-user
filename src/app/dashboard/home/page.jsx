@@ -186,6 +186,13 @@ const Home = () => {
                       currentUserId={currentUser?.uid}
                       onDelete={handleDelete}
                       onReport={(id) => console.log("Reported Post ID: ", id)}
+                      onChat={() => {
+                        const chatUrl = `/dashboard/orders?chat=${
+                          post.createdByUsername || post.createdBy
+                        }`;
+                        console.log("Navigate to chat:", chatUrl);
+                        window.location.href = chatUrl;
+                      }}
                     />
                   </div>
                 </div>
