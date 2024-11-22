@@ -91,7 +91,8 @@ const Orders = () => {
     const user = users.find((u) => u.uid === uid);
     if (user) {
       setSelectedUser(uid);
-      const urlParam = user.inputValue || uid;
+      const urlParam =
+        user.businessName || user.fullName || user.inputValue || uid;
       window.history.pushState(null, "", `/dashboard/orders?chat=${urlParam}`);
     }
   };

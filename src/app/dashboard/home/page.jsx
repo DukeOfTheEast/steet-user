@@ -173,7 +173,8 @@ const Home = () => {
                       width={30}
                       height={30}
                     />
-                    <p>{post.createdByUsername}</p>
+                    {/* <p>{post.createdByUsername}</p> */}
+                    <p>{post.businessName}</p>
                   </div>
                   <div className="flex items-center">
                     <div className="flex text-sm gap-1">
