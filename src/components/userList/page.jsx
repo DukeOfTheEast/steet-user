@@ -78,19 +78,36 @@ const UserList = ({ onSelectUser }) => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
+        // First, fetch all conversations for the current user
+        const conversationsRef = collection(db, "conversations");
+        const conversationsQuery = query(
+          conversationsRef,
+          where("participants", "array-contains", currentUser.uid)
+        );
+        const conversationsSnapshot = await getDocs(conversationsQuery);
+
+        // Get the UIDs of users you've had conversations with
+        const conversedUserIds = new Set(
+          conversationsSnapshot.docs.flatMap((doc) =>
+            doc.data().participants.filter((id) => id !== currentUser.uid)
+          )
+        );
+
         const querySnapshot = await getDocs(collection(db, "users"));
-        const usersList = querySnapshot.docs.map((doc) => ({
-          uid: doc.id,
-          ...doc.data(),
-        }));
+        const usersList = querySnapshot.docs
+          .map((doc) => ({
+            uid: doc.id,
+            ...doc.data(),
+          }))
+          .filter((user) => conversedUserIds.has(user.uid));
 
         const unreadCounts = await fetchUnreadMessagesCount(currentUser);
         setUnreadMessages(unreadCounts);
 
         // Sort users to place the current user at the top
         const sortedUsers = usersList.sort((a, b) => {
-          if (a.uid === currentUser.uid) return -1;
-          if (b.uid === currentUser.uid) return 1;
+          // if (a.uid === currentUser.uid) return -1;
+          // if (b.uid === currentUser.uid) return 1;
           if (unreadCounts[a.uid]?.hasUnread && !unreadCounts[b.uid]?.hasUnread)
             return -1;
           if (!unreadCounts[a.uid]?.hasUnread && unreadCounts[b.uid]?.hasUnread)
@@ -137,39 +154,47 @@ const UserList = ({ onSelectUser }) => {
 
   return (
     <div className="mx-10">
-      <ul className="">
-        {users.map((user) => (
-          <div
-            onClick={() => handleSelectUser(user.uid)}
-            key={user.uid}
-            className="cursor-pointer max-w-80 sm:border-b-4 hover:bg-slate-300 sm:rounded-2xl py-1 px-2"
-          >
-            <li className="my-2 flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <Image
-                  src={user.photoURL ? user.photoURL : Default.src}
-                  alt="profile"
-                  width={30}
-                  height={30}
-                  className="max-w-8 max-h-8 rounded-full"
-                />
-                <span>
-                  {user.inputValue || formatUserId(user.uid)}{" "}
-                  {user.uid === currentUser.uid && "(Me)"}
-                </span>
-              </div>
-              <div className="flex items-center space-x-2">
-                {unreadMessages[user.uid] &&
-                  unreadMessages[user.uid].count > 0 && (
-                    <span className="bg-red-500 text-white rounded-full px-2 py-1 text-xs">
-                      {unreadMessages[user.uid].count}
-                    </span>
-                  )}
-              </div>
-            </li>
-          </div>
-        ))}
-      </ul>
+      {users.length === 0 ? (
+        <div>
+          <p className="italic flex items-center justify-center mt-20">
+            You have no messages yet...
+          </p>
+        </div>
+      ) : (
+        <ul className="">
+          {users.map((user) => (
+            <div
+              onClick={() => handleSelectUser(user.uid)}
+              key={user.uid}
+              className="cursor-pointer max-w-80 sm:border-b-4 hover:bg-slate-300 sm:rounded-2xl py-1 px-2"
+            >
+              <li className="my-2 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Image
+                    src={user.photoURL ? user.photoURL : Default.src}
+                    alt="profile"
+                    width={30}
+                    height={30}
+                    className="max-w-8 max-h-8 rounded-full"
+                  />
+                  <span>
+                    {user.inputValue || formatUserId(user.uid)}{" "}
+                    {user.uid === currentUser.uid && "(Me)"}
+                  </span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  {unreadMessages[user.uid] &&
+                    unreadMessages[user.uid].count > 0 && (
+                      <span className="bg-red-500 text-white rounded-full px-2 py-1 text-xs">
+                        {unreadMessages[user.uid].count}
+                      </span>
+                    )}
+                </div>
+              </li>
+            </div>
+          ))}
+        </ul>
+      )}
     </div>
   );
 };
