@@ -197,16 +197,21 @@ const Home = () => {
                     />
                   </div>
                 </div>
-                {post.text && <p className="mb-4">{post.text}</p>}
-                {post.imageUrl && (
-                  <Image
-                    src={post.imageUrl}
-                    alt="post"
-                    className="w-full rounded-xl mb-4 max-h-96"
-                    width={800}
-                    height={800}
-                  />
-                )}
+                <Link
+                  href={`/${post.businessName}/post/${post.id}`}
+                  className="cursor-pointer"
+                >
+                  {post.text && <p className="mb-4">{post.text}</p>}
+                  {post.imageUrl && (
+                    <Image
+                      src={post.imageUrl}
+                      alt="post"
+                      className="w-full rounded-xl mb-4 max-h-96"
+                      width={800}
+                      height={800}
+                    />
+                  )}
+                </Link>
                 <div className="flex flex-row-reverse items-center justify-between">
                   <div className="flex items-center gap-1">
                     <button onClick={() => handleLike(post.id)}>

@@ -191,7 +191,7 @@ const Bookmarks = () => {
                         width={30}
                         height={30}
                       />
-                      <p>{post.createdByUsername}</p>
+                      <p>{post.businessName || post.createdByUsername}</p>
                     </div>
                     <div className="flex items-center">
                       <div className="flex text-sm gap-1">
