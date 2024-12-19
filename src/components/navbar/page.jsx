@@ -60,7 +60,7 @@ export default function Navbar() {
   return (
     <div>
       {/* DESKTOP VIEW OF THE NAVBAR */}
-      <div className="hidden sm:block px-12  h-screen fixed z-50 bg-white shadow-lg">
+      <div className="hidden sm:block lg:px-12 h-screen fixed z-50 bg-white shadow-lg">
         <Image src={Meet} alt="logo" className="w-48 h-20 mx-30" priority />
         <div className="mx-16 flex flex-col gap-8 my-16 text-black font-bold text-lg">
           <Link
@@ -70,7 +70,7 @@ export default function Navbar() {
             <div className="route flex gap-1">
               {/* <Image src={Dash} alt="logo" /> */}
               <Home size={25} />
-              <p>Home</p>
+              <p className="hidden lg:block">Home</p>
             </div>
           </Link>
           <Link
@@ -80,7 +80,7 @@ export default function Navbar() {
             <div className="route flex gap-1">
               {/* <Image src={Folder} alt="logo" /> */}
               <FolderArchive size={25} />
-              <p>Folder</p>
+              <p className="hidden lg:block">Folder</p>
             </div>
           </Link>
           <Link
@@ -90,7 +90,7 @@ export default function Navbar() {
             <div className="route flex gap-1">
               {/* <Image src={Orders} alt="logo" /> */}
               <MessageCircle size={25} />
-              <p>Chat</p>
+              <p className="hidden lg:block">Chat</p>
             </div>
           </Link>
           <Link
@@ -100,7 +100,7 @@ export default function Navbar() {
             <div className="route flex gap-1">
               {/* <Image src={Tasks} alt="logo" /> */}
               <Bookmark size={25} />
-              <p>Bookmarks</p>
+              <p className="hidden lg:block">Bookmarks</p>
             </div>
           </Link>
           <Link
@@ -110,7 +110,7 @@ export default function Navbar() {
             <div className="route flex gap-1">
               {/* <Image src={Catalogue} alt="logo" /> */}
               <Logs size={25} />
-              <p>Catalogue</p>
+              <p className="hidden lg:block">Catalogue</p>
             </div>
           </Link>
           <Link
@@ -120,7 +120,7 @@ export default function Navbar() {
             <div className="route flex gap-1">
               {/* <Image src={Settings} alt="logo" /> */}
               <Settings2 size={25} />
-              <p>Settings</p>
+              <p className="hidden lg:block">Settings</p>
             </div>
           </Link>
         </div>
@@ -128,7 +128,7 @@ export default function Navbar() {
           <button onClick={handleLogout} className="flex gap-1">
             {/* <Image src={Logout} alt="logo" /> */}
             <LogOutIcon size={25} />
-            <p>Logout</p>
+            <p className="hidden lg:block">Logout</p>
           </button>
         </div>
       </div>

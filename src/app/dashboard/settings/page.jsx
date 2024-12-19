@@ -144,7 +144,7 @@ export default function Settings() {
     <div>
       <Navbar />
       <DesktopHeader />
-      <div className="sm:pl-96 sm:pt-20 pt-20 font-serif">
+      <div className="sm:pl-60 lg:pl-96 sm:pt-20 pt-20 font-serif">
         {/* <div className="mt-4">
           <h2>Saved Data:</h2>
           <p>{savedData}</p>

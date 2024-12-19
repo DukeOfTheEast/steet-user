@@ -145,7 +145,7 @@ const Home = () => {
       <Navbar />
       <DesktopHeader />
 
-      <div className="sm:pl-96 sm:pt-20 pt-24 sm:w-full">
+      <div className="sm:pl-60 lg:pl-96 sm:pt-20 pt-24 sm:w-full">
         {currentUser?.role === "designer" ? (
           <FiPlus
             color="white"

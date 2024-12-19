@@ -24,7 +24,7 @@ const LandingNav = () => {
         className="w-24 h-24"
       />
       <div className="hidden sm:block">
-        <div className="flex gap-10 text-[#FF5C00] font-semibold font-mono">
+        <div className="flex gap-10 text-[#FF5C00] font-serif">
           <Link href={"/"}>How it works</Link>
           <Link href={"/"}>Features</Link>
           <Link href={"/"}>FAQ</Link>

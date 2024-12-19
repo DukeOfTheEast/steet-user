@@ -107,7 +107,7 @@ const Orders = () => {
       <Navbar />
       <DesktopHeader />
       <div
-        className={`sm:pl-96 sm:pt-20 pt-20 ${selectedUser ? "blur-sm" : ""}`}
+        className={`sm:pl-60 lg:pl-96 pt-28 ${selectedUser ? "blur-sm" : ""}`}
       >
         <UserList onSelectUser={handleSelectUser} />
       </div>

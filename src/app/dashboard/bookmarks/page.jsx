@@ -165,7 +165,7 @@ const Bookmarks = () => {
       <Navbar />
       <DesktopHeader />
 
-      <div className="sm:pl-96 sm:pt-20 pt-24 w-full my-3">
+      <div className="sm:pl-60 lg:pl-96 sm:pt-20 pt-24 w-full my-3">
         {posts.length === 0 ? (
           <div className="flex flex-col items-center text-center justify-center p-10 mt-20">
             <BsBookmark className="text-6xl text-[#FF5C00] mb-4" />
