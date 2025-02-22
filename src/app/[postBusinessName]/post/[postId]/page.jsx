@@ -13,6 +13,7 @@ import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { BsBookmark, BsBookmarkFill } from "react-icons/bs";
 import Navbar from "@/components/navbar/page";
 import { DesktopHeader } from "@/components/desktop-header/page";
+import ReactPlayer from "react-player";
 
 export default function PostDetailPage() {
   const [post, setPosts] = useState(null);
@@ -121,6 +122,30 @@ export default function PostDetailPage() {
 
           {post?.text && <p className="mb-4">{post?.text}</p>}
 
+          {post.mediaUrl && post.mediaType === "image" && (
+            <Image
+              src={post.mediaUrl}
+              alt="post"
+              className="w-full rounded-xl mb-4 max-h-96"
+              width={800}
+              height={800}
+            />
+          )}
+          {post.mediaUrl && post.mediaType === "video" && (
+            <div className="w-full mb-4">
+              <ReactPlayer
+                url={post.mediaUrl}
+                controls={true}
+                playing={false}
+                loop={true}
+                muted={false}
+                width="100%"
+                height="100%"
+                className="rounded-md shadow-lg"
+              />
+            </div>
+          )}
+          {/* 
           {post?.imageUrl && (
             <Image
               src={post?.imageUrl}
@@ -129,7 +154,7 @@ export default function PostDetailPage() {
               width={800}
               height={800}
             />
-          )}
+          )} */}
           <div className="flex flex-row-reverse items-center justify-between">
             <div className="flex items-center gap-1">
               <button onClick={() => handleLike(post?.id)}>

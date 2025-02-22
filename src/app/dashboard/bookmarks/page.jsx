@@ -32,6 +32,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { EllipsisVertical } from "lucide-react";
 import { GoLocation } from "react-icons/go";
+import ReactPlayer from "react-player";
 
 const Bookmarks = () => {
   const { currentUser } = useAuth();
@@ -202,14 +203,28 @@ const Bookmarks = () => {
                     </div>
                   </div>
                   {post.text && <p className="mb-4">{post.text}</p>}
-                  {post.imageUrl && (
+                  {post.mediaUrl && post.mediaType === "image" && (
                     <Image
-                      src={post.imageUrl}
+                      src={post.mediaUrl}
                       alt="post"
                       className="w-full rounded-xl mb-4 max-h-96"
                       width={800}
                       height={800}
                     />
+                  )}
+                  {post.mediaUrl && post.mediaType === "video" && (
+                    <div className="w-full mb-4">
+                      <ReactPlayer
+                        url={post.mediaUrl}
+                        controls={true}
+                        playing={false}
+                        loop={true}
+                        muted={false}
+                        width="100%"
+                        height="100%"
+                        className="rounded-md shadow-lg"
+                      />
+                    </div>
                   )}
                   <div className="flex flex-row-reverse items-center justify-between">
                     <div className="flex items-center gap-1">
