@@ -1,7 +1,6 @@
 "use client";
 
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "@/components/navbar/page";
 import { DesktopHeader } from "@/components/desktop-header/page";
 import { useAuth } from "@/context/AuthContext";
@@ -18,8 +17,7 @@ import {
   onSnapshot,
 } from "firebase/firestore";
 import PostModal from "@/components/post-modal/page";
-import { FaRegHeart } from "react-icons/fa";
-import { FaHeart } from "react-icons/fa";
+import { FaRegHeart, FaHeart } from "react-icons/fa";
 import { AiOutlineDelete, AiOutlineDownload } from "react-icons/ai";
 import {
   BsBookmark,
@@ -32,10 +30,7 @@ import Image from "next/image";
 import { EllipsisVertical } from "lucide-react";
 import { GoLocation } from "react-icons/go";
 import PostOptions from "@/components/postOptions/page";
-// import { toast } from "react-toastify";
-// import { toast } from "react-hot-toast";
-// import { ToastBar, Toaster } from "react-hot-toast";
-import "react-toastify/dist/ReactToastify.css";
+import ReactPlayer from "react-player";
 
 const Home = () => {
   const { currentUser, setCurrentUser } = useAuth();
@@ -47,8 +42,6 @@ const Home = () => {
 
     try {
       const userRef = doc(db, "users", currentUser.uid);
-
-      // Check if post is already bookmarked
       const userDoc = await getDoc(userRef);
       const currentBookmarks = userDoc.data().bookmarks || [];
 
@@ -56,11 +49,8 @@ const Home = () => {
         ? currentBookmarks.filter((id) => id !== postId)
         : [...currentBookmarks, postId];
 
-      await updateDoc(userRef, {
-        bookmarks: updatedBookmarks,
-      });
+      await updateDoc(userRef, { bookmarks: updatedBookmarks });
 
-      // Modify this part to update posts with bookmark status
       setPosts((prevPosts) =>
         prevPosts.map((post) => ({
           ...post,
@@ -72,11 +62,11 @@ const Home = () => {
         ...prev,
         bookmarks: updatedBookmarks,
       }));
-      toast.success(
-        updatedBookmarks.includes(postId)
-          ? "Post bookmarked!"
-          : "Bookmark removed!"
-      );
+      // toast.success(
+      //   updatedBookmarks.includes(postId)
+      //     ? "Post bookmarked!"
+      //     : "Bookmark removed!"
+      // );
     } catch (error) {
       console.error("Error bookmarking post: ", error);
     }
@@ -91,8 +81,6 @@ const Home = () => {
         const postsList = await Promise.all(
           snapshot.docs.map(async (postDoc) => {
             const postData = { id: postDoc.id, ...postDoc.data() };
-
-            // Check if this post is bookmarked by the current user
             const userRef = doc(db, "users", currentUser.uid);
             const userSnapshot = await getDoc(userRef);
             const currentBookmarks = userSnapshot.data()?.bookmarks || [];
@@ -173,7 +161,6 @@ const Home = () => {
                       width={30}
                       height={30}
                     />
-                    {/* <p>{post.createdByUsername}</p> */}
                     <p>{post.businessName}</p>
                   </div>
                   <div className="flex items-center">
@@ -202,14 +189,28 @@ const Home = () => {
                   className="cursor-pointer"
                 >
                   {post.text && <p className="mb-4">{post.text}</p>}
-                  {post.imageUrl && (
+                  {post.mediaUrl && post.mediaType === "image" && (
                     <Image
-                      src={post.imageUrl}
+                      src={post.mediaUrl}
                       alt="post"
                       className="w-full rounded-xl mb-4 max-h-96"
                       width={800}
                       height={800}
                     />
+                  )}
+                  {post.mediaUrl && post.mediaType === "video" && (
+                    <div className="w-full mb-4">
+                      <ReactPlayer
+                        url={post.mediaUrl}
+                        controls={true}
+                        playing={false}
+                        loop={true}
+                        muted={false}
+                        width="100%"
+                        height="100%"
+                        className="rounded-md shadow-lg"
+                      />
+                    </div>
                   )}
                 </Link>
                 <div className="flex flex-row-reverse items-center justify-between">
@@ -219,7 +220,7 @@ const Home = () => {
                         <FaHeart />
                       ) : (
                         <FaRegHeart />
-                      )}{" "}
+                      )}
                     </button>
                     <p>{post.likes.length}</p>
                   </div>

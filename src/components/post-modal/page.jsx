@@ -1,21 +1,21 @@
+"use client";
+
 import React, { useState, useEffect } from "react";
 import { db, storage } from "@/app/firebase/config";
 import { collection, addDoc, Timestamp, getDoc, doc } from "firebase/firestore";
-import {
-  getStorage,
-  ref,
-  uploadBytesResumable,
-  getDownloadURL,
-} from "firebase/storage";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { useAuth } from "@/context/AuthContext";
 import { FaTimes } from "react-icons/fa";
 import Spinner from "../spinner/page";
 import { useProfile } from "@/context/ProfileContext";
 import Image from "next/image";
+// import { Player } from "video-react";
+import ReactPlayer from "react-player";
 
 const PostModal = ({ isOpen, onClose, currentUser }) => {
-  const [image, setImage] = useState(null);
-  const [imageUrl, setImageUrl] = useState(null);
+  const [media, setMedia] = useState(null); // For image or video file
+  const [mediaUrl, setMediaUrl] = useState(null); // Local preview URL
+  const [mediaType, setMediaType] = useState(null); // "image" or "video"
   const [text, setText] = useState("");
   const { currentUser: user } = useAuth();
   const [postLoading, setPostLoading] = useState(false);
@@ -23,25 +23,36 @@ const PostModal = ({ isOpen, onClose, currentUser }) => {
 
   useEffect(() => {
     if (currentUser) {
-      // Fetch user's saved data when component mounts
       const fetchUserData = async () => {
         const docRef = doc(db, "users", currentUser.uid);
         const docSnap = await getDoc(docRef);
         const userData = docSnap.data();
-        if (docSnap.exists()) {
-          if (userData.photoURL) {
-            setPhotoURL(userData.photoURL);
-          }
+        if (docSnap.exists() && userData.photoURL) {
+          setPhotoURL(userData.photoURL);
         }
       };
       fetchUserData();
     }
   }, [currentUser, setPhotoURL]);
 
-  const handleImageChange = (e) => {
+  const handleMediaChange = (e) => {
     if (e.target.files[0]) {
-      setImage(e.target.files[0]);
-      setImageUrl(URL.createObjectURL(e.target.files[0]));
+      const file = e.target.files[0];
+      setMedia(file);
+
+      // Determine file type and set preview URL
+      if (file.type.startsWith("image/")) {
+        setMediaType("image");
+        setMediaUrl(URL.createObjectURL(file));
+      } else if (file.type.startsWith("video/")) {
+        setMediaType("video");
+        setMediaUrl(URL.createObjectURL(file));
+      } else {
+        alert("Please upload an image or video file.");
+        setMedia(null);
+        setMediaUrl(null);
+        setMediaType(null);
+      }
     }
   };
 
@@ -49,23 +60,25 @@ const PostModal = ({ isOpen, onClose, currentUser }) => {
     e.preventDefault();
     setPostLoading(true);
     try {
-      let postImageUrl = "";
+      let postMediaUrl = "";
+      let postMediaType = "";
 
-      if (image) {
-        const storageRef = ref(storage, `posts/${image.name}`);
-        const uploadTask = uploadBytesResumable(storageRef, image);
+      if (media) {
+        const storageRef = ref(storage, `posts/${media.name}`);
+        const uploadTask = uploadBytesResumable(storageRef, media);
 
         await new Promise((resolve, reject) => {
           uploadTask.on(
             "state_changed",
             () => {},
             (error) => {
-              console.error("Error uploading image: ", error);
+              console.error("Error uploading media: ", error);
               reject(error);
             },
             () => {
               getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-                postImageUrl = downloadURL;
+                postMediaUrl = downloadURL;
+                postMediaType = mediaType;
                 resolve();
               });
             }
@@ -75,9 +88,10 @@ const PostModal = ({ isOpen, onClose, currentUser }) => {
 
       await addDoc(collection(db, "posts"), {
         text,
-        imageUrl: postImageUrl,
+        mediaUrl: postMediaUrl, // Store Firebase URL
+        mediaType: postMediaType, // Store type for rendering downstream
         createdBy: user.uid,
-        createdByUsername: user.inputValue || "Anonymous", // Assuming inputValue is the username
+        createdByUsername: user.inputValue || "Anonymous",
         createdAt: Timestamp.now(),
         likes: [],
         createdByProfileImage: photoURL || user.photoURL,
@@ -89,38 +103,51 @@ const PostModal = ({ isOpen, onClose, currentUser }) => {
       });
 
       setText("");
-      setImage(null);
-      setImageUrl(null);
+      setMedia(null);
+      setMediaUrl(null);
+      setMediaType(null);
       onClose();
     } catch (error) {
       console.error("Error creating post: ", error);
+    } finally {
+      setPostLoading(false);
     }
   };
 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-50 ">
+    <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-50">
       <div className="bg-white rounded-lg shadow-lg w-full sm:max-w-md max-w-sm">
         <div className="modal p-2">
-          <div className="">
-            {/* <span className="close w-10 h-10" onClick={onClose}>
-              &times;
-            </span> */}
+          <div>
             <FaTimes
               size={40}
               className="cursor-pointer p-2"
               onClick={onClose}
             />
-            {imageUrl && (
+            {mediaUrl && (
               <div className="mb-4">
-                <Image
-                  src={imageUrl}
-                  alt="Preview"
-                  className="w-full h-auto max-h-72 rounded"
-                  width={300}
-                  height={300}
-                />
+                {mediaType === "image" ? (
+                  <Image
+                    src={mediaUrl}
+                    alt="Preview"
+                    className="w-full h-auto max-h-72 rounded"
+                    width={300}
+                    height={300}
+                  />
+                ) : mediaType === "video" ? (
+                  <ReactPlayer
+                    url={mediaUrl}
+                    controls={true}
+                    playing={true}
+                    loop={true}
+                    muted={true}
+                    width="100%"
+                    height="100%"
+                    className="rounded-lg shadow-lg"
+                  />
+                ) : null}
               </div>
             )}
             <textarea
@@ -131,10 +158,15 @@ const PostModal = ({ isOpen, onClose, currentUser }) => {
               rows="3"
             />
             <div className="flex items-center justify-between">
-              <input type="file" onChange={handleImageChange} />
+              <input
+                type="file"
+                accept="image/*,video/*" // Accept both image and video
+                onChange={handleMediaChange}
+              />
               <button
                 onClick={handleSubmit}
                 className="bg-[#FF5C00] text-white px-4 py-2 rounded hover:bg-[#eead88]"
+                disabled={postLoading}
               >
                 {postLoading ? <Spinner /> : "Post"}
               </button>

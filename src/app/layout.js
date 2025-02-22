@@ -2,6 +2,7 @@
 
 import { Inter } from "next/font/google";
 import "./globals.css";
+import "video-react/dist/video-react.css";
 import { AuthProvider } from "@/context/AuthContext";
 import CatProvider from "@/context/CatContext";
 import { ProfileProvider } from "@/context/ProfileContext";
