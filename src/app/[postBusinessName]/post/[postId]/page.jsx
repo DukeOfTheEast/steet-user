@@ -122,16 +122,16 @@ export default function PostDetailPage() {
 
           {post?.text && <p className="mb-4">{post?.text}</p>}
 
-          {post.mediaUrl && post.mediaType === "image" && (
+          {post?.mediaUrl && post?.mediaType === "image" && (
             <Image
-              src={post.mediaUrl}
+              src={post?.mediaUrl}
               alt="post"
               className="w-full rounded-xl mb-4 max-h-96"
               width={800}
               height={800}
             />
           )}
-          {post.mediaUrl && post.mediaType === "video" && (
+          {post?.mediaUrl && post?.mediaType === "video" && (
             <div className="w-full mb-4">
               <ReactPlayer
                 url={post.mediaUrl}
