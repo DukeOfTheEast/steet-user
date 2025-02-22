@@ -85,7 +85,6 @@ export default function PostDetailPage() {
               className="flex items-center gap-2 hover:bg-gray-100 p-2 rounded-full"
             >
               <ArrowLeft size={24} />
-              <span>Back to Posts</span>
             </button>
           </div>
 
